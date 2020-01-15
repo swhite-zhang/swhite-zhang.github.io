@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>OS 操作系统结构 | Ascrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="操作系统结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 操作系统结构">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="操作系统结构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/os%E7%AC%AC%E4%BA%8C%E7%AB%A01.png">
+<meta property="article:published_time" content="2020-01-07T18:26:03.294Z">
+<meta property="article:modified_time" content="2020-01-07T16:13:40.085Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/os%E7%AC%AC%E4%BA%8C%E7%AB%A01.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ascrush</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ascrush.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-os操作系统结构" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/" class="article-date">
+  <time datetime="2020-01-07T18:26:03.294Z" itemprop="datePublished">2020-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OS 操作系统结构
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h1><a id="more"></a>
+<h2 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h2><h3 id="提供的函数"><a href="#提供的函数" class="headerlink" title="提供的函数"></a>提供的函数</h3><p>1.用户界面（user interface，UI）</p>
+<blockquote>
+<p>命令行界面（command-line interface，CLI）  采用文本命令，用一定的方法输入。<br>图形用户界面（graphical user interface，GUI）</p>
+</blockquote>
+<p>2.程序执行<br>3.I/O操作</p>
+<blockquote>
+<p>用户通常不能直接控制I/O设备，所以操作系统需要提供进行I/O操作的方法。</p>
+</blockquote>
+<p>4.文件系统操作</p>
+<blockquote>
+<p>程序需要读写文件和目录，也需要根据文件名来创建和删除文件、搜索一个给定的文件、列出文件信息。此外还包括基于文件所有权的允许或拒绝对文件或目录的访问管理</p>
+</blockquote>
+<p>5.通信</p>
+<blockquote>
+<p>一个进程需要与另一个进程交换信息。</p>
+<blockquote>
+<ol>
+<li>同一台计算机上两个程序之间。</li>
+<li>运行在网络连接起来的两台计算机上的进程之间。</li>
+</ol>
+</blockquote>
+</blockquote>
+<p>6.错误检测</p>
+<blockquote>
+<p>CPU或内存硬件、I/O设备和用户程序中出现的错误。</p>
+</blockquote>
+<p>7.资源分配</p>
+<blockquote>
+<p>同时有多个用户或多个作业运行时，系统必须为它们分配资源（CPU周期、内存、I/O设备等）。</p>
+</blockquote>
+<p>8.统计</p>
+<blockquote>
+<p>记录哪些用户使用了多少和什么类型的资源。</p>
+</blockquote>
+<p>9.保护和安全</p>
+<blockquote>
+<p>当多个程序并发时，一个程序不能干预另一个进程或操作系统本身。<br>同时系统也不能受到外界的侵犯。</p>
+</blockquote>
+<h2 id="操作系统用户界面"><a href="#操作系统用户界面" class="headerlink" title="操作系统用户界面"></a>操作系统用户界面</h2><h3 id="命令解释程序"><a href="#命令解释程序" class="headerlink" title="命令解释程序"></a>命令解释程序</h3><p>用于获取并执行用户指定的下一条命令。<br>1.命令解释程序本身包含代码以执行这些命令。<br>2.有系统程序实现绝大多数命令。</p>
+<h3 id="图形用户界面（GUI）"><a href="#图形用户界面（GUI）" class="headerlink" title="图形用户界面（GUI）"></a>图形用户界面（GUI）</h3><p>提供基于鼠标的窗口和菜单系统。</p>
+<h2 id="系统调用（system-call）"><a href="#系统调用（system-call）" class="headerlink" title="系统调用（system call）"></a>系统调用（system call）</h2><p>提供了操作系统提供的有效服务界面。应用程序开发人员根据<strong>应用程序接口</strong>（API）设计程序。组成API的函数就是操作系统提供的系统调用。</p>
+<h2 id="系统调用类型"><a href="#系统调用类型" class="headerlink" title="系统调用类型"></a>系统调用类型</h2><ul>
+<li>进程控制</li>
+<li>文件管理</li>
+<li>设备管理</li>
+<li>信息维护</li>
+<li>通信<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3>运行程序需要能够正常或非正常地中断其执行。<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3>创建和删除文件，读、写或重定位文件，确定和设置其属性（文件名、文件类型、保护模式、计账信息）。<h3 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h3>物理设备（磁带）抽象设备（文件）。<h3 id="信息维护"><a href="#信息维护" class="headerlink" title="信息维护"></a>信息维护</h3>用户程序和操作系统之间传递信息。<h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3></li>
+</ul>
+<p>1.消息传递模型（message-passing model）</p>
+<blockquote>
+<p>通过彼此之间交换消息来交换信息。</p>
+</blockquote>
+<p>2.共享内存模型（shared-memory model）</p>
+<blockquote>
+<p>使用shared memory create和shared memoty attach 系统调用来获得其他进程所拥有的内存区域地访问权。</p>
+</blockquote>
+<h2 id="系统程序"><a href="#系统程序" class="headerlink" title="系统程序"></a>系统程序</h2><p>1.文件管理</p>
+<blockquote>
+<p>创建、删除、复制、重命名、打印、转储、列出和操作文件和目录。</p>
+</blockquote>
+<p>2.状态信息</p>
+<blockquote>
+<p>系统的日期、时间、可用内存、或磁盘空间的数量、用户数或类似的状态信息。</p>
+</blockquote>
+<p>3.文件修改<br>4.程序语言支持</p>
+<blockquote>
+<p>常用的程序设计语言的编译程序、汇编程序、调试程序和接师程序</p>
+</blockquote>
+<p>5.程序装入和执行<br>6.通信</p>
+<h2 id="操作系统设计和实现"><a href="#操作系统设计和实现" class="headerlink" title="操作系统设计和实现"></a>操作系统设计和实现</h2><h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><p>1.定义系统的目标和规格。<br>2.方便和容易使用、学习、可靠、安全和快速。<br>3.容易设计、实现和维护的同时灵活、可靠高效且没有错误。</p>
+<h3 id="机制（mechanism）和策略（policy）"><a href="#机制（mechanism）和策略（policy）" class="headerlink" title="机制（mechanism）和策略（policy）"></a>机制（mechanism）和策略（policy）</h3><ul>
+<li>机制   决定怎么做</li>
+<li>策略   决定做什么<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3>使用汇编和高级语言编写<h2 id="操作系统结构-1"><a href="#操作系统结构-1" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="简单结构"><a href="#简单结构" class="headerlink" title="简单结构"></a>简单结构</h3><img src="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/os%E7%AC%AC%E4%BA%8C%E7%AB%A01.png" alt="MS-DOS层次结构" title="MS-DOS层次结构"><h3 id="分层方法"><a href="#分层方法" class="headerlink" title="分层方法"></a>分层方法</h3>分层法   操作系统分成若干层。最底层为硬件，最高层为用户接口。<h3 id="微内核（microkernel）"><a href="#微内核（microkernel）" class="headerlink" title="微内核（microkernel）"></a>微内核（microkernel）</h3>将所有非基本部分从内核中移走，并将它们实现为系统程序或用户程序。从而使客户程序和运行在用户空间的各种服务之间进行通信。<br>好处：<blockquote>
+<p>便于扩充操作系统。更好的安全性和可靠性。</p>
+</blockquote>
+</li>
+</ul>
+<p>坏处：</p>
+<blockquote>
+<p>由于系统功能总开销的增加而导致系统性能下降。</p>
+</blockquote>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>面向对象编程技术生成模块化的内核。</p>
+<h2 id="虚拟机（virtual-machine）"><a href="#虚拟机（virtual-machine）" class="headerlink" title="虚拟机（virtual machine）"></a>虚拟机（virtual machine）</h2><h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>底层机器的两种模式：用户模式和内核模式。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>优点是没有安全问题。但同时没有了资源共享。<br>共享实现的两种方法：</p>
+<blockquote>
+<p>1.通过共享小型磁盘来共享文件，模拟共享物理磁盘，用软件实现。<br>2.通过定义一个虚拟机的网络，模拟通信网络来传递消息。</p>
+</blockquote>
+<h2 id="系统生成（system-generation）"><a href="#系统生成（system-generation）" class="headerlink" title="系统生成（system generation）"></a>系统生成（system generation）</h2><p>对某个特定的计算机场所，配置和生成系统。</p>
+<h2 id="系统启动"><a href="#系统启动" class="headerlink" title="系统启动"></a>系统启动</h2><p>装入内核以启动计算机的过程称为引导系统。步骤：</p>
+<blockquote>
+<p>一个简单的引导程序从磁盘上调入一个较复杂的引导程序。然后后者再装入内核</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/" data-id="ck5f0oggz0000c4w8chz01846" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OS 线程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OS 导论</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">About</h3>
+    <div class="widget">
+        邮箱：zzzhhh@bupt.edu.cn<br />
+        github：<a href="https://github.com/swhite-zhang" target="_blank">swhite-zhang</a>
+        <br />
+    </div>
+</div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2019/" rel="tag">2019</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%91%84%E5%BD%B1/" rel="tag">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/">2019摄影记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/">OS 进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/">OS 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/">OS 操作系统结构</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/">OS 导论</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Ascrush<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <div id="top">
+    <a href="#">▲</a>
+    <a href="#footer">▼</a>
+</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

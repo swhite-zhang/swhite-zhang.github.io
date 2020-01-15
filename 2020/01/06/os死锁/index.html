@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>OS 死锁 | Ascrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="死锁如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为死锁（deadlock）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 死锁">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="死锁如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为死锁（deadlock）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%811.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%812.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%813.jpg">
+<meta property="article:published_time" content="2020-01-06T11:12:45.000Z">
+<meta property="article:modified_time" content="2020-01-07T16:14:30.853Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%811.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ascrush</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ascrush.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-os死锁" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/06/os%E6%AD%BB%E9%94%81/" class="article-date">
+  <time datetime="2020-01-06T11:12:45.000Z" itemprop="datePublished">2020-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OS 死锁
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为<strong>死锁（deadlock）</strong>。</p>
+<a id="more"></a>
+<h2 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h2><p>进程在使用资源前必须申请资源，在使用资源之后必须释放资源。在正常操作模式下，进程只能按如下顺序使用资源：</p>
+<ol>
+<li>申请：如果申请不被允许，那么进程必须等待，直到它获得该资源为止。</li>
+<li>使用：对资源进行操作。</li>
+<li>释放：使用完后释放资源。</li>
+</ol>
+<p>资源的申请与释放为系统调用。</p>
+<h2 id="死锁特征"><a href="#死锁特征" class="headerlink" title="死锁特征"></a>死锁特征</h2><h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><ol>
+<li><strong>互斥</strong>：至少有一个资源一次只有一个进程可以使用。</li>
+<li><strong>占有并等待</strong>：一个进程必须占有至少一个资源并等待另一个资源，而该资源为其他进程占有。</li>
+<li><strong>非抢占</strong>：资源不能被抢占</li>
+<li><strong>循环等待</strong>：有一组等待进程{P₀，P₁，…，Pn}，P₀等待的资源为P₁所占有，P₁等待的资源为P₂所占有，…，Pn-1等待的资源为Pn所占有，Pn等待的资源为P₀所占有。</li>
+</ol>
+<p>必须这四个条件同时出现才会出现死锁。</p>
+<h3 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h3><p>P-&gt;R为申请边，R-&gt;P为分配边。</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%811.jpg" alt="资源分配图" title="资源分配图"></p>
+<h3 id="死锁处理方法"><a href="#死锁处理方法" class="headerlink" title="死锁处理方法"></a>死锁处理方法</h3><p>从原理上来说有三种：</p>
+<blockquote>
+<ol>
+<li>可使用协议以预防或避免死锁，确保系统不会进入死锁状态。</li>
+<li>可允许系统进入死锁状态，然后检测它，并加以恢复。</li>
+<li>可忽视这个问题，认为死锁不可能在系统内发生。</li>
+</ol>
+</blockquote>
+<h4 id="采用死锁预防（deadlock-prevention）的方案"><a href="#采用死锁预防（deadlock-prevention）的方案" class="headerlink" title="采用死锁预防（deadlock prevention）的方案"></a>采用死锁预防（deadlock prevention）的方案</h4><p>确保至少一个必要条件（互斥、占有并等待、非抢占和循环等待）不成立。</p>
+<h4 id="采用死锁避免（deadlock-avoidance）的方案"><a href="#采用死锁避免（deadlock-avoidance）的方案" class="headerlink" title="采用死锁避免（deadlock avoidance）的方案"></a>采用死锁避免（deadlock avoidance）的方案</h4><p>事先得到有关进程申请资源和使用资源的额外信息。然后确定该进程是否应该等待，是允许申请还是延迟。</p>
+<h2 id="死锁避免（deadlock-avoidance）"><a href="#死锁避免（deadlock-avoidance）" class="headerlink" title="死锁避免（deadlock avoidance）"></a>死锁避免（deadlock avoidance）</h2><h3 id="安全状态"><a href="#安全状态" class="headerlink" title="安全状态"></a>安全状态</h3><p>如果系统能按某个顺序为每个进程分配资源并能避免死锁，那么系统状态就是安全的。即如果存在一个安全序列，那么系统处于安全状态。</p>
+<h3 id="资源分配图算法"><a href="#资源分配图算法" class="headerlink" title="资源分配图算法"></a>资源分配图算法</h3><p>除了申请边和分配边外，引入需求边。假设进程i申请资源j。只有在将申请边i-&gt;j变成分配边j-&gt;i而不会导致资源分配图形成环时，才允许申请。</p>
+<h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><p>资源分配图算法不适合于每种资源类型有多个实例的资源分配系统。在银行家算法中，如果客户的需求不能满足，银行决不会分配其现金。<br>死锁避免的资源分配图</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%812.jpg" alt="死锁避免的资源分配图" title="死锁避免的资源分配图"></p>
+<p>资源分配图的不安全状态</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%813.jpg" alt="资源分配图的不安全状态" title="资源分配图的不安全状态"></p>
+<p>所需数据结构：</p>
+<blockquote>
+<ul>
+<li><strong>Availabe</strong>：长度为m的向量，表示每种资源的现有实例的数量。</li>
+<li><strong>Max</strong>：n*m矩阵，定义每个进程的最大需求。</li>
+<li><strong>Allocation</strong>：n*m矩阵，定义每个进程现在所分配的各种资源类型的实例数量。</li>
+<li><strong>Need</strong>：n*m矩阵，表示每个进程还需要的剩余的资源。</li>
+</ul>
+</blockquote>
+<h4 id="安全性算法"><a href="#安全性算法" class="headerlink" title="安全性算法"></a>安全性算法</h4><p>步骤：</p>
+<p>1.设work和finish分别为长度m和n的向量。work=available，finish[0,…,n-1]=false。</p>
+<p>2.查找这样的i使其满足</p>
+<blockquote>
+<ol>
+<li>finish[i]=false</li>
+<li>need[i]≤work</li>
+</ol>
+</blockquote>
+<p>如果没有就跳转到第4步。</p>
+<p>3.work=work+allocation[i];finish[i]=true<br>返回到第2步</p>
+<p>4.如果对所有i，finish[i]=true，那么系统处于安全状态。</p>
+<h4 id="资源请求算法"><a href="#资源请求算法" class="headerlink" title="资源请求算法"></a>资源请求算法</h4><p>request[i]为进程P[i]的请求向量。request[j]==k表示进程P[i]需要资源类型为j的实例数量为k。步骤：</p>
+<ol>
+<li>如果request[i]≤need[i]，那么调转到第2步。否则报错：进程所需资源超过最大请求。</li>
+<li>如果request[i]≤available,那么跳转到第3步。否则报错：进程所需资源超过现有资源。</li>
+<li>分配资源：<blockquote>
+<ol>
+<li>available=available-request[i];</li>
+<li>allocation[i]=allocation[i]+request[i];</li>
+<li>need[i]=need[i]-request[i];</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h2 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h2><p>系统提供：</p>
+<ul>
+<li>一个用来检查系统状态从而确定是否出现了死锁的算法</li>
+<li>一个用来从死锁状态中恢复的算法<h3 id="每个资源类型只有单个实例"><a href="#每个资源类型只有单个实例" class="headerlink" title="每个资源类型只有单个实例"></a>每个资源类型只有单个实例</h3>如果每个资源类型只有单个实例，那就删除所有资源实例就能得到一个等待图（wait-for）。只要图中没有环就不会出现死锁。<h3 id="每种资源类型可有多个实例"><a href="#每种资源类型可有多个实例" class="headerlink" title="每种资源类型可有多个实例"></a>每种资源类型可有多个实例</h3>和银行家算法中的安全性算法相同。<h3 id="应用检测算法"><a href="#应用检测算法" class="headerlink" title="应用检测算法"></a>应用检测算法</h3>当经常发生死锁时，就应经常调用应用检测算法。但经常调用应用检测算法会增加开销。<h2 id="死锁恢复"><a href="#死锁恢复" class="headerlink" title="死锁恢复"></a>死锁恢复</h2><h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3>两种终止方法：</li>
+<li>终止所有死锁进程。代价较高。</li>
+<li>一次只终止一个进程直到取消死锁循环为止。开销较大。<h3 id="资源抢占"><a href="#资源抢占" class="headerlink" title="资源抢占"></a>资源抢占</h3>通过逐步从其他进程中抢占资源直到死锁打破。但是也有问题：</li>
+</ul>
+<ol>
+<li>选择一个牺牲品</li>
+<li>回滚：被抢占资源的进程回到一个安全的状态</li>
+<li>饥饿：保证每次被抢占的不是同一个进程</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/" data-id="ck5f0oghn000dc4w8a6sxhnrq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OS 文件系统接口
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OS 进程同步</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">About</h3>
+    <div class="widget">
+        邮箱：zzzhhh@bupt.edu.cn<br />
+        github：<a href="https://github.com/swhite-zhang" target="_blank">swhite-zhang</a>
+        <br />
+    </div>
+</div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2019/" rel="tag">2019</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%91%84%E5%BD%B1/" rel="tag">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/">2019摄影记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/">OS 进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/">OS 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/">OS 操作系统结构</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/">OS 导论</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Ascrush<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <div id="top">
+    <a href="#">▲</a>
+    <a href="#footer">▼</a>
+</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

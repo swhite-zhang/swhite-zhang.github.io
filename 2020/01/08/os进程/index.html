@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>OS 进程 | Ascrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="进程在CPU中的活动称为进程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 进程">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="进程在CPU中的活动称为进程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A01.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A02.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A03.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A04.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A05.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A06.jpg">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A07.jpg">
+<meta property="article:published_time" content="2020-01-07T18:26:03.366Z">
+<meta property="article:modified_time" content="2020-01-07T16:14:08.422Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A01.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ascrush</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ascrush.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-os进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2020-01-07T18:26:03.366Z" itemprop="datePublished">2020-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OS 进程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>在CPU中的活动称为进程。</p>
+<a id="more"></a>
+<h2 id="进程概念"><a href="#进程概念" class="headerlink" title="进程概念"></a>进程概念</h2><h3 id="进程-1"><a href="#进程-1" class="headerlink" title="进程"></a>进程</h3><p>进程组成：</p>
+<blockquote>
+<ul>
+<li>文本段（或代码段）</li>
+<li>当前活动（通过程序计数器的值和处理器寄存器的内容来表示）</li>
+<li>堆栈段（临时数据，如函数参数、返回地址、局部变量）</li>
+<li>数据段（全局变量）</li>
+<li>堆（heap）</li>
+</ul>
+</blockquote>
+<h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><ul>
+<li>新的：进程正在被创建</li>
+<li>运行：指令正在被执行</li>
+<li>等待：进程等待某个事件发生</li>
+<li>就绪：进程等待分配处理器</li>
+<li>终止：进行完成执行</li>
+</ul>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A01.jpg" alt="进程状态图" title="进程状态图"></p>
+<h3 id="进程控制块（process-control-block，PCB）"><a href="#进程控制块（process-control-block，PCB）" class="headerlink" title="进程控制块（process control block，PCB）"></a>进程控制块（process control block，PCB）</h3><p>1.进程状态<br>2.程序计数器</p>
+<blockquote>
+<p>计数器表示进程要执行的下个指令的地址</p>
+</blockquote>
+<p>3.CPU寄存器</p>
+<blockquote>
+<p>累加器、索引寄存器、堆栈指针和通用寄存器等</p>
+</blockquote>
+<p>4.CPU调度信息</p>
+<blockquote>
+<p>进程优先级、调度队列的指针和其他调度参数。</p>
+</blockquote>
+<p>5.内存管理信息</p>
+<blockquote>
+<p>基址寄存器和界限寄存器的值、页表或段表</p>
+</blockquote>
+<p>6.记账信息</p>
+<blockquote>
+<p>CPU时间、实际使用时间、时间界限、记账数据、作业或进程数量</p>
+</blockquote>
+<p>7.I/O状态信息</p>
+<blockquote>
+<p>分配给进程的I/O设备列表、打开的文件列表等</p>
+</blockquote>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><h3 id="调度队列"><a href="#调度队列" class="headerlink" title="调度队列"></a>调度队列</h3><p>1.作业队列</p>
+<blockquote>
+<p>该队列包括系统中的所有进程</p>
+</blockquote>
+<p>2.就绪队列（通常用链表实现）</p>
+<blockquote>
+<p>内存中就绪的、等待的进程</p>
+</blockquote>
+<p>3.设备队列</p>
+<blockquote>
+<p>等待特定I/O设备的进程</p>
+</blockquote>
+<h3 id="调度程序-scheduler"><a href="#调度程序-scheduler" class="headerlink" title="调度程序(scheduler)"></a>调度程序(scheduler)</h3><h4 id="长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））"><a href="#长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））" class="headerlink" title="长期调度程序（long-term scheduler，或作业调度程序（job scheduler））"></a>长期调度程序（long-term scheduler，或作业调度程序（job scheduler））</h4><blockquote>
+<p>一些批处理系统，进程更多的是被提交，所以都被放在大容量存储设备中。长期调度程序从大容量的存储设备中选择程序，放到内存中准备执行。</p>
+</blockquote>
+<h4 id="短期调度程序（short-term-scheduler，或CPU调度程序）"><a href="#短期调度程序（short-term-scheduler，或CPU调度程序）" class="headerlink" title="短期调度程序（short-term scheduler，或CPU调度程序）"></a>短期调度程序（short-term scheduler，或CPU调度程序）</h4><blockquote>
+<p>短期调度程序是从准备执行的进程中选择进程，然后为之分配CPU。</p>
+</blockquote>
+<h4 id="程序可以分为I-O为主和CPU为主"><a href="#程序可以分为I-O为主和CPU为主" class="headerlink" title="程序可以分为I/O为主和CPU为主"></a>程序可以分为I/O为主和CPU为主</h4><p><strong>I/O为主（I/O-bound progress）</strong>：</p>
+<blockquote>
+<p>执行I/O方面的时间更多</p>
+</blockquote>
+<p><strong>CPU为主（CPU-bound progress）</strong>：</p>
+<blockquote>
+<p>很少产生I/O请求</p>
+</blockquote>
+<h3 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h3><p>中断时，系统需要保存当前运行在CPU上的进程的上下文，从而在其处理完后能够恢复上下文。通常，通过执行一个<strong>状态保存（state save）</strong>来保存CPU当前状态，之后执行一个<strong>状态恢复（state restore）</strong>重新开始。<br>这个将CPU切换到另一个进程需要保存当前进程的状态并恢复另一个进程的状态称为<strong>上下文切换（context switch）</strong>。</p>
+<h2 id="进程操作"><a href="#进程操作" class="headerlink" title="进程操作"></a>进程操作</h2><h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p>进程（父进程）在执行过程中，能够通过创建程序系统调用创建多个新进程（子进程）。创建进程需要一定的资源（如：CPU时间、内存、文件、I/O设备），子进程可能从系统获得资源，也可能直接从父进程中获得资源。<br>当进程创建新进程时有两种执行可能：</p>
+<blockquote>
+<p>1.父进程与子进程并发执行<br>2.父进程等待，知道某个或全部子进程执行完</p>
+</blockquote>
+<p>新进程的地址空间也有两种可能：</p>
+<blockquote>
+<p>1.子进程时父进程的复制品<br>2.子程序装入另一个新程序</p>
+</blockquote>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A02.jpg" alt="进程生成" title="进程生成"></p>
+<h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3><p>当进程完成执行最后的语句并使用系统调用exit()请求系统删除自身时，进程终止。<br>父进程终止子进程的原因：</p>
+<blockquote>
+<ul>
+<li>子进程使用了超过它所分配的资源</li>
+<li>分配给子进程的任务不再需要</li>
+<li>父进程退出（级联终止（cascading termination））</li>
+</ul>
+</blockquote>
+<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><p>需要提供环境以允许进程协作的理由:</p>
+<blockquote>
+<ul>
+<li>信息共享（information sharing）</li>
+<li>提高运算速度（computation speedup）</li>
+<li>模块化（modularity）</li>
+<li>方便（convenience）</li>
+</ul>
+</blockquote>
+<p>进程间通信机制（interprocess communication，IPC）：用来允许进程相互交换数据与信息。两种基本模式：</p>
+<blockquote>
+<p>1.共享内存<br>2.消息传递</p>
+</blockquote>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A03.jpg" alt="通信模型" title="通信模型"></p>
+<h3 id="共享内存系统"><a href="#共享内存系统" class="headerlink" title="共享内存系统"></a>共享内存系统</h3><p>采用共享内存的进程间通信需要建立共享内存区域。</p>
+<h4 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h4><p>生产者进程产生信息以供消费者进程消费，这就必须要求建立缓冲来满足生产者和消费者的消费。<strong>无限缓冲（unbounded-buffer）</strong>，对缓冲大小没有限制。<strong>有限缓冲（bounded-buffer）</strong>，缓冲大小固定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFFER_SIZE 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;item;</span><br><span class="line"></span><br><span class="line">item buffer[BUFFER_SIZE];</span><br><span class="line"><span class="keyword">int</span> in = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> out = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A04.jpg" alt="代码实例" title="生产者消费者问题"></p>
+<h3 id="消息传递系统"><a href="#消息传递系统" class="headerlink" title="消息传递系统"></a>消息传递系统</h3><p>需求：</p>
+<blockquote>
+<p>发送和接受<br>通信线路（communication link）</p>
+<blockquote>
+<ul>
+<li>直接或间接通信</li>
+<li>同步或异步通信</li>
+<li>自动或显示缓冲</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="1-命名"><a href="#1-命名" class="headerlink" title="1.命名"></a>1.命名</h4><p>直接通信：需要通信的每个进程必须明确地命名通信的接收者和发送者。<br>间接通信：通过邮箱或端口来发送和接受消息。</p>
+<h4 id="2-同步（阻塞或非阻塞——同步或异步）"><a href="#2-同步（阻塞或非阻塞——同步或异步）" class="headerlink" title="2.同步（阻塞或非阻塞——同步或异步）"></a>2.同步（阻塞或非阻塞——同步或异步）</h4><blockquote>
+<ul>
+<li>阻塞 send：发送进程阻塞，直到消息被接受进程或邮箱所接受</li>
+<li>非阻塞 send：发送进程发送消息并继续操作</li>
+<li>阻塞 receive：接收者阻塞，直到有消息可用</li>
+<li>非阻塞 receive：接收者收到一个有效消息或空消息</li>
+</ul>
+</blockquote>
+<p>都阻塞的时候，发送者和接收者之间就有一个集合点（rendzvous）。</p>
+<h4 id="3-缓冲"><a href="#3-缓冲" class="headerlink" title="3.缓冲"></a>3.缓冲</h4><blockquote>
+<ul>
+<li>零容量：队列的最大长度为0。这种情况必须阻塞发送。</li>
+<li>有限容量</li>
+<li>无限容量</li>
+</ul>
+</blockquote>
+<h2 id="客户机-服务器系统通信"><a href="#客户机-服务器系统通信" class="headerlink" title="客户机-服务器系统通信"></a>客户机-服务器系统通信</h2><h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>套接字（Socket）可定义为通信的端点。一对通过网络通信的进程需要使用一对Socket。</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A05.jpg" alt="使用Socket通信" title="使用Socket通信"></p>
+<h3 id="远程过程调用"><a href="#远程过程调用" class="headerlink" title="远程过程调用"></a>远程过程调用</h3><p>最为普通的远程服务——RPC方式</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A06.jpg" alt="远程过程调用（RPC）" title="远程过程调用（RPC）"></p>
+<h3 id="远程方法调用（remote-method-invocation）"><a href="#远程方法调用（remote-method-invocation）" class="headerlink" title="远程方法调用（remote method invocation）"></a>远程方法调用（remote method invocation）</h3><p>类似于RPC的Java特性</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A07.jpg" alt="远程方法调用" title="远程方法调用"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/" data-id="ck5f0oghp000fc4w8f6ij76mj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2019摄影记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">OS 线程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">About</h3>
+    <div class="widget">
+        邮箱：zzzhhh@bupt.edu.cn<br />
+        github：<a href="https://github.com/swhite-zhang" target="_blank">swhite-zhang</a>
+        <br />
+    </div>
+</div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2019/" rel="tag">2019</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%91%84%E5%BD%B1/" rel="tag">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/">2019摄影记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/">OS 进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/">OS 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/">OS 操作系统结构</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/">OS 导论</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Ascrush<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <div id="top">
+    <a href="#">▲</a>
+    <a href="#footer">▼</a>
+</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

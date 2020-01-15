@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Ascrush</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.ascrush.cn/"/>
+  <updated>2020-01-09T09:29:17.356Z</updated>
+  <id>http://blog.ascrush.cn/</id>
+  
+  <author>
+    <name>Ascrush</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2019摄影记录</title>
+    <link href="http://blog.ascrush.cn/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/"/>
+    <id>http://blog.ascrush.cn/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/</id>
+    <published>2020-01-09T08:41:05.000Z</published>
+    <updated>2020-01-09T09:29:17.356Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;在2019年10月4日，我拥有了人生里的第一台相机。在过去的几个月里，我带着它去了后海，去了古北水镇，还去了陶然亭。我也用它记录了我的学校，同学们的表演还有室友的生日。由于学校里事务繁多，没有能够抽出时间系统的学习摄影和后期，所以拍得一般。不过好歹也是自己拍出来的，敝帚自珍
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="摄影" scheme="http://blog.ascrush.cn/tags/%E6%91%84%E5%BD%B1/"/>
+    
+      <category term="2019" scheme="http://blog.ascrush.cn/tags/2019/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 进程</title>
+    <link href="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/"/>
+    <id>http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/</id>
+    <published>2020-01-07T18:26:03.366Z</published>
+    <updated>2020-01-07T16:14:08.422Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;进程&quot;&gt;&lt;a href=&quot;#进程&quot; class=&quot;headerlink&quot; title=&quot;进程&quot;&gt;&lt;/a&gt;进程&lt;/h1&gt;&lt;p&gt;在CPU中的活动称为进程。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 线程</title>
+    <link href="http://blog.ascrush.cn/2020/01/08/os%E7%BA%BF%E7%A8%8B/"/>
+    <id>http://blog.ascrush.cn/2020/01/08/os%E7%BA%BF%E7%A8%8B/</id>
+    <published>2020-01-07T18:26:03.355Z</published>
+    <updated>2020-01-07T16:14:52.757Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;线程&quot;&gt;&lt;a href=&quot;#线程&quot; class=&quot;headerlink&quot; title=&quot;线程&quot;&gt;&lt;/a&gt;线程&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 操作系统结构</title>
+    <link href="http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/"/>
+    <id>http://blog.ascrush.cn/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</id>
+    <published>2020-01-07T18:26:03.294Z</published>
+    <updated>2020-01-07T16:13:40.085Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;操作系统结构&quot;&gt;&lt;a href=&quot;#操作系统结构&quot; class=&quot;headerlink&quot; title=&quot;操作系统结构&quot;&gt;&lt;/a&gt;操作系统结构&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 导论</title>
+    <link href="http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/"/>
+    <id>http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/</id>
+    <published>2020-01-07T18:26:03.291Z</published>
+    <updated>2020-01-07T16:13:58.283Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;导论&quot;&gt;&lt;a href=&quot;#导论&quot; class=&quot;headerlink&quot; title=&quot;导论&quot;&gt;&lt;/a&gt;导论&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Welcome</title>
+    <link href="http://blog.ascrush.cn/2020/01/08/hello-world/"/>
+    <id>http://blog.ascrush.cn/2020/01/08/hello-world/</id>
+    <published>2020-01-07T18:22:10.039Z</published>
+    <updated>2020-01-08T08:33:42.585Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;欢迎参观我的博客&quot;&gt;&lt;a href=&quot;#欢迎参观我的博客&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>OS 文件系统实现</title>
+    <link href="http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/"/>
+    <id>http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/</id>
+    <published>2020-01-06T14:35:06.000Z</published>
+    <updated>2020-01-07T16:14:43.867Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;文件系统实现&quot;&gt;&lt;a href=&quot;#文件系统实现&quot; class=&quot;headerlink&quot; title=&quot;文件系统实现&quot;&gt;&lt;/a&gt;文件系统实现&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 文件系统接口</title>
+    <link href="http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/"/>
+    <id>http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/</id>
+    <published>2020-01-06T13:08:41.000Z</published>
+    <updated>2020-01-07T16:14:36.457Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;文件系统接口&quot;&gt;&lt;a href=&quot;#文件系统接口&quot; class=&quot;headerlink&quot; title=&quot;文件系统接口&quot;&gt;&lt;/a&gt;文件系统接口&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 死锁</title>
+    <link href="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/"/>
+    <id>http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/</id>
+    <published>2020-01-06T11:12:45.000Z</published>
+    <updated>2020-01-07T16:14:30.853Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;死锁&quot;&gt;&lt;a href=&quot;#死锁&quot; class=&quot;headerlink&quot; title=&quot;死锁&quot;&gt;&lt;/a&gt;死锁&lt;/h1&gt;&lt;p&gt;如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为&lt;strong&gt;死锁（deadlock）&lt;/strong&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OS 进程同步</title>
+    <link href="http://blog.ascrush.cn/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/"/>
+    <id>http://blog.ascrush.cn/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/</id>
+    <published>2020-01-06T06:35:17.000Z</published>
+    <updated>2020-01-07T16:14:21.347Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;OS-进程同步&quot;&gt;&lt;a href=&quot;#OS-进程同步&quot; class=&quot;headerlink&quot; title=&quot;OS 进程同步&quot;&gt;&lt;/a&gt;OS 进程同步&lt;/h1&gt;&lt;p&gt;多个进程对同一数据处理且执行结果与访问顺序有关，称为竞争条件（race condition）。这就是&lt;strong&gt;进程同步（process synchronization）&lt;/strong&gt;和&lt;strong&gt;协调（coordination）&lt;/strong&gt;问题。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>os CPU调度</title>
+    <link href="http://blog.ascrush.cn/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/"/>
+    <id>http://blog.ascrush.cn/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/</id>
+    <published>2020-01-06T02:57:01.000Z</published>
+    <updated>2020-01-07T16:14:57.606Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;CPU调度&quot;&gt;&lt;a href=&quot;#CPU调度&quot; class=&quot;headerlink&quot; title=&quot;CPU调度&quot;&gt;&lt;/a&gt;CPU调度&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
+    
+  </entry>
+  
+</feed>

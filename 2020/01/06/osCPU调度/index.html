@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>os CPU调度 | Ascrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CPU调度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="os CPU调度">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="CPU调度">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-06T02:57:01.000Z">
+<meta property="article:modified_time" content="2020-01-07T16:14:57.606Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ascrush</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ascrush.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-osCPU调度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/" class="article-date">
+  <time datetime="2020-01-06T02:57:01.000Z" itemprop="datePublished">2020-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      os CPU调度
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h1><a id="more"></a>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>多道程序的目标是在任何时候都有某些进程在运行，使CPU使用率最大化。当一个进程执行到等待的时候，操作系统就拿走CPU使用权交给其他就绪的进程。</p>
+<h3 id="CPU-I-O区间周期"><a href="#CPU-I-O区间周期" class="headerlink" title="CPU-I/O区间周期"></a>CPU-I/O区间周期</h3><p>进程执行从<strong>CPU区间（CPU burst）</strong>开始，之后使<strong>I/O区间（I/O burst）</strong>，接着使另一个CPU区间，然后使另一个I/O区间，以此循环，最终在最后的CPU区间通过系统请求终止执行。I/O约束程序通常具有很多短CPU区间；CPU约束程序可能有少量的长CPU区间。</p>
+<h3 id="CPU调度程序"><a href="#CPU调度程序" class="headerlink" title="CPU调度程序"></a>CPU调度程序</h3><p>CPU空闲时，操作系统就会从就绪队列中选择一个进程来执行。这个操作通常由<strong>短期调度程序（short-term scheduler）</strong>或CPU调度程序执行。</p>
+<h3 id="抢占调度"><a href="#抢占调度" class="headerlink" title="抢占调度"></a>抢占调度</h3><p>CPU调度决策在如下4种环境发生：</p>
+<blockquote>
+<ul>
+<li>1.当一个进程从运行状态切换到等待状态</li>
+<li>2.当一个进程从运行状态切换到就绪状态</li>
+<li>2.当一个进程从等待状态切换到就绪状态</li>
+<li>3.当一个进程终止</li>
+</ul>
+</blockquote>
+<p>当调度只能发生在第1和第4两种情况下时，称调度方案是<strong>非抢占的（nonpreemptive）</strong>或<strong>协作的（cooperative）</strong>；否则，称调度方案是<strong>抢占的（preemptive）</strong>。抢占调度对访问共享数据是有代价的，同时对内核设计也有影响。</p>
+<h3 id="分派程序（dispatcher）"><a href="#分派程序（dispatcher）" class="headerlink" title="分派程序（dispatcher）"></a>分派程序（dispatcher）</h3><p>功能：</p>
+<blockquote>
+<ul>
+<li>切换上下文</li>
+<li>切换到用户模式</li>
+<li>跳转到用户程序的合适位置，以重新启动程序</li>
+</ul>
+</blockquote>
+<p>分配程序停止一个进程而启动另一个所要花费的时间称为分派延迟（dispatch latency）。</p>
+<h2 id="调度准则"><a href="#调度准则" class="headerlink" title="调度准则"></a>调度准则</h2><ul>
+<li><p>CPU使用率</p>
+</li>
+<li><p>吞吐量</p>
+<blockquote>
+<p>单位时间内所完成进程的数量</p>
+</blockquote>
+</li>
+<li><p>周转时间</p>
+<blockquote>
+<p>从进程提交到进程完成的时间段称为周转时间</p>
+</blockquote>
+</li>
+<li><p>等待时间</p>
+<blockquote>
+<p>在就绪队列中等待所花费的时间之和</p>
+</blockquote>
+</li>
+<li><p>响应时间</p>
+<blockquote>
+<p>从进程提交到产生第一次响应的时间。</p>
+</blockquote>
+<h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h2></li>
+<li><p><em>Gantt图*</em>通过条状图来显示项目，进度和其他时间相关的系统进展的内在关系随着时间进展的情况。</p>
+<h3 id="先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）"><a href="#先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）" class="headerlink" title="先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）"></a>先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）</h3><p>先请求CPU的进程先分配到CPU。该策略可以用FIFO队列来容易地实现。</p>
+</li>
+</ul>
+<p>优点：</p>
+<blockquote>
+<ul>
+<li>代码编写简单且容易理解</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>平均等待时间通常较长</li>
+<li>容易产生护航效果（convoy effect）（所有其他进程都等待一个大进程释放CPU）</li>
+</ul>
+</blockquote>
+<p>FCFS调度算法是非抢占式的。</p>
+<h3 id="最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）"><a href="#最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）" class="headerlink" title="最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）"></a>最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）</h3><p>当CPU空闲时，它会赋给具有最短CPU区间的进程。如果两个进程有同样的长度，那么就可以使用FCFS调度来处理。通常用于长期调度。</p>
+<p>优点：</p>
+<blockquote>
+<ul>
+<li>平均等待时间最短</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>需要知道下一个CPU区间的长度</li>
+<li>不能再短期CPU调度层次上加以实现。</li>
+</ul>
+</blockquote>
+<p><strong>近似SJF调度</strong>：<br>下一个CPU区间预测为以前CPU区间的测量长度的指数平均。</p>
+<p>SJF调度算法可以时抢占或非抢占的。</p>
+<p>抢占式SJF算法又称为<strong>最短剩余时间优先调度（shortest-remaining-time-first scheduling）</strong>：当一个新进程如果到达就绪队列且它的CPU区间更短，就抢占当前进程。</p>
+<p>非抢占式允许当前运行的进程先完成其CPU区间。</p>
+<h3 id="优先级调度（priority-scheduling-algorithm）"><a href="#优先级调度（priority-scheduling-algorithm）" class="headerlink" title="优先级调度（priority scheduling algorithm）"></a>优先级调度（priority scheduling algorithm）</h3><p>每个进程都有一个优先级与其相关联，具有最高优先级的进程会分配到CPU。具有相同优先级的按FCFS调度来处理。优先级可以通过内部或外部方式来定义。内部定义优先级使用一些测量数据（时间极限、内存要求、打开文件的数量和平均I/O区间与平均CPU区间之比）以计算进程优先级。外部优先级是通过操作系统外的准则（进程重要性、用于支付使用计算机的费用类型等）来定义的。</p>
+<p>优先级调度可以说抢占式或非抢占式。</p>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>会出现<strong>无穷阻塞（indefinite blocking）</strong>或<strong>饥饿（starvation）</strong>（指可以运行但是缺乏CPU的进程）</li>
+</ul>
+</blockquote>
+<p>通过老化（aging，随着时间的增加增加优先级）可以解决阻塞问题。</p>
+<h3 id="轮转法调度（round-robin，RR）"><a href="#轮转法调度（round-robin，RR）" class="headerlink" title="轮转法调度（round-robin，RR）"></a>轮转法调度（round-robin，RR）</h3><p>专门为分时系统设计。它类似于FCFS调度，但是增加了抢占切换进程。定义一个较小时间单元（时间片）为进程的CPU区间。若进程运行了一个时间片的时间还没有停止就被抢占，而CPU交给下一个进程。</p>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>时间片太短会导致CPU效率降低，时间片太长RR调度也就变成了FCFS调度。</li>
+</ul>
+</blockquote>
+<h3 id="多级队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级队列调度（multilevel queue scheduling algorithm）"></a>多级队列调度（multilevel queue scheduling algorithm）</h3><p>将进程分成不同的组，例如，前台（交互）进程和后台（批处理）进程。然后根据进程的属性（内存大小、进程优先级、进程类型），一个进程被永久的分配到一个队列。每个队列有自己的调度算法。另外，队列之间也有调度，通常采用固定优先级抢占调度，通常采用固定优先级抢占调度。</p>
+<h3 id="多级反馈队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级反馈队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级反馈队列调度（multilevel queue scheduling algorithm）"></a>多级反馈队列调度（multilevel queue scheduling algorithm）</h3><p>为了解决多级队列调度不够灵活的问题，避免出现饥饿的发生，多级反馈队列调度允许进程在队列之间移动。通常是根据不同CPU区间的特点以区分进程。它通多下列参数来定义：</p>
+<blockquote>
+<ul>
+<li>队列数量</li>
+<li>每个队列的调度算法</li>
+<li>用以确定何时升级到更高优先级队列的方法</li>
+<li>用以确定何时降级到更低优先级队列的方法</li>
+<li>用以确定进程在需要服务时应进入哪个队列的方法</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>过于复杂</li>
+</ul>
+</blockquote>
+<h2 id="多处理器调度"><a href="#多处理器调度" class="headerlink" title="多处理器调度"></a>多处理器调度</h2><p>如果有多个处理器，则负载分配（loading sharing）成为可能。</p>
+<h3 id="多处理器调度的方法"><a href="#多处理器调度的方法" class="headerlink" title="多处理器调度的方法"></a>多处理器调度的方法</h3><h4 id="非对称多处理器（asymmetric-multiprocessing）"><a href="#非对称多处理器（asymmetric-multiprocessing）" class="headerlink" title="非对称多处理器（asymmetric multiprocessing）"></a>非对称多处理器（asymmetric multiprocessing）</h4><p>让一个处理器处理所有的调度决定、I/O处理以及其他的系统活动，其他的处理器只执行用户代码。</p>
+<h4 id="对称多处理器（symmetric-multiproccessing，SMP）"><a href="#对称多处理器（symmetric-multiproccessing，SMP）" class="headerlink" title="对称多处理器（symmetric multiproccessing，SMP）"></a>对称多处理器（symmetric multiproccessing，SMP）</h4><p>每个处理器自我调度。所有进程可能处于一个共同的就绪队列中，或每个处理器都有它自己私有的就绪进程队列。</p>
+<h3 id="处理器亲和性"><a href="#处理器亲和性" class="headerlink" title="处理器亲和性"></a>处理器亲和性</h3><p>努力使一个进程在同一个处理器上运行。不能做到保证叫做软亲和性（soft affinity），允许进程指定它不移植到其他处理器叫做硬亲和性（hard affinity）</p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h2 id="算法评估"><a href="#算法评估" class="headerlink" title="算法评估"></a>算法评估</h2><blockquote>
+<ul>
+<li>最大化CPU使用率，同时要求最大响应时间为1s</li>
+<li>最大化吞吐量</li>
+</ul>
+</blockquote>
+<h3 id="确定模型（deterministic-modeling）"><a href="#确定模型（deterministic-modeling）" class="headerlink" title="确定模型（deterministic modeling）"></a>确定模型（deterministic modeling）</h3><p>分析评估发（analytic evaluation），使用给定算法和系统负荷，产生公式或数字，以评估对于该负荷算法的性能。确定模型法使其中一种。主要比较平均等待时间。</p>
+<h3 id="排队模型"><a href="#排队模型" class="headerlink" title="排队模型"></a>排队模型</h3><p>用到达率和服务率计算使用率、平均队列长度、平均等待时间，成为排队网络分析（queueing-network analysis）。</p>
+<p><strong>Little公式</strong>：<br>设n为平均队列长度，W为队列的平均等待时间，λ为新进程到达队列的平均到达率。有</p>
+<center>n=λ*W</center>
+
+<h3 id="模拟（simulation）"><a href="#模拟（simulation）" class="headerlink" title="模拟（simulation）"></a>模拟（simulation）</h3><p>对计算机系统建模。用软件数据表示系统的主要组成部分。用一个变量的改变反映设备、进程、和调度程序的活动。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最精确的办法就是实现代码将其放到操作系统内，并观测它如何工作，在真是操作系统内进行评估。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ascrush.cn/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/" data-id="ck5f0oghg0004c4w8ba5whcku" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OS 进程同步
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">About</h3>
+    <div class="widget">
+        邮箱：zzzhhh@bupt.edu.cn<br />
+        github：<a href="https://github.com/swhite-zhang" target="_blank">swhite-zhang</a>
+        <br />
+    </div>
+</div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2019/" rel="tag">2019</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%91%84%E5%BD%B1/" rel="tag">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/">2019摄影记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/">OS 进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/">OS 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/">OS 操作系统结构</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/">OS 导论</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Ascrush<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <div id="top">
+    <a href="#">▲</a>
+    <a href="#footer">▼</a>
+</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>OS 导论 | Ascrush</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="导论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS 导论">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="导论">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-01-07T18:26:03.291Z">
+<meta property="article:modified_time" content="2020-01-07T16:13:58.283Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Ascrush</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://blog.ascrush.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-os导论" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/" class="article-date">
+  <time datetime="2020-01-07T18:26:03.291Z" itemprop="datePublished">2020-01-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OS 导论
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h1><a id="more"></a>
+<h2 id="操作系统做什么"><a href="#操作系统做什么" class="headerlink" title="操作系统做什么"></a>操作系统做什么</h2><h3 id="计算机组成"><a href="#计算机组成" class="headerlink" title="计算机组成"></a>计算机组成</h3><h4 id="计算机硬件"><a href="#计算机硬件" class="headerlink" title="计算机硬件"></a>计算机硬件</h4><p>中央处理单元（CPU）<br>内存（memory）<br>输入输出设备（IO）</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>系统程序<br>应用程序和用户</p>
+<h3 id="用户视角"><a href="#用户视角" class="headerlink" title="用户视角"></a>用户视角</h3><h4 id="在大型机或小型机相连的终端前"><a href="#在大型机或小型机相连的终端前" class="headerlink" title="在大型机或小型机相连的终端前"></a>在大型机或小型机相连的终端前</h4><p>对资源使用做优化<br>确保所有的CPU时间、内存和I/O都能够得到充分使用，同时用户不会使用超出其权限以外的资源。</p>
+<h4 id="在工作站前"><a href="#在工作站前" class="headerlink" title="在工作站前"></a>在工作站前</h4><p>个人使用性能和资源利用率的折中</p>
+<h4 id="单个用户独立使用"><a href="#单个用户独立使用" class="headerlink" title="单个用户独立使用"></a>单个用户独立使用</h4><p>为了方便个人使用</p>
+<h3 id="系统视角"><a href="#系统视角" class="headerlink" title="系统视角"></a>系统视角</h3><p>操作系统是控制程序</p>
+<h3 id="定义操作系统"><a href="#定义操作系统" class="headerlink" title="定义操作系统"></a>定义操作系统</h3><p>管理计算机硬件并提供应用程序运行环境的软件</p>
+<h2 id="计算机系统组织"><a href="#计算机系统组织" class="headerlink" title="计算机系统组织"></a>计算机系统组织</h2><h3 id="计算机系统操作"><a href="#计算机系统操作" class="headerlink" title="计算机系统操作"></a>计算机系统操作</h3><h4 id="引导程序（bootstrap-program）"><a href="#引导程序（bootstrap-program）" class="headerlink" title="引导程序（bootstrap program）"></a>引导程序（bootstrap program）</h4><p>计算机开始运行需要一个初始化程序</p>
+<h4 id="中断（interrupt）"><a href="#中断（interrupt）" class="headerlink" title="中断（interrupt）"></a>中断（interrupt）</h4><h5 id="事件的发生"><a href="#事件的发生" class="headerlink" title="事件的发生"></a>事件的发生</h5><h5 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h5><p>通过系统总线向CPU发出信号</p>
+<h5 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h5><p>系统调用（system call，监视器调用（monitor call））</p>
+<h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><h4 id="随机访问内存（random-access-memory，RAM）"><a href="#随机访问内存（random-access-memory，RAM）" class="headerlink" title="随机访问内存（random access memory，RAM）"></a>随机访问内存（random access memory，RAM）</h4><p>计算机程序运行的地方</p>
+<h4 id="动态随机访问内存（dynamic-random-access-memory，DRAM）"><a href="#动态随机访问内存（dynamic-random-access-memory，DRAM）" class="headerlink" title="动态随机访问内存（dynamic random access memory，DRAM）"></a>动态随机访问内存（dynamic random access memory，DRAM）</h4><p>处理器可以直接访问的唯一大容量存储区域</p>
+<h4 id="指令寄存器（instruction-register）"><a href="#指令寄存器（instruction-register）" class="headerlink" title="指令寄存器（instruction register）"></a>指令寄存器（instruction register）</h4><h4 id="辅存（secondary-storage）"><a href="#辅存（secondary-storage）" class="headerlink" title="辅存（secondary storage）"></a>辅存（secondary storage）</h4><p>内存的扩充<br>磁盘（magnetic disk）</p>
+<h3 id="I-O结构"><a href="#I-O结构" class="headerlink" title="I/O结构"></a>I/O结构</h3><h4 id="DMA（direct-memory-access，直接内存访问）"><a href="#DMA（direct-memory-access，直接内存访问）" class="headerlink" title="DMA（direct memory access，直接内存访问）"></a>DMA（direct memory access，直接内存访问）</h4><p>解决大块数据移动</p>
+<h2 id="计算机系统体系结构"><a href="#计算机系统体系结构" class="headerlink" title="计算机系统体系结构"></a>计算机系统体系结构</h2><h3 id="单处理器系统"><a href="#单处理器系统" class="headerlink" title="单处理器系统"></a>单处理器系统</h3><p>只有一个主CPU能够执行一个通用指令集</p>
+<h3 id="多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））"><a href="#多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））" class="headerlink" title="多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））"></a>多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））</h3><h4 id="有多个紧密通信的CPU"><a href="#有多个紧密通信的CPU" class="headerlink" title="有多个紧密通信的CPU"></a>有多个紧密通信的CPU</h4><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>增加吞吐量<br>规模经济<br>增加可靠性</p>
+<h4 id="非对称对处理"><a href="#非对称对处理" class="headerlink" title="非对称对处理"></a>非对称对处理</h4><h4 id="对称多处理"><a href="#对称多处理" class="headerlink" title="对称多处理"></a>对称多处理</h4><h3 id="集群系统（clustered-system）"><a href="#集群系统（clustered-system）" class="headerlink" title="集群系统（clustered system）"></a>集群系统（clustered system）</h3><p>提供高可用性服务</p>
+<h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="最重要的是有多道程序设计"><a href="#最重要的是有多道程序设计" class="headerlink" title="最重要的是有多道程序设计"></a>最重要的是有多道程序设计</h3><p>分时系统<br>交互计算机系统</p>
+<h3 id="作业池（job-pool）"><a href="#作业池（job-pool）" class="headerlink" title="作业池（job pool）"></a>作业池（job pool）</h3><p>作业调度（job scheduling）</p>
+<h3 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h3><h3 id="虚拟内存（virtual-memory）"><a href="#虚拟内存（virtual-memory）" class="headerlink" title="虚拟内存（virtual memory）"></a>虚拟内存（virtual memory）</h3><p>逻辑内存（logical memory）</p>
+<h3 id="物理内存（physical-memory）"><a href="#物理内存（physical-memory）" class="headerlink" title="物理内存（physical memory）"></a>物理内存（physical memory）</h3><h2 id="操作系统操作"><a href="#操作系统操作" class="headerlink" title="操作系统操作"></a>操作系统操作</h2><h3 id="双重模式操作"><a href="#双重模式操作" class="headerlink" title="双重模式操作"></a>双重模式操作</h3><p>用户模式（user mode）</p>
+<blockquote>
+<p>用户应用程序运行的时候系统处于的模式。</p>
+</blockquote>
+<p>监督程序模式（monitor mode），也称管理模式（supervisor mode）、系统模式（system mode）和特权模式（privileged mode）</p>
+<blockquote>
+<p>用来执行系统服务，只有在内核模式的时候才能执行特权指令。</p>
+</blockquote>
+<p>模式位（mode bit）</p>
+<blockquote>
+<p>标识所处的状态</p>
+</blockquote>
+<p>特权指令（privileged mode）</p>
+<blockquote>
+<p>能够引起损害的机器指令</p>
+</blockquote>
+<h3 id="定时器（timer）"><a href="#定时器（timer）" class="headerlink" title="定时器（timer）"></a>定时器（timer）</h3><h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>程序计数器</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h2 id="存储管理"><a href="#存储管理" class="headerlink" title="存储管理"></a>存储管理</h2><h3 id="文件系统管理"><a href="#文件系统管理" class="headerlink" title="文件系统管理"></a>文件系统管理</h3><p>创建和删除文件<br>创建和删除目录来组织文件<br>提供操作文件和目录的原语<br>将文件映射到二级存储上<br>在稳定存储介质上备份文件</p>
+<h3 id="大容量存储器管理"><a href="#大容量存储器管理" class="headerlink" title="大容量存储器管理"></a>大容量存储器管理</h3><p>空闲空间管理<br>存储空间分配<br>磁盘调度</p>
+<h3 id="高速缓存"><a href="#高速缓存" class="headerlink" title="高速缓存"></a>高速缓存</h3><p>高速缓存一致性（cache coherency）<br>需要特定信息时，首先检查是否在高数缓存中。如果不在，使用位于内存中的信息。</p>
+<h3 id="I-O系统"><a href="#I-O系统" class="headerlink" title="I/O系统"></a>I/O系统</h3><p>一个包括缓冲、高速缓存和假脱机的内存管理部分<br>通用的设备驱动器接口<br>特定硬件设备的驱动程序</p>
+<h2 id="保护和安全"><a href="#保护和安全" class="headerlink" title="保护和安全"></a>保护和安全</h2><h3 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h3><p>一种控制进程或用户对计算机系统资源的访问的机制</p>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>防止系统不受外部或内部攻击</p>
+<h2 id="分布式系统"><a href="#分布式系统" class="headerlink" title="分布式系统"></a>分布式系统</h2><p>局域网（local-area network，LAN）<br>广域网（wide-area network，WAN）<br>域域网（metropoltan-area network）<br>小域网（small-area network）</p>
+<h2 id="专用系统"><a href="#专用系统" class="headerlink" title="专用系统"></a>专用系统</h2><h3 id="实时嵌入式系统"><a href="#实时嵌入式系统" class="headerlink" title="实时嵌入式系统"></a>实时嵌入式系统</h3><p>实时操作系统<br>当对处理器操作或数据流动有严格时间要求时，就需要使用实时系统。</p>
+<h3 id="多媒体系统"><a href="#多媒体系统" class="headerlink" title="多媒体系统"></a>多媒体系统</h3><p>用来处理传统的数据</p>
+<h3 id="手持系统（handheld-system）"><a href="#手持系统（handheld-system）" class="headerlink" title="手持系统（handheld system）"></a>手持系统（handheld system）</h3><h2 id="计算环境"><a href="#计算环境" class="headerlink" title="计算环境"></a>计算环境</h2><h3 id="传统计算"><a href="#传统计算" class="headerlink" title="传统计算"></a>传统计算</h3><h3 id="客户机-服务器计算"><a href="#客户机-服务器计算" class="headerlink" title="客户机-服务器计算"></a>客户机-服务器计算</h3><h4 id="服务器系统（server-system）"><a href="#服务器系统（server-system）" class="headerlink" title="服务器系统（server system）"></a>服务器系统（server system）</h4><p>计算服务器<br>提供接口以接受用户所发出的执行操作的请求，执行操作，并将操作结果反回给客户机。<br>文件服务器系统<br>提供文件系统接口，以便客户机能创建、更新、访问和删除文件。</p>
+<h4 id="客户机系统（client-system）"><a href="#客户机系统（client-system）" class="headerlink" title="客户机系统（client system）"></a>客户机系统（client system）</h4><h3 id="对等计算"><a href="#对等计算" class="headerlink" title="对等计算"></a>对等计算</h3><p>p2p</p>
+<h3 id="基于web的计算"><a href="#基于web的计算" class="headerlink" title="基于web的计算"></a>基于web的计算</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/" data-id="ck5f0oghd0003c4w84j92airb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OS/" rel="tag">OS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OS 操作系统结构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/01/08/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Welcome</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+<div class="widget-wrap">
+    <h3 class="widget-title">About</h3>
+    <div class="widget">
+        邮箱：zzzhhh@bupt.edu.cn<br />
+        github：<a href="https://github.com/swhite-zhang" target="_blank">swhite-zhang</a>
+        <br />
+    </div>
+</div>
+
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/2019/" rel="tag">2019</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OS/" rel="tag">OS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%91%84%E5%BD%B1/" rel="tag">摄影</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/">2019摄影记录</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/">OS 进程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/">OS 线程</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/">OS 操作系统结构</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/">OS 导论</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Ascrush<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+  <div id="top">
+    <a href="#">▲</a>
+    <a href="#footer">▼</a>
+</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
