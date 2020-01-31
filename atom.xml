@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-01-30T15:16:03.405Z</updated>
+  <updated>2020-01-31T13:25:15.831Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -17,11 +17,32 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>python爬虫（一）-开发环境</title>
+    <title>Python爬虫（二）——requests库</title>
+    <link href="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/"/>
+    <id>http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/</id>
+    <published>2020-01-30T15:07:13.000Z</published>
+    <updated>2020-01-31T13:25:15.831Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;requests库&quot;&gt;&lt;a href=&quot;#requests库&quot; class=&quot;headerlink&quot; title=&quot;requests库&quot;&gt;&lt;/a&gt;&lt;a href=&quot;https://requests.readthedocs.io/en/master/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; title=&quot;requests库的信息&quot;&gt;requests库&lt;/a&gt;&lt;/h1&gt;&lt;p&gt;公认的爬取网页最好的库&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>python爬虫（一）——开发环境</title>
     <link href="http://blog.ascrush.cn/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
     <id>http://blog.ascrush.cn/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</id>
     <published>2020-01-30T14:28:31.000Z</published>
-    <updated>2020-01-30T15:16:03.405Z</updated>
+    <updated>2020-01-31T08:53:52.107Z</updated>
     
     <summary type="html">
     
