@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="manifest" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://blog.ascrush.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Python爬虫（四）——五个基础爬虫实例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫（四）——五个基础爬虫实例">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="Python爬虫（四）——五个基础爬虫实例">
+<meta property="article:published_time" content="2020-02-01T11:00:46.000Z">
+<meta property="article:modified_time" content="2020-02-01T13:53:31.625Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.ascrush.cn/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Python爬虫（四）——五个基础爬虫实例 | Ascrush</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ascrush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Ascrush's blog</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Cambiar a barra de navegación">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.ascrush.cn/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="欢迎参观我的博客网站~">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ascrush">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python爬虫（四）——五个基础爬虫实例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建于：2020-02-01 19:00:46 / 更新于：21:53:31" itemprop="dateCreated datePublished" datetime="2020-02-01T19:00:46+08:00">2020-02-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python爬虫（四）——五个基础爬虫实例"><a href="#Python爬虫（四）——五个基础爬虫实例" class="headerlink" title="Python爬虫（四）——五个基础爬虫实例"></a>Python爬虫（四）——五个基础爬虫实例</h1><a id="more"></a>
+<h2 id="爬取京东商城商品"><a href="#爬取京东商城商品" class="headerlink" title="爬取京东商城商品"></a>爬取京东商城商品</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://item.jd.com/100009996740.html"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status() <span class="comment">#不返回200产生异常</span></span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[:<span class="number">1000</span>])<span class="comment">#如果r.text过多会在IDLE上无法显示</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="爬取亚马逊商品界面"><a href="#爬取亚马逊商品界面" class="headerlink" title="爬取亚马逊商品界面"></a>爬取亚马逊商品界面</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://www.amazon.cn/b/ref=s9_acss_bw_cg_WKebook_1a1_w?node=116169071&amp;pf_rd_m=A1U5RCOVU0NYF2&amp;pf_rd_s=merchandised-search-9&amp;pf_rd_r=SGMKFB10R7MV2VEZXX20&amp;pf_rd_t=101&amp;pf_rd_p=d857603c-3657-40b3-a25b-d5fe03fd4e10&amp;pf_rd_i=116087071"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome:10.0'</span>&#125;<span class="comment">#与访问京东商城不同，我们需要更改headers字段模拟浏览器访问亚马逊商城。</span></span><br><span class="line">    r = requests.get(url,header=kv)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[<span class="number">1000</span>:<span class="number">2000</span>])</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="百度-360搜索关键词提交"><a href="#百度-360搜索关键词提交" class="headerlink" title="百度/360搜索关键词提交"></a>百度/360搜索关键词提交</h2><p>百度和360都提供了关键词提交接口：</p>
+<blockquote>
+<p>百度：<a href="http://www.baidu.com/s?wd=keyword" target="_blank" rel="noopener">http://www.baidu.com/s?wd=keyword</a></p>
+</blockquote>
+<blockquote>
+<p>360：<a href="http://www.so.com/s?q=keyword" target="_blank" rel="noopener">http://www.so.com/s?q=keyword</a></p>
+</blockquote>
+<p>所以我们只用替换关键词就可以了。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">keword = <span class="string">"Python爬虫"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv =  &#123;<span class="string">'wd'</span>:keyword&#125;</span><br><span class="line">    user = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome/10.0'</span>&#125;</span><br><span class="line">    r = requests.get(<span class="string">'https://www.baidu.com/s'</span>,headers=user,params=kv)</span><br><span class="line">    print(r.request.url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    print(len(r.text))<span class="comment">#之后再加入爬取数据处理</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="网络图片的爬取和存储"><a href="#网络图片的爬取和存储" class="headerlink" title="网络图片的爬取和存储"></a>网络图片的爬取和存储</h2><p>我们需要得到网络图片的地址（找到图片右键复制图片地址）。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">url = <span class="string">"http://image.ngchina.com.cn/userpic/107269/2019/11181936061072693671.jpeg"</span><span class="comment">#得到的图片地址</span></span><br><span class="line">path = <span class="string">"D:/getImage.jpg"</span><span class="comment">#你想保存的文件路径</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line">        f.close()</span><br><span class="line">        print(<span class="string">"文件保存成功"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="IP地址归属地的自动查询"><a href="#IP地址归属地的自动查询" class="headerlink" title="IP地址归属地的自动查询"></a>IP地址归属地的自动查询</h2><p>在IP138我们可以查询IP地址归属地。我们可以用它的url接口：</p>
+<blockquote>
+<p><a href="http://m.ip138.com/ip.asp?ip=ipaddress" target="_blank" rel="noopener">http://m.ip138.com/ip.asp?ip=ipaddress</a></p>
+</blockquote>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://m.ip138.com/ip.asp?ip="</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url+<span class="string">'124.127.207.15'</span>)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    r.text[<span class="number">-500</span>:]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/" rel="prev" title="Python爬虫（三）——Robots协议">
+      <i class="fa fa-chevron-left"></i> Python爬虫（三）——Robots协议
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python爬虫（四）——五个基础爬虫实例"><span class="nav-number">1.</span> <span class="nav-text">Python爬虫（四）——五个基础爬虫实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#爬取京东商城商品"><span class="nav-number">1.1.</span> <span class="nav-text">爬取京东商城商品</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬取亚马逊商品界面"><span class="nav-number">1.2.</span> <span class="nav-text">爬取亚马逊商品界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#百度-360搜索关键词提交"><span class="nav-number">1.3.</span> <span class="nav-text">百度&#x2F;360搜索关键词提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络图片的爬取和存储"><span class="nav-number">1.4.</span> <span class="nav-text">网络图片的爬取和存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP地址归属地的自动查询"><span class="nav-number">1.5.</span> <span class="nav-text">IP地址归属地的自动查询</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="博主"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ascrush</p>
+  <div class="site-description" itemprop="description">欢迎参观我的博客网站~</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swhite-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swhite-zhang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zzzhhh@bupt.edu.cn" title="E-Mail → zzzhhh@bupt.edu.cn"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      
+      
+        <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 16.67px;">爬虫</a>
+          </div>
+        </div>
+      
+    </div>
+  </aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ascrush</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

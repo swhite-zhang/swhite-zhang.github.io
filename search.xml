@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python爬虫（四）——五个基础爬虫实例</title>
+    <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<h1 id="Python爬虫（四）——五个基础爬虫实例"><a href="#Python爬虫（四）——五个基础爬虫实例" class="headerlink" title="Python爬虫（四）——五个基础爬虫实例"></a>Python爬虫（四）——五个基础爬虫实例</h1><a id="more"></a>
+<h2 id="爬取京东商城商品"><a href="#爬取京东商城商品" class="headerlink" title="爬取京东商城商品"></a>爬取京东商城商品</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://item.jd.com/100009996740.html"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status() <span class="comment">#不返回200产生异常</span></span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[:<span class="number">1000</span>])<span class="comment">#如果r.text过多会在IDLE上无法显示</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="爬取亚马逊商品界面"><a href="#爬取亚马逊商品界面" class="headerlink" title="爬取亚马逊商品界面"></a>爬取亚马逊商品界面</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://www.amazon.cn/b/ref=s9_acss_bw_cg_WKebook_1a1_w?node=116169071&amp;pf_rd_m=A1U5RCOVU0NYF2&amp;pf_rd_s=merchandised-search-9&amp;pf_rd_r=SGMKFB10R7MV2VEZXX20&amp;pf_rd_t=101&amp;pf_rd_p=d857603c-3657-40b3-a25b-d5fe03fd4e10&amp;pf_rd_i=116087071"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome:10.0'</span>&#125;<span class="comment">#与访问京东商城不同，我们需要更改headers字段模拟浏览器访问亚马逊商城。</span></span><br><span class="line">    r = requests.get(url,header=kv)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[<span class="number">1000</span>:<span class="number">2000</span>])</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="百度-360搜索关键词提交"><a href="#百度-360搜索关键词提交" class="headerlink" title="百度/360搜索关键词提交"></a>百度/360搜索关键词提交</h2><p>百度和360都提供了关键词提交接口：</p>
+<blockquote>
+<p>百度：<a href="http://www.baidu.com/s?wd=keyword" target="_blank" rel="noopener">http://www.baidu.com/s?wd=keyword</a></p>
+</blockquote>
+<blockquote>
+<p>360：<a href="http://www.so.com/s?q=keyword" target="_blank" rel="noopener">http://www.so.com/s?q=keyword</a></p>
+</blockquote>
+<p>所以我们只用替换关键词就可以了。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">keword = <span class="string">"Python爬虫"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv =  &#123;<span class="string">'wd'</span>:keyword&#125;</span><br><span class="line">    user = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome/10.0'</span>&#125;</span><br><span class="line">    r = requests.get(<span class="string">'https://www.baidu.com/s'</span>,headers=user,params=kv)</span><br><span class="line">    print(r.request.url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    print(len(r.text))<span class="comment">#之后再加入爬取数据处理</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="网络图片的爬取和存储"><a href="#网络图片的爬取和存储" class="headerlink" title="网络图片的爬取和存储"></a>网络图片的爬取和存储</h2><p>我们需要得到网络图片的地址（找到图片右键复制图片地址）。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">url = <span class="string">"http://image.ngchina.com.cn/userpic/107269/2019/11181936061072693671.jpeg"</span><span class="comment">#得到的图片地址</span></span><br><span class="line">path = <span class="string">"D:/getImage.jpg"</span><span class="comment">#你想保存的文件路径</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line">        f.close()</span><br><span class="line">        print(<span class="string">"文件保存成功"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="IP地址归属地的自动查询"><a href="#IP地址归属地的自动查询" class="headerlink" title="IP地址归属地的自动查询"></a>IP地址归属地的自动查询</h2><p>在IP138我们可以查询IP地址归属地。我们可以用它的url接口：</p>
+<blockquote>
+<p><a href="http://m.ip138.com/ip.asp?ip=ipaddress" target="_blank" rel="noopener">http://m.ip138.com/ip.asp?ip=ipaddress</a></p>
+</blockquote>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://m.ip138.com/ip.asp?ip="</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url+<span class="string">'124.127.207.15'</span>)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    r.text[<span class="number">-500</span>:]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python爬虫（三）——Robots协议</title>
     <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/</url>
     <content><![CDATA[<h1 id="Python爬虫（三）——Robots协议"><a href="#Python爬虫（三）——Robots协议" class="headerlink" title="Python爬虫（三）——Robots协议"></a>Python爬虫（三）——Robots协议</h1><p>Robots协议全称为Robots Exclusion Standard，网络爬虫排除标准。它的作用是告知网络爬虫哪些可以抓取哪些不可以。通常被放在网站根目录下的robots.txt。</p>
