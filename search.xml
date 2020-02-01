@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python爬虫（三）——Robots协议</title>
+    <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h1 id="Python爬虫（三）——Robots协议"><a href="#Python爬虫（三）——Robots协议" class="headerlink" title="Python爬虫（三）——Robots协议"></a>Python爬虫（三）——Robots协议</h1><p>Robots协议全称为Robots Exclusion Standard，网络爬虫排除标准。它的作用是告知网络爬虫哪些可以抓取哪些不可以。通常被放在网站根目录下的robots.txt。</p>
+<p>注：并不是所有网站都有Robots协议，如果没有默认为内容都可以爬取。</p>
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#*代表所有，&#x2F;代表根目录</span><br><span class="line">User-agent:*</span><br><span class="line">Disallow:&#x2F;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>User-agent 限制的User-agent</li>
+<li>Disallow 不允许访问的目录<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2>自动或人工识别robots.tst，再进行内容爬取。</li>
+</ul>
+<p>你也可以不遵守robots.txt，但会产生风险。只有当你的程序不会对服务器产生威胁或者行为类似人类的时候可以不遵守robots.txt。这时候你获取的资源不能用于商业用途。</p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python爬虫（二）——requests库</title>
     <url>/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/</url>
     <content><![CDATA[<h1 id="requests库"><a href="#requests库" class="headerlink" title="requests库"></a><a href="https://requests.readthedocs.io/en/master/" target="_blank" rel="noopener" title="requests库的信息">requests库</a></h1><p>公认的爬取网页最好的库</p>
@@ -9,7 +26,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>抓取百度的网页代码。</p>
 <p>打开IDLE输入一下代码</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">t.text</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">r.text</span><br></pre></td></tr></table></figure>
 <p>状态码为200即为成功，否则失败。</p>
 <p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests%E5%BA%93test.jpg" alt="爬取百度结果" title="爬取百度结果"></p>
 <h2 id="7个主要方法"><a href="#7个主要方法" class="headerlink" title="7个主要方法"></a>7个主要方法</h2><h3 id="requests-requests"><a href="#requests-requests" class="headerlink" title="requests.requests()"></a>requests.requests()</h3><p>构造一个请求，支撑所有方法的基础。</p>
@@ -130,7 +147,7 @@
   <entry>
     <title>python爬虫（一）——开发环境</title>
     <url>/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[<h1 id="python爬虫（一）-开发环境"><a href="#python爬虫（一）-开发环境" class="headerlink" title="python爬虫（一）-开发环境"></a>python爬虫（一）-开发环境</h1><h2 id="IDLE"><a href="#IDLE" class="headerlink" title="IDLE"></a>IDLE</h2><p><a href="https://baike.baidu.com/item/IDLE" target="_blank" rel="noopener" title="about IDLE">IDLE</a>是Python的集成开发环境，被打包为Python包装的可选部分。它是一个入门级的代码编写工具，适合编写较短的程序。</p>
+    <content><![CDATA[<h1 id="python爬虫（一）——开发环境"><a href="#python爬虫（一）——开发环境" class="headerlink" title="python爬虫（一）——开发环境"></a>python爬虫（一）——开发环境</h1><h2 id="IDLE"><a href="#IDLE" class="headerlink" title="IDLE"></a>IDLE</h2><p><a href="https://baike.baidu.com/item/IDLE" target="_blank" rel="noopener" title="about IDLE">IDLE</a>是Python的集成开发环境，被打包为Python包装的可选部分。它是一个入门级的代码编写工具，适合编写较短的程序。</p>
 <h2 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h2><p><a href="https://www.sublimetext.com/3" target="_blank" rel="noopener" title="Sublime Text download">Sublime Text</a>是一个专门为程序员开发的文本编辑器。它是一个收费软件，但是可以无限期的试用。Sublime Text 支持多种编程语言的语法高亮、拥有优秀的代码自动完成功能，还拥有代码片段（Snippet）的功能，可以将常用的代码片段保存起来，在需要时随时调用。支持 VIM 模式，可以使用Vim模式下的多数命令。</p>
 <h2 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h2><p><a href="https://www.jetbrains.com/pycharm/download/" target="_blank" rel="noopener" title="PyCharm download">PyCharm</a>是一个由JetBrains打造的Python IDE。它的社区版免费，使用简单，集成度高。适合于较复杂的工程。</p>
 <h2 id="Anaconda-amp-Spyder"><a href="#Anaconda-amp-Spyder" class="headerlink" title="Anaconda &amp; Spyder"></a>Anaconda &amp; Spyder</h2><p><a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener" title="Anaconda download">Anaconda</a>是一个开源的Python发行版本，包含了conda、Python的180多个科学包及其依赖项。它适合用于科学计算。</p>

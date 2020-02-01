@@ -57,7 +57,7 @@
 <meta property="og:image" content="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/post.jpg">
 <meta property="og:image" content="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/put.jpg">
 <meta property="article:published_time" content="2020-01-30T15:07:13.000Z">
-<meta property="article:modified_time" content="2020-01-31T13:25:15.831Z">
+<meta property="article:modified_time" content="2020-01-31T13:44:43.433Z">
 <meta property="article:author" content="Ascrush">
 <meta property="article:tag" content="爬虫">
 <meta property="article:tag" content="Python">
@@ -237,7 +237,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="更新于：2020-01-31 21:25:15" itemprop="dateModified" datetime="2020-01-31T21:25:15+08:00">2020-01-31</time>
+                <time title="更新于：2020-01-31 21:44:43" itemprop="dateModified" datetime="2020-01-31T21:44:43+08:00">2020-01-31</time>
               </span>
 
           
@@ -257,7 +257,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>抓取百度的网页代码。</p>
 <p>打开IDLE输入一下代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">t.text</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">r.text</span><br></pre></td></tr></table></figure>
 <p>状态码为200即为成功，否则失败。</p>
 <p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests%E5%BA%93test.jpg" alt="爬取百度结果" title="爬取百度结果"></p>
 <h2 id="7个主要方法"><a href="#7个主要方法" class="headerlink" title="7个主要方法"></a>7个主要方法</h2><h3 id="requests-requests"><a href="#requests-requests" class="headerlink" title="requests.requests()"></a>requests.requests()</h3><p>构造一个请求，支撑所有方法的基础。</p>
@@ -391,7 +391,10 @@
     <a href="/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" rel="prev" title="python爬虫（一）——开发环境">
       <i class="fa fa-chevron-left"></i> python爬虫（一）——开发环境
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/" rel="next" title="Python爬虫（三）——Robots协议">
+      Python爬虫（三）——Robots协议 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -467,7 +470,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -496,7 +499,7 @@
         <div class="widget-wrap">
           <h3 class="widget-title">Tag Cloud</h3>
           <div class="widget tagcloud">
-            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a>
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 16.67px;">爬虫</a>
           </div>
         </div>
       

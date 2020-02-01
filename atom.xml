@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-01-31T13:25:15.831Z</updated>
+  <updated>2020-02-01T08:43:26.265Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Python爬虫（三）——Robots协议</title>
+    <link href="http://blog.ascrush.cn/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/"/>
+    <id>http://blog.ascrush.cn/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/</id>
+    <published>2020-02-01T08:02:19.000Z</published>
+    <updated>2020-02-01T08:43:26.265Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Python爬虫（三）——Robots协议&quot;&gt;&lt;a href=&quot;#Python爬虫（三）——Robots协议&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Python爬虫（二）——requests库</title>
     <link href="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/"/>
     <id>http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/</id>
     <published>2020-01-30T15:07:13.000Z</published>
-    <updated>2020-01-31T13:25:15.831Z</updated>
+    <updated>2020-01-31T13:44:43.433Z</updated>
     
     <summary type="html">
     
@@ -42,7 +69,7 @@
     <link href="http://blog.ascrush.cn/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
     <id>http://blog.ascrush.cn/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</id>
     <published>2020-01-30T14:28:31.000Z</published>
-    <updated>2020-01-31T08:53:52.107Z</updated>
+    <updated>2020-01-31T13:31:58.321Z</updated>
     
     <summary type="html">
     
@@ -50,7 +77,7 @@
       
         
         
-          &lt;h1 id=&quot;python爬虫（一）-开发环境&quot;&gt;&lt;a href=&quot;#python爬虫（一）-开发环境&quot; class=&quot;headerlink&quot; title=&quot;python爬虫（一）-开发环境&quot;&gt;&lt;/a&gt;python爬虫（一）-开发环境&lt;/h1&gt;&lt;h2 id=&quot;IDLE&quot;&gt;&lt;a
+          &lt;h1 id=&quot;python爬虫（一）——开发环境&quot;&gt;&lt;a href=&quot;#python爬虫（一）——开发环境&quot; class=&quot;headerlink&quot; title=&quot;python爬虫（一）——开发环境&quot;&gt;&lt;/a&gt;python爬虫（一）——开发环境&lt;/h1&gt;&lt;h2
         
       
     
