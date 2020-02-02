@@ -1,296 +1,1155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search> 
-  
-  
-    
-    <entry>
-      <title>Python爬虫（四）——五个基础爬虫实例</title>
-      <link href="/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/"/>
-      <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Python爬虫（四）——五个基础爬虫实例"><a href="#Python爬虫（四）——五个基础爬虫实例" class="headerlink" title="Python爬虫（四）——五个基础爬虫实例"></a>Python爬虫（四）——五个基础爬虫实例</h1><a id="more"></a><h2 id="爬取京东商城商品"><a href="#爬取京东商城商品" class="headerlink" title="爬取京东商城商品"></a>爬取京东商城商品</h2><p>代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://item.jd.com/100009996740.html"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status() <span class="comment">#不返回200产生异常</span></span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[:<span class="number">1000</span>])<span class="comment">#如果r.text过多会在IDLE上无法显示</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure><h2 id="爬取亚马逊商品界面"><a href="#爬取亚马逊商品界面" class="headerlink" title="爬取亚马逊商品界面"></a>爬取亚马逊商品界面</h2><p>代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://www.amazon.cn/b/ref=s9_acss_bw_cg_WKebook_1a1_w?node=116169071&amp;pf_rd_m=A1U5RCOVU0NYF2&amp;pf_rd_s=merchandised-search-9&amp;pf_rd_r=SGMKFB10R7MV2VEZXX20&amp;pf_rd_t=101&amp;pf_rd_p=d857603c-3657-40b3-a25b-d5fe03fd4e10&amp;pf_rd_i=116087071"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome:10.0'</span>&#125;<span class="comment">#与访问京东商城不同，我们需要更改headers字段模拟浏览器访问亚马逊商城。</span></span><br><span class="line">    r = requests.get(url,header=kv)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[<span class="number">1000</span>:<span class="number">2000</span>])</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure><h2 id="百度-360搜索关键词提交"><a href="#百度-360搜索关键词提交" class="headerlink" title="百度/360搜索关键词提交"></a>百度/360搜索关键词提交</h2><p>百度和360都提供了关键词提交接口：</p><blockquote><p>百度：<a href="http://www.baidu.com/s?wd=keyword" target="_blank" rel="noopener">http://www.baidu.com/s?wd=keyword</a></p></blockquote><blockquote><p>360：<a href="http://www.so.com/s?q=keyword" target="_blank" rel="noopener">http://www.so.com/s?q=keyword</a></p></blockquote><p>所以我们只用替换关键词就可以了。</p><p>代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">keword = <span class="string">"Python爬虫"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv =  &#123;<span class="string">'wd'</span>:keyword&#125;</span><br><span class="line">    user = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome/10.0'</span>&#125;</span><br><span class="line">    r = requests.get(<span class="string">'https://www.baidu.com/s'</span>,headers=user,params=kv)</span><br><span class="line">    print(r.request.url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    print(len(r.text))<span class="comment">#之后再加入爬取数据处理</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure><h2 id="网络图片的爬取和存储"><a href="#网络图片的爬取和存储" class="headerlink" title="网络图片的爬取和存储"></a>网络图片的爬取和存储</h2><p>我们需要得到网络图片的地址（找到图片右键复制图片地址）。</p><p>代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">url = <span class="string">"http://image.ngchina.com.cn/userpic/107269/2019/11181936061072693671.jpeg"</span><span class="comment">#得到的图片地址</span></span><br><span class="line">path = <span class="string">"D:/getImage.jpg"</span><span class="comment">#你想保存的文件路径</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line">        f.close()</span><br><span class="line">        print(<span class="string">"文件保存成功"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure><h2 id="IP地址归属地的自动查询"><a href="#IP地址归属地的自动查询" class="headerlink" title="IP地址归属地的自动查询"></a>IP地址归属地的自动查询</h2><p>在IP138我们可以查询IP地址归属地。我们可以用它的url接口：</p><blockquote><p><a href="http://m.ip138.com/ip.asp?ip=ipaddress" target="_blank" rel="noopener">http://m.ip138.com/ip.asp?ip=ipaddress</a></p></blockquote><p>代码：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://m.ip138.com/ip.asp?ip="</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url+<span class="string">'124.127.207.15'</span>)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    r.text[<span class="number">-500</span>:]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 爬虫 </tag>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Python爬虫（三）——Robots协议</title>
-      <link href="/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/"/>
-      <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/</url>
-      
-        <content type="html"><![CDATA[<h1 id="Python爬虫（三）——Robots协议"><a href="#Python爬虫（三）——Robots协议" class="headerlink" title="Python爬虫（三）——Robots协议"></a>Python爬虫（三）——Robots协议</h1><p>Robots协议全称为Robots Exclusion Standard，网络爬虫排除标准。它的作用是告知网络爬虫哪些可以抓取哪些不可以。通常被放在网站根目录下的robots.txt。</p><p>注：并不是所有网站都有Robots协议，如果没有默认为内容都可以爬取。</p><h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#*代表所有，&#x2F;代表根目录</span><br><span class="line">User-agent:*</span><br><span class="line">Disallow:&#x2F;</span><br></pre></td></tr></table></figure><ul><li>User-agent 限制的User-agent</li><li>Disallow 不允许访问的目录<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2>自动或人工识别robots.tst，再进行内容爬取。</li></ul><p>你也可以不遵守robots.txt，但会产生风险。只有当你的程序不会对服务器产生威胁或者行为类似人类的时候可以不遵守robots.txt。这时候你获取的资源不能用于商业用途。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 爬虫 </tag>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Python爬虫（二）——requests库</title>
-      <link href="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/"/>
-      <url>/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/</url>
-      
-        <content type="html"><![CDATA[<h1 id="requests库"><a href="#requests库" class="headerlink" title="requests库"></a><a href="https://requests.readthedocs.io/en/master/" target="_blank" rel="noopener" title="requests库的信息">requests库</a></h1><p>公认的爬取网页最好的库</p><a id="more"></a><h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>用cmd打开控制台，输入</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure><h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>抓取百度的网页代码。</p><p>打开IDLE输入一下代码</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">r.text</span><br></pre></td></tr></table></figure><p>状态码为200即为成功，否则失败。</p><p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests%E5%BA%93test.jpg" alt="爬取百度结果" title="爬取百度结果"></p><h2 id="7个主要方法"><a href="#7个主要方法" class="headerlink" title="7个主要方法"></a>7个主要方法</h2><h3 id="requests-requests"><a href="#requests-requests" class="headerlink" title="requests.requests()"></a>requests.requests()</h3><p>构造一个请求，支撑所有方法的基础。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.requests(method,url,**kewargs)</span><br></pre></td></tr></table></figure><ul><li>method：请求方式，对应get/put/post等七种</li><li>url：获取页面的url链接</li><li>**kwargs：13个控制访问参数。其中params的使用方法：<br><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests-kewargs.jpg" alt="kwargs使用方法" title="kwargs使用方法"></li></ul><h4 id="kwargs的13个参数"><a href="#kwargs的13个参数" class="headerlink" title="**kwargs的13个参数"></a>**kwargs的13个参数</h4><ul><li><strong>params</strong>：字典或字节序列，作为参数增加到url中</li><li><strong>data</strong>：字典、字节序列或文件对象，作为Request的内容</li><li><strong>json</strong>：JSON格式的数据，作为Request的内容</li><li><strong>headers</strong>：字典，HTTP定制头</li><li>cookies：字典或CookieJar，Request中的cookie</li><li>auth：元组，支持HTTP认证功能</li><li>files：字典类型，传输文件</li><li>timeout：设定超时时间，单位为秒</li><li>proxies：字典类型，设定访问代理服务器，可以增加登录认证</li><li>allow_redirects:True/False，默认为True，重定向开关</li><li>stream：True/False，默认为True，获取内容立即下载开关</li><li>verify：True/False，默认为True，认证SSL证书开关</li><li>cert：本地SSL证书路径</li></ul><h3 id="requests-get"><a href="#requests-get" class="headerlink" title="requests.get()"></a>requests.get()</h3><p>获取HTML网页的主要方法，对应于与HTTP的GET方法。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r= requests.get(url)</span><br></pre></td></tr></table></figure><p>构造一个向服务器请求资源的Request对象，返回一个包含服务器资源的Response对象。</p><p>完整的格式：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.get(url,params = <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：拟获取页面的url链接</li><li>params：url中的额外参数，字典或字节流格式，可选</li><li>**kwargs：12个控制访问的参数，可选。requests中除了params的参数</li></ul><p>get方法实际上使用了requests方法来封装。</p><h4 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h4><h5 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h5><ul><li>r.status_code HTTP请求的返回状态，200表示连接成功，404表示失败。</li><li>r.text HTTP响应内容的字符串形式。即url对应的页面内容。</li><li>r.encoding 从HTTP hear中<strong>猜测</strong>的响应内容编码方式。如果在返回的header中charset为空默认为ISO-8859-1。</li><li>r.apparent_encoding 从内容中<strong>分析</strong>出的响应内容编码方式（备选编码方式）。</li><li>r.content HTTP响应内容的二进制形式。</li></ul><h3 id="requests-head"><a href="#requests-head" class="headerlink" title="requests.head()"></a>requests.head()</h3><p>获取HTML网页头信息的方法，对应于HTTP的HEAD方法。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.head(url,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：获取页面的url链接</li><li>**kwargs：13个控制访问的参数</li></ul><p>实例：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r = requests.head(<span class="string">'http://httpbin.org/get'</span>)</span><br><span class="line">r.headers</span><br><span class="line">r.text</span><br></pre></td></tr></table></figure><h3 id="requests-post"><a href="#requests-post" class="headerlink" title="requests.post()"></a>requests.post()</h3><p>向HTML网页提交POST请求的方法，对应于HTTP的POST。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.post(url,data=<span class="literal">None</span>,json=<span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：更新页面的url链接</li><li>data：字典、字节序列或文件，Request的内容</li><li>json：JSON格式的数据，Request的内容</li><li>**kwargs：11个控制访问的参数（除了requests中的data和json）</li></ul><p>实例：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload  = &#123;<span class="string">'key1'</span>:<span class="string">'value1'</span>, <span class="string">'key2'</span>:<span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">'http://httpbin.org/post'</span>, data = payload)</span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure><p>结果：</p><p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/post.jpg" alt="post请求结果" title="post请求结果"></p><h3 id="requests-put"><a href="#requests-put" class="headerlink" title="requests.put()"></a>requests.put()</h3><p>向HTML网页提交PUT请求的方法，对应于HTTP的PUT。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.put(url,data= <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：更新页面的url链接</li><li>data：字典、字节序列或文件，Request的内容</li><li>**kwargs：12个控制访问的参数（除了requests中的data）</li></ul><p>实例：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload  = &#123;<span class="string">'key1'</span>:<span class="string">'value1'</span>, <span class="string">'key2'</span>:<span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.put(<span class="string">'http://httpbin.org/put'</span>, data = payload)</span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure><p>结果：</p><p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/put.jpg" alt="put请求结果" title="put请求结果"></p><h3 id="requests-patch"><a href="#requests-patch" class="headerlink" title="requests.patch()"></a>requests.patch()</h3><p>向HTML网页提交局部修改请求的方法，对应于HTTP的PATCH。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.patch(url,data= <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：更新页面的url链接</li><li>data：字典、字节序列或文件，Request的内容</li><li>**kwargs：12个控制访问的参数（除了requests中的data）</li></ul><h3 id="requests-delete"><a href="#requests-delete" class="headerlink" title="requests.delete()"></a>requests.delete()</h3><p>向HTML页面提交删除请求的方法，对应于HTTP的DELETE。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">requests.delete(url,**kwargs)</span><br></pre></td></tr></table></figure><ul><li>url：更新页面的url链接</li><li>**kwargs：13个控制访问的参数</li></ul><h2 id="通用代码框架"><a href="#通用代码框架" class="headerlink" title="通用代码框架"></a>通用代码框架</h2><h3 id="六种常见的异常"><a href="#六种常见的异常" class="headerlink" title="六种常见的异常"></a>六种常见的异常</h3><ul><li>requests.ConnectionError 网络连接错误异常，如DNS查询失败、拒绝连接等。</li><li>requests.HTTPError HTTP错误异常</li><li>requests.URLRequired URL缺失异常</li><li>requests.TooManyRedirects 超过最大重定向次数，产生重定向异常</li><li>requests.ConnectTimeout 连接远程服务器超时异常</li><li>requests.Timeout 请求URL超时，产生超市异常</li></ul><h3 id="r-raise-fo-status"><a href="#r-raise-fo-status" class="headerlink" title="r.raise_fo_status()"></a>r.raise_fo_status()</h3><p>如果返回值不是200，产生异常requests.HTTPError</p><h3 id="通用代码框架-1"><a href="#通用代码框架-1" class="headerlink" title="通用代码框架"></a>通用代码框架</h3><p>爬取页面</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>)</span><br><span class="line">        r.raise_for_status() <span class="comment">#如果状态不是200，引发HTTPError异常</span></span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> t.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"产生异常"</span></span><br></pre></td></tr></table></figure><p>最大的用处是使用户爬取网页变得更有效、更稳定、更可靠。</p><h2 id="HTTP协议及Requests库方法"><a href="#HTTP协议及Requests库方法" class="headerlink" title="HTTP协议及Requests库方法"></a>HTTP协议及Requests库方法</h2><h3 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h3><p>Hypertext Transfer Protocol，超文本传输协议。是一个基于“请求与响应”模式、无状态的应用层协议。采用URL作为定位网络资源的格式（http:// host [:port] [path],host:合法的Internet主机或IP地址,port:端口号,path:请求资源的路径）。URL使通过HTTP协议存取资源的Internet路径。一个URL对应一个数据资源。</p><h4 id="HTTP协议对资源的操作"><a href="#HTTP协议对资源的操作" class="headerlink" title="HTTP协议对资源的操作"></a>HTTP协议对资源的操作</h4><ul><li>GET 请求获取URL位置的资源。</li><li>HEAD 请求获取URL位置资源的响应消息报告，即获得该资源的头部信息。</li><li>POST 请求向URL位置的资源后附加新的数据。</li><li>PUT 请求向URL位置存储一个资源，<strong>覆盖</strong>原URL位置的资源。</li><li>PATCH 请求<strong>局部更新</strong>URL位置的资源，即改变该处资源的部分内容。</li><li>DELETE 请求i删除URL位置存储的资源。</li></ul><h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>由于网络安全的限制，我们最常使用的是requests.get()方法，某些时候会使用requests.head()方法。</p><p>由于网络链接的问题我们需要一个通用代码框架。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 爬虫 </tag>
-            
-            <tag> Python </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>python爬虫（一）——开发环境</title>
-      <link href="/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
-      <url>/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
-      
-        <content type="html"><![CDATA[<h1 id="python爬虫（一）——开发环境"><a href="#python爬虫（一）——开发环境" class="headerlink" title="python爬虫（一）——开发环境"></a>python爬虫（一）——开发环境</h1><h2 id="IDLE"><a href="#IDLE" class="headerlink" title="IDLE"></a>IDLE</h2><p><a href="https://baike.baidu.com/item/IDLE" target="_blank" rel="noopener" title="about IDLE">IDLE</a>是Python的集成开发环境，被打包为Python包装的可选部分。它是一个入门级的代码编写工具，适合编写较短的程序。</p><h2 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h2><p><a href="https://www.sublimetext.com/3" target="_blank" rel="noopener" title="Sublime Text download">Sublime Text</a>是一个专门为程序员开发的文本编辑器。它是一个收费软件，但是可以无限期的试用。Sublime Text 支持多种编程语言的语法高亮、拥有优秀的代码自动完成功能，还拥有代码片段（Snippet）的功能，可以将常用的代码片段保存起来，在需要时随时调用。支持 VIM 模式，可以使用Vim模式下的多数命令。</p><h2 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h2><p><a href="https://www.jetbrains.com/pycharm/download/" target="_blank" rel="noopener" title="PyCharm download">PyCharm</a>是一个由JetBrains打造的Python IDE。它的社区版免费，使用简单，集成度高。适合于较复杂的工程。</p><h2 id="Anaconda-amp-Spyder"><a href="#Anaconda-amp-Spyder" class="headerlink" title="Anaconda &amp; Spyder"></a>Anaconda &amp; Spyder</h2><p><a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener" title="Anaconda download">Anaconda</a>是一个开源的Python发行版本，包含了conda、Python的180多个科学包及其依赖项。它适合用于科学计算。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> python </tag>
-            
-            <tag> 爬虫 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>2019摄影记录</title>
-      <link href="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/"/>
-      <url>/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/</url>
-      
-        <content type="html"><![CDATA[<h1 id="2019摄影记录"><a href="#2019摄影记录" class="headerlink" title="2019摄影记录"></a>2019摄影记录</h1><a id="more"></a><p>在2019年10月4日，我拥有了人生里的第一台相机。在过去的几个月里，我带着它去了后海，去了古北水镇，还去了陶然亭。我也用它记录了我的学校，同学们的表演还有室友的生日。由于学校里事务繁多，没有能够抽出时间系统的学习摄影和后期，所以拍得一般。不过好歹也是自己拍出来的，敝帚自珍嘛。于是乎，我在这里列出几张自己比较喜欢的照片，也希望大家能够喜欢。</p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%90%8E%E6%B5%B7-%E6%9C%88%E4%BA%AE.jpg" alt="后海-月亮" title="后海-月亮"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%90%8E%E6%B5%B7-%E8%A1%97%E9%81%93.jpg" alt="后海-街道" title="后海-街道"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E6%9C%AC%E9%83%A8-%E9%93%B6%E6%9D%8F.jpg" alt="本部-银杏" title="本部-银杏"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E9%99%B6%E7%84%B6%E4%BA%AD-%E5%B0%8F%E6%8F%90%E7%90%B4.jpg" alt="陶然亭-小提琴" title="陶然亭-小提琴"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E9%99%B6%E7%84%B6%E4%BA%AD-%E9%A3%9E%E9%B8%9F.jpg" alt="陶然亭-飞鸟" title="陶然亭-飞鸟"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%8F%A4%E5%8C%97%E6%B0%B4%E9%95%87-%E6%B0%B4%E9%81%93.jpg" alt="古北水镇-水道" title="古北水镇-水道"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%8F%A4%E5%8C%97%E6%B0%B4%E9%95%87-%E6%B0%B4%E5%BA%93.jpg" alt="古北水镇-水库" title="古北水镇-水库"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E6%B2%99%E6%B2%B3-%E8%90%BD%E6%97%A5.jpg" alt="沙河-落日" title="沙河-落日"></p><p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E7%94%9F%E6%97%A5-%E8%A1%97%E9%81%93.jpg" alt="生日-街道" title="生日-街道"></p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> 摄影 </tag>
-            
-            <tag> 2019 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 进程</title>
-      <link href="/2020/01/08/os%E8%BF%9B%E7%A8%8B/"/>
-      <url>/2020/01/08/os%E8%BF%9B%E7%A8%8B/</url>
-      
-        <content type="html"><![CDATA[<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>在CPU中的活动称为进程。</p><a id="more"></a><h2 id="进程概念"><a href="#进程概念" class="headerlink" title="进程概念"></a>进程概念</h2><h3 id="进程-1"><a href="#进程-1" class="headerlink" title="进程"></a>进程</h3><p>进程组成：</p><blockquote><ul><li>文本段（或代码段）</li><li>当前活动（通过程序计数器的值和处理器寄存器的内容来表示）</li><li>堆栈段（临时数据，如函数参数、返回地址、局部变量）</li><li>数据段（全局变量）</li><li>堆（heap）</li></ul></blockquote><h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><ul><li>新的：进程正在被创建</li><li>运行：指令正在被执行</li><li>等待：进程等待某个事件发生</li><li>就绪：进程等待分配处理器</li><li>终止：进行完成执行</li></ul><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A01.jpg" alt="进程状态图" title="进程状态图"></p><h3 id="进程控制块（process-control-block，PCB）"><a href="#进程控制块（process-control-block，PCB）" class="headerlink" title="进程控制块（process control block，PCB）"></a>进程控制块（process control block，PCB）</h3><p>1.进程状态<br>2.程序计数器</p><blockquote><p>计数器表示进程要执行的下个指令的地址</p></blockquote><p>3.CPU寄存器</p><blockquote><p>累加器、索引寄存器、堆栈指针和通用寄存器等</p></blockquote><p>4.CPU调度信息</p><blockquote><p>进程优先级、调度队列的指针和其他调度参数。</p></blockquote><p>5.内存管理信息</p><blockquote><p>基址寄存器和界限寄存器的值、页表或段表</p></blockquote><p>6.记账信息</p><blockquote><p>CPU时间、实际使用时间、时间界限、记账数据、作业或进程数量</p></blockquote><p>7.I/O状态信息</p><blockquote><p>分配给进程的I/O设备列表、打开的文件列表等</p></blockquote><h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><h3 id="调度队列"><a href="#调度队列" class="headerlink" title="调度队列"></a>调度队列</h3><p>1.作业队列</p><blockquote><p>该队列包括系统中的所有进程</p></blockquote><p>2.就绪队列（通常用链表实现）</p><blockquote><p>内存中就绪的、等待的进程</p></blockquote><p>3.设备队列</p><blockquote><p>等待特定I/O设备的进程</p></blockquote><h3 id="调度程序-scheduler"><a href="#调度程序-scheduler" class="headerlink" title="调度程序(scheduler)"></a>调度程序(scheduler)</h3><h4 id="长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））"><a href="#长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））" class="headerlink" title="长期调度程序（long-term scheduler，或作业调度程序（job scheduler））"></a>长期调度程序（long-term scheduler，或作业调度程序（job scheduler））</h4><blockquote><p>一些批处理系统，进程更多的是被提交，所以都被放在大容量存储设备中。长期调度程序从大容量的存储设备中选择程序，放到内存中准备执行。</p></blockquote><h4 id="短期调度程序（short-term-scheduler，或CPU调度程序）"><a href="#短期调度程序（short-term-scheduler，或CPU调度程序）" class="headerlink" title="短期调度程序（short-term scheduler，或CPU调度程序）"></a>短期调度程序（short-term scheduler，或CPU调度程序）</h4><blockquote><p>短期调度程序是从准备执行的进程中选择进程，然后为之分配CPU。</p></blockquote><h4 id="程序可以分为I-O为主和CPU为主"><a href="#程序可以分为I-O为主和CPU为主" class="headerlink" title="程序可以分为I/O为主和CPU为主"></a>程序可以分为I/O为主和CPU为主</h4><p><strong>I/O为主（I/O-bound progress）</strong>：</p><blockquote><p>执行I/O方面的时间更多</p></blockquote><p><strong>CPU为主（CPU-bound progress）</strong>：</p><blockquote><p>很少产生I/O请求</p></blockquote><h3 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h3><p>中断时，系统需要保存当前运行在CPU上的进程的上下文，从而在其处理完后能够恢复上下文。通常，通过执行一个<strong>状态保存（state save）</strong>来保存CPU当前状态，之后执行一个<strong>状态恢复（state restore）</strong>重新开始。<br>这个将CPU切换到另一个进程需要保存当前进程的状态并恢复另一个进程的状态称为<strong>上下文切换（context switch）</strong>。</p><h2 id="进程操作"><a href="#进程操作" class="headerlink" title="进程操作"></a>进程操作</h2><h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p>进程（父进程）在执行过程中，能够通过创建程序系统调用创建多个新进程（子进程）。创建进程需要一定的资源（如：CPU时间、内存、文件、I/O设备），子进程可能从系统获得资源，也可能直接从父进程中获得资源。<br>当进程创建新进程时有两种执行可能：</p><blockquote><p>1.父进程与子进程并发执行<br>2.父进程等待，知道某个或全部子进程执行完</p></blockquote><p>新进程的地址空间也有两种可能：</p><blockquote><p>1.子进程时父进程的复制品<br>2.子程序装入另一个新程序</p></blockquote><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A02.jpg" alt="进程生成" title="进程生成"></p><h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3><p>当进程完成执行最后的语句并使用系统调用exit()请求系统删除自身时，进程终止。<br>父进程终止子进程的原因：</p><blockquote><ul><li>子进程使用了超过它所分配的资源</li><li>分配给子进程的任务不再需要</li><li>父进程退出（级联终止（cascading termination））</li></ul></blockquote><h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><p>需要提供环境以允许进程协作的理由:</p><blockquote><ul><li>信息共享（information sharing）</li><li>提高运算速度（computation speedup）</li><li>模块化（modularity）</li><li>方便（convenience）</li></ul></blockquote><p>进程间通信机制（interprocess communication，IPC）：用来允许进程相互交换数据与信息。两种基本模式：</p><blockquote><p>1.共享内存<br>2.消息传递</p></blockquote><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A03.jpg" alt="通信模型" title="通信模型"></p><h3 id="共享内存系统"><a href="#共享内存系统" class="headerlink" title="共享内存系统"></a>共享内存系统</h3><p>采用共享内存的进程间通信需要建立共享内存区域。</p><h4 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h4><p>生产者进程产生信息以供消费者进程消费，这就必须要求建立缓冲来满足生产者和消费者的消费。<strong>无限缓冲（unbounded-buffer）</strong>，对缓冲大小没有限制。<strong>有限缓冲（bounded-buffer）</strong>，缓冲大小固定。</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFFER_SIZE 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;item;</span><br><span class="line"></span><br><span class="line">item buffer[BUFFER_SIZE];</span><br><span class="line"><span class="keyword">int</span> in = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> out = <span class="number">0</span>;</span><br></pre></td></tr></table></figure><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A04.jpg" alt="代码实例" title="生产者消费者问题"></p><h3 id="消息传递系统"><a href="#消息传递系统" class="headerlink" title="消息传递系统"></a>消息传递系统</h3><p>需求：</p><blockquote><p>发送和接受<br>通信线路（communication link）</p><blockquote><ul><li>直接或间接通信</li><li>同步或异步通信</li><li>自动或显示缓冲</li></ul></blockquote></blockquote><h4 id="1-命名"><a href="#1-命名" class="headerlink" title="1.命名"></a>1.命名</h4><p>直接通信：需要通信的每个进程必须明确地命名通信的接收者和发送者。<br>间接通信：通过邮箱或端口来发送和接受消息。</p><h4 id="2-同步（阻塞或非阻塞——同步或异步）"><a href="#2-同步（阻塞或非阻塞——同步或异步）" class="headerlink" title="2.同步（阻塞或非阻塞——同步或异步）"></a>2.同步（阻塞或非阻塞——同步或异步）</h4><blockquote><ul><li>阻塞 send：发送进程阻塞，直到消息被接受进程或邮箱所接受</li><li>非阻塞 send：发送进程发送消息并继续操作</li><li>阻塞 receive：接收者阻塞，直到有消息可用</li><li>非阻塞 receive：接收者收到一个有效消息或空消息</li></ul></blockquote><p>都阻塞的时候，发送者和接收者之间就有一个集合点（rendzvous）。</p><h4 id="3-缓冲"><a href="#3-缓冲" class="headerlink" title="3.缓冲"></a>3.缓冲</h4><blockquote><ul><li>零容量：队列的最大长度为0。这种情况必须阻塞发送。</li><li>有限容量</li><li>无限容量</li></ul></blockquote><h2 id="客户机-服务器系统通信"><a href="#客户机-服务器系统通信" class="headerlink" title="客户机-服务器系统通信"></a>客户机-服务器系统通信</h2><h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>套接字（Socket）可定义为通信的端点。一对通过网络通信的进程需要使用一对Socket。</p><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A05.jpg" alt="使用Socket通信" title="使用Socket通信"></p><h3 id="远程过程调用"><a href="#远程过程调用" class="headerlink" title="远程过程调用"></a>远程过程调用</h3><p>最为普通的远程服务——RPC方式</p><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A06.jpg" alt="远程过程调用（RPC）" title="远程过程调用（RPC）"></p><h3 id="远程方法调用（remote-method-invocation）"><a href="#远程方法调用（remote-method-invocation）" class="headerlink" title="远程方法调用（remote method invocation）"></a>远程方法调用（remote method invocation）</h3><p>类似于RPC的Java特性</p><p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A07.jpg" alt="远程方法调用" title="远程方法调用"></p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 线程</title>
-      <link href="/2020/01/08/os%E7%BA%BF%E7%A8%8B/"/>
-      <url>/2020/01/08/os%E7%BA%BF%E7%A8%8B/</url>
-      
-        <content type="html"><![CDATA[<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><a id="more"></a><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>线程是CPU使用的基本单元，它由线程ID、程序计数器、寄存器集合和栈组成。它与同属一个进程的其他线程共享代码段、数据段和其他操作系统资源。<br><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B4.jpg" alt="单线程和多线程的区别" title="多线程和单线程的区别"></p><h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>有时候，一个应用程序可能需要执行多个相似的任务。</p><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul><li>1.响应度高</li><li>2.资源共享：线程默认共享它们所属进程的内存和资源。</li><li>3.经济：进程创建所需要的内存和资源的分配比较昂贵。</li><li>4.多处理器体系结构的利用：充分使用多处理器体系结构。<h2 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h2>两种方法：<blockquote><ul><li>用户层的用户线程：受内核支持，而无需内核管理。</li><li>内核层的内核线程：由操作系统直接支持和管理。</li></ul></blockquote><h3 id="多对一模型"><a href="#多对一模型" class="headerlink" title="多对一模型"></a>多对一模型</h3>将许多用户线程映射到一个内核线程。例如Green thread和<strong>GNU可移植线程（GNU Portable Thread）</strong>。效率比较高，但因为任一时刻只有一个线程能访问内核，多个线程不能并行运行在多处理器上。</li></ul><p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B.jpg" alt="多对一模型" title="多对一模型"></p><h3 id="一对一模型"><a href="#一对一模型" class="headerlink" title="一对一模型"></a>一对一模型</h3><p>每个用户线程映射到一个内核线程。例如Linux和Windows操作系统家族。能够很好的实现并发功能，但因为创建内核线程的开销会影响应用程序的性能，所以会限制系统所支持的线程的数量。</p><p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B1.jpg" alt="一对一模型" title="一对一模型"></p><h3 id="多对多模型"><a href="#多对多模型" class="headerlink" title="多对多模型"></a>多对多模型</h3><p>复用了许多用户线程到同样数量或更小的内核线程上。没有增加并发性，但不用担心线程过多且能并发执行。</p><p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B2.jpg" alt="多对多模型" title="多对多模型"></p><h2 id="线程库（thread-library）"><a href="#线程库（thread-library）" class="headerlink" title="线程库（thread library）"></a>线程库（thread library）</h2><p>提供创建和管理线程的API。</p><p>实现线程库的两种方法：</p><blockquote><ul><li>在用户空间中提供一个没有内核支持的库，调用函数只是一个本地函数调用而不是系统调用。</li><li>执行一个由操作系统直接支持的内核级库，调用一个API通常会导致对内核的系统调用。</li></ul></blockquote><p>当前使用的三种主要的线程库：1.Pthread、2.Win32、3.Java。</p><h2 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h2><h3 id="系统调用fork-和exec"><a href="#系统调用fork-和exec" class="headerlink" title="系统调用fork()和exec()"></a>系统调用fork()和exec()</h3><h3 id="取消"><a href="#取消" class="headerlink" title="取消"></a>取消</h3><p><strong>线程取消（thread cancellation）</strong>，在线程完成之前来终止线程的任务。要取消的线程通常称为目标线程。</p><blockquote><ul><li>1.异步取消（asynchronous cancellation）：一个线程立即终止目标线程。</li><li>2.延迟取消（deferred cancellation）：目标线程不断地检查它是否应终止，这允许目标线程有机会以有序方式来终结自己。</li></ul></blockquote><h3 id="信号处理"><a href="#信号处理" class="headerlink" title="信号处理"></a>信号处理</h3><p>所有信号具有同样的模式</p><blockquote><ul><li>1.信号是由特事件的发生所产生的</li><li>2.产生信号要发送到线程</li><li>3一旦发送，信号必须加以处理</li></ul></blockquote><p>每个信号可能由两种可能的处理程序的一种来处理：</p><blockquote><p>1.<strong>默认信号处理程序（default signal handler）</strong>，每个程序都有一个默认信号处理程序<br>2.用户定义的信号处理程</p></blockquote><h3 id="线程池（thread-pool）"><a href="#线程池（thread-pool）" class="headerlink" title="线程池（thread pool）"></a>线程池（thread pool）</h3><p>优点：</p><blockquote><ul><li>通常用现有线程处理请求要比等待创建新的线程块</li><li>线程池限制了在任何时候可用线程的数量（由系统CPU的数量、物理内存的大小和并发客户请求的期望值等确定）</li></ul></blockquote><h3 id="线程特定数据（thread-specific-data）"><a href="#线程特定数据（thread-specific-data）" class="headerlink" title="线程特定数据（thread-specific data）"></a>线程特定数据（thread-specific data）</h3><p>同属一个进程的线程共享进程数据。不过一些线程在某些情况下需要一定数据的自己的副本。这些就称为线程特定数据。</p><h3 id="调度程序激活（scheduler-activation）"><a href="#调度程序激活（scheduler-activation）" class="headerlink" title="调度程序激活（scheduler activation）"></a>调度程序激活（scheduler activation）</h3><p>一种解决用户线程库与内核间通信的方法。内核提供一组虚拟处理器（轻量级进程，LWP）给应用程序，应用程序可调度用户线程到一个可用的LWP上。这样就为线程提供了一个用户级的中间系统，它就可以通过系统调用获得内核提供的服务。</p><p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B3.jpg" alt="轻量级进程（LWP）" title="轻量级进程（LWP）"></p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 操作系统结构</title>
-      <link href="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/"/>
-      <url>/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</url>
-      
-        <content type="html"><![CDATA[<h1 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h1><a id="more"></a><h2 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h2><h3 id="提供的函数"><a href="#提供的函数" class="headerlink" title="提供的函数"></a>提供的函数</h3><p>1.用户界面（user interface，UI）</p><blockquote><p>命令行界面（command-line interface，CLI）  采用文本命令，用一定的方法输入。<br>图形用户界面（graphical user interface，GUI）</p></blockquote><p>2.程序执行<br>3.I/O操作</p><blockquote><p>用户通常不能直接控制I/O设备，所以操作系统需要提供进行I/O操作的方法。</p></blockquote><p>4.文件系统操作</p><blockquote><p>程序需要读写文件和目录，也需要根据文件名来创建和删除文件、搜索一个给定的文件、列出文件信息。此外还包括基于文件所有权的允许或拒绝对文件或目录的访问管理</p></blockquote><p>5.通信</p><blockquote><p>一个进程需要与另一个进程交换信息。</p><blockquote><ol><li>同一台计算机上两个程序之间。</li><li>运行在网络连接起来的两台计算机上的进程之间。</li></ol></blockquote></blockquote><p>6.错误检测</p><blockquote><p>CPU或内存硬件、I/O设备和用户程序中出现的错误。</p></blockquote><p>7.资源分配</p><blockquote><p>同时有多个用户或多个作业运行时，系统必须为它们分配资源（CPU周期、内存、I/O设备等）。</p></blockquote><p>8.统计</p><blockquote><p>记录哪些用户使用了多少和什么类型的资源。</p></blockquote><p>9.保护和安全</p><blockquote><p>当多个程序并发时，一个程序不能干预另一个进程或操作系统本身。<br>同时系统也不能受到外界的侵犯。</p></blockquote><h2 id="操作系统用户界面"><a href="#操作系统用户界面" class="headerlink" title="操作系统用户界面"></a>操作系统用户界面</h2><h3 id="命令解释程序"><a href="#命令解释程序" class="headerlink" title="命令解释程序"></a>命令解释程序</h3><p>用于获取并执行用户指定的下一条命令。<br>1.命令解释程序本身包含代码以执行这些命令。<br>2.有系统程序实现绝大多数命令。</p><h3 id="图形用户界面（GUI）"><a href="#图形用户界面（GUI）" class="headerlink" title="图形用户界面（GUI）"></a>图形用户界面（GUI）</h3><p>提供基于鼠标的窗口和菜单系统。</p><h2 id="系统调用（system-call）"><a href="#系统调用（system-call）" class="headerlink" title="系统调用（system call）"></a>系统调用（system call）</h2><p>提供了操作系统提供的有效服务界面。应用程序开发人员根据<strong>应用程序接口</strong>（API）设计程序。组成API的函数就是操作系统提供的系统调用。</p><h2 id="系统调用类型"><a href="#系统调用类型" class="headerlink" title="系统调用类型"></a>系统调用类型</h2><ul><li>进程控制</li><li>文件管理</li><li>设备管理</li><li>信息维护</li><li>通信<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3>运行程序需要能够正常或非正常地中断其执行。<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3>创建和删除文件，读、写或重定位文件，确定和设置其属性（文件名、文件类型、保护模式、计账信息）。<h3 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h3>物理设备（磁带）抽象设备（文件）。<h3 id="信息维护"><a href="#信息维护" class="headerlink" title="信息维护"></a>信息维护</h3>用户程序和操作系统之间传递信息。<h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3></li></ul><p>1.消息传递模型（message-passing model）</p><blockquote><p>通过彼此之间交换消息来交换信息。</p></blockquote><p>2.共享内存模型（shared-memory model）</p><blockquote><p>使用shared memory create和shared memoty attach 系统调用来获得其他进程所拥有的内存区域地访问权。</p></blockquote><h2 id="系统程序"><a href="#系统程序" class="headerlink" title="系统程序"></a>系统程序</h2><p>1.文件管理</p><blockquote><p>创建、删除、复制、重命名、打印、转储、列出和操作文件和目录。</p></blockquote><p>2.状态信息</p><blockquote><p>系统的日期、时间、可用内存、或磁盘空间的数量、用户数或类似的状态信息。</p></blockquote><p>3.文件修改<br>4.程序语言支持</p><blockquote><p>常用的程序设计语言的编译程序、汇编程序、调试程序和接师程序</p></blockquote><p>5.程序装入和执行<br>6.通信</p><h2 id="操作系统设计和实现"><a href="#操作系统设计和实现" class="headerlink" title="操作系统设计和实现"></a>操作系统设计和实现</h2><h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><p>1.定义系统的目标和规格。<br>2.方便和容易使用、学习、可靠、安全和快速。<br>3.容易设计、实现和维护的同时灵活、可靠高效且没有错误。</p><h3 id="机制（mechanism）和策略（policy）"><a href="#机制（mechanism）和策略（policy）" class="headerlink" title="机制（mechanism）和策略（policy）"></a>机制（mechanism）和策略（policy）</h3><ul><li>机制   决定怎么做</li><li>策略   决定做什么<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3>使用汇编和高级语言编写<h2 id="操作系统结构-1"><a href="#操作系统结构-1" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="简单结构"><a href="#简单结构" class="headerlink" title="简单结构"></a>简单结构</h3><img src="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/os%E7%AC%AC%E4%BA%8C%E7%AB%A01.png" alt="MS-DOS层次结构" title="MS-DOS层次结构"><h3 id="分层方法"><a href="#分层方法" class="headerlink" title="分层方法"></a>分层方法</h3>分层法   操作系统分成若干层。最底层为硬件，最高层为用户接口。<h3 id="微内核（microkernel）"><a href="#微内核（microkernel）" class="headerlink" title="微内核（microkernel）"></a>微内核（microkernel）</h3>将所有非基本部分从内核中移走，并将它们实现为系统程序或用户程序。从而使客户程序和运行在用户空间的各种服务之间进行通信。<br>好处：<blockquote><p>便于扩充操作系统。更好的安全性和可靠性。</p></blockquote></li></ul><p>坏处：</p><blockquote><p>由于系统功能总开销的增加而导致系统性能下降。</p></blockquote><h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>面向对象编程技术生成模块化的内核。</p><h2 id="虚拟机（virtual-machine）"><a href="#虚拟机（virtual-machine）" class="headerlink" title="虚拟机（virtual machine）"></a>虚拟机（virtual machine）</h2><h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>底层机器的两种模式：用户模式和内核模式。</p><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>优点是没有安全问题。但同时没有了资源共享。<br>共享实现的两种方法：</p><blockquote><p>1.通过共享小型磁盘来共享文件，模拟共享物理磁盘，用软件实现。<br>2.通过定义一个虚拟机的网络，模拟通信网络来传递消息。</p></blockquote><h2 id="系统生成（system-generation）"><a href="#系统生成（system-generation）" class="headerlink" title="系统生成（system generation）"></a>系统生成（system generation）</h2><p>对某个特定的计算机场所，配置和生成系统。</p><h2 id="系统启动"><a href="#系统启动" class="headerlink" title="系统启动"></a>系统启动</h2><p>装入内核以启动计算机的过程称为引导系统。步骤：</p><blockquote><p>一个简单的引导程序从磁盘上调入一个较复杂的引导程序。然后后者再装入内核</p></blockquote>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 导论</title>
-      <link href="/2020/01/08/os%E5%AF%BC%E8%AE%BA/"/>
-      <url>/2020/01/08/os%E5%AF%BC%E8%AE%BA/</url>
-      
-        <content type="html"><![CDATA[<h1 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h1><a id="more"></a><h2 id="操作系统做什么"><a href="#操作系统做什么" class="headerlink" title="操作系统做什么"></a>操作系统做什么</h2><h3 id="计算机组成"><a href="#计算机组成" class="headerlink" title="计算机组成"></a>计算机组成</h3><h4 id="计算机硬件"><a href="#计算机硬件" class="headerlink" title="计算机硬件"></a>计算机硬件</h4><p>中央处理单元（CPU）<br>内存（memory）<br>输入输出设备（IO）</p><h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>系统程序<br>应用程序和用户</p><h3 id="用户视角"><a href="#用户视角" class="headerlink" title="用户视角"></a>用户视角</h3><h4 id="在大型机或小型机相连的终端前"><a href="#在大型机或小型机相连的终端前" class="headerlink" title="在大型机或小型机相连的终端前"></a>在大型机或小型机相连的终端前</h4><p>对资源使用做优化<br>确保所有的CPU时间、内存和I/O都能够得到充分使用，同时用户不会使用超出其权限以外的资源。</p><h4 id="在工作站前"><a href="#在工作站前" class="headerlink" title="在工作站前"></a>在工作站前</h4><p>个人使用性能和资源利用率的折中</p><h4 id="单个用户独立使用"><a href="#单个用户独立使用" class="headerlink" title="单个用户独立使用"></a>单个用户独立使用</h4><p>为了方便个人使用</p><h3 id="系统视角"><a href="#系统视角" class="headerlink" title="系统视角"></a>系统视角</h3><p>操作系统是控制程序</p><h3 id="定义操作系统"><a href="#定义操作系统" class="headerlink" title="定义操作系统"></a>定义操作系统</h3><p>管理计算机硬件并提供应用程序运行环境的软件</p><h2 id="计算机系统组织"><a href="#计算机系统组织" class="headerlink" title="计算机系统组织"></a>计算机系统组织</h2><h3 id="计算机系统操作"><a href="#计算机系统操作" class="headerlink" title="计算机系统操作"></a>计算机系统操作</h3><h4 id="引导程序（bootstrap-program）"><a href="#引导程序（bootstrap-program）" class="headerlink" title="引导程序（bootstrap program）"></a>引导程序（bootstrap program）</h4><p>计算机开始运行需要一个初始化程序</p><h4 id="中断（interrupt）"><a href="#中断（interrupt）" class="headerlink" title="中断（interrupt）"></a>中断（interrupt）</h4><h5 id="事件的发生"><a href="#事件的发生" class="headerlink" title="事件的发生"></a>事件的发生</h5><h5 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h5><p>通过系统总线向CPU发出信号</p><h5 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h5><p>系统调用（system call，监视器调用（monitor call））</p><h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><h4 id="随机访问内存（random-access-memory，RAM）"><a href="#随机访问内存（random-access-memory，RAM）" class="headerlink" title="随机访问内存（random access memory，RAM）"></a>随机访问内存（random access memory，RAM）</h4><p>计算机程序运行的地方</p><h4 id="动态随机访问内存（dynamic-random-access-memory，DRAM）"><a href="#动态随机访问内存（dynamic-random-access-memory，DRAM）" class="headerlink" title="动态随机访问内存（dynamic random access memory，DRAM）"></a>动态随机访问内存（dynamic random access memory，DRAM）</h4><p>处理器可以直接访问的唯一大容量存储区域</p><h4 id="指令寄存器（instruction-register）"><a href="#指令寄存器（instruction-register）" class="headerlink" title="指令寄存器（instruction register）"></a>指令寄存器（instruction register）</h4><h4 id="辅存（secondary-storage）"><a href="#辅存（secondary-storage）" class="headerlink" title="辅存（secondary storage）"></a>辅存（secondary storage）</h4><p>内存的扩充<br>磁盘（magnetic disk）</p><h3 id="I-O结构"><a href="#I-O结构" class="headerlink" title="I/O结构"></a>I/O结构</h3><h4 id="DMA（direct-memory-access，直接内存访问）"><a href="#DMA（direct-memory-access，直接内存访问）" class="headerlink" title="DMA（direct memory access，直接内存访问）"></a>DMA（direct memory access，直接内存访问）</h4><p>解决大块数据移动</p><h2 id="计算机系统体系结构"><a href="#计算机系统体系结构" class="headerlink" title="计算机系统体系结构"></a>计算机系统体系结构</h2><h3 id="单处理器系统"><a href="#单处理器系统" class="headerlink" title="单处理器系统"></a>单处理器系统</h3><p>只有一个主CPU能够执行一个通用指令集</p><h3 id="多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））"><a href="#多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））" class="headerlink" title="多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））"></a>多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））</h3><h4 id="有多个紧密通信的CPU"><a href="#有多个紧密通信的CPU" class="headerlink" title="有多个紧密通信的CPU"></a>有多个紧密通信的CPU</h4><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>增加吞吐量<br>规模经济<br>增加可靠性</p><h4 id="非对称对处理"><a href="#非对称对处理" class="headerlink" title="非对称对处理"></a>非对称对处理</h4><h4 id="对称多处理"><a href="#对称多处理" class="headerlink" title="对称多处理"></a>对称多处理</h4><h3 id="集群系统（clustered-system）"><a href="#集群系统（clustered-system）" class="headerlink" title="集群系统（clustered system）"></a>集群系统（clustered system）</h3><p>提供高可用性服务</p><h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="最重要的是有多道程序设计"><a href="#最重要的是有多道程序设计" class="headerlink" title="最重要的是有多道程序设计"></a>最重要的是有多道程序设计</h3><p>分时系统<br>交互计算机系统</p><h3 id="作业池（job-pool）"><a href="#作业池（job-pool）" class="headerlink" title="作业池（job pool）"></a>作业池（job pool）</h3><p>作业调度（job scheduling）</p><h3 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h3><h3 id="虚拟内存（virtual-memory）"><a href="#虚拟内存（virtual-memory）" class="headerlink" title="虚拟内存（virtual memory）"></a>虚拟内存（virtual memory）</h3><p>逻辑内存（logical memory）</p><h3 id="物理内存（physical-memory）"><a href="#物理内存（physical-memory）" class="headerlink" title="物理内存（physical memory）"></a>物理内存（physical memory）</h3><h2 id="操作系统操作"><a href="#操作系统操作" class="headerlink" title="操作系统操作"></a>操作系统操作</h2><h3 id="双重模式操作"><a href="#双重模式操作" class="headerlink" title="双重模式操作"></a>双重模式操作</h3><p>用户模式（user mode）</p><blockquote><p>用户应用程序运行的时候系统处于的模式。</p></blockquote><p>监督程序模式（monitor mode），也称管理模式（supervisor mode）、系统模式（system mode）和特权模式（privileged mode）</p><blockquote><p>用来执行系统服务，只有在内核模式的时候才能执行特权指令。</p></blockquote><p>模式位（mode bit）</p><blockquote><p>标识所处的状态</p></blockquote><p>特权指令（privileged mode）</p><blockquote><p>能够引起损害的机器指令</p></blockquote><h3 id="定时器（timer）"><a href="#定时器（timer）" class="headerlink" title="定时器（timer）"></a>定时器（timer）</h3><h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>程序计数器</p><h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h2 id="存储管理"><a href="#存储管理" class="headerlink" title="存储管理"></a>存储管理</h2><h3 id="文件系统管理"><a href="#文件系统管理" class="headerlink" title="文件系统管理"></a>文件系统管理</h3><p>创建和删除文件<br>创建和删除目录来组织文件<br>提供操作文件和目录的原语<br>将文件映射到二级存储上<br>在稳定存储介质上备份文件</p><h3 id="大容量存储器管理"><a href="#大容量存储器管理" class="headerlink" title="大容量存储器管理"></a>大容量存储器管理</h3><p>空闲空间管理<br>存储空间分配<br>磁盘调度</p><h3 id="高速缓存"><a href="#高速缓存" class="headerlink" title="高速缓存"></a>高速缓存</h3><p>高速缓存一致性（cache coherency）<br>需要特定信息时，首先检查是否在高数缓存中。如果不在，使用位于内存中的信息。</p><h3 id="I-O系统"><a href="#I-O系统" class="headerlink" title="I/O系统"></a>I/O系统</h3><p>一个包括缓冲、高速缓存和假脱机的内存管理部分<br>通用的设备驱动器接口<br>特定硬件设备的驱动程序</p><h2 id="保护和安全"><a href="#保护和安全" class="headerlink" title="保护和安全"></a>保护和安全</h2><h3 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h3><p>一种控制进程或用户对计算机系统资源的访问的机制</p><h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>防止系统不受外部或内部攻击</p><h2 id="分布式系统"><a href="#分布式系统" class="headerlink" title="分布式系统"></a>分布式系统</h2><p>局域网（local-area network，LAN）<br>广域网（wide-area network，WAN）<br>域域网（metropoltan-area network）<br>小域网（small-area network）</p><h2 id="专用系统"><a href="#专用系统" class="headerlink" title="专用系统"></a>专用系统</h2><h3 id="实时嵌入式系统"><a href="#实时嵌入式系统" class="headerlink" title="实时嵌入式系统"></a>实时嵌入式系统</h3><p>实时操作系统<br>当对处理器操作或数据流动有严格时间要求时，就需要使用实时系统。</p><h3 id="多媒体系统"><a href="#多媒体系统" class="headerlink" title="多媒体系统"></a>多媒体系统</h3><p>用来处理传统的数据</p><h3 id="手持系统（handheld-system）"><a href="#手持系统（handheld-system）" class="headerlink" title="手持系统（handheld system）"></a>手持系统（handheld system）</h3><h2 id="计算环境"><a href="#计算环境" class="headerlink" title="计算环境"></a>计算环境</h2><h3 id="传统计算"><a href="#传统计算" class="headerlink" title="传统计算"></a>传统计算</h3><h3 id="客户机-服务器计算"><a href="#客户机-服务器计算" class="headerlink" title="客户机-服务器计算"></a>客户机-服务器计算</h3><h4 id="服务器系统（server-system）"><a href="#服务器系统（server-system）" class="headerlink" title="服务器系统（server system）"></a>服务器系统（server system）</h4><p>计算服务器<br>提供接口以接受用户所发出的执行操作的请求，执行操作，并将操作结果反回给客户机。<br>文件服务器系统<br>提供文件系统接口，以便客户机能创建、更新、访问和删除文件。</p><h4 id="客户机系统（client-system）"><a href="#客户机系统（client-system）" class="headerlink" title="客户机系统（client system）"></a>客户机系统（client system）</h4><h3 id="对等计算"><a href="#对等计算" class="headerlink" title="对等计算"></a>对等计算</h3><p>p2p</p><h3 id="基于web的计算"><a href="#基于web的计算" class="headerlink" title="基于web的计算"></a>基于web的计算</h3>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Welcome</title>
-      <link href="/2020/01/08/hello-world/"/>
-      <url>/2020/01/08/hello-world/</url>
-      
-        <content type="html"><![CDATA[<h1 id="欢迎参观我的博客"><a href="#欢迎参观我的博客" class="headerlink" title="欢迎参观我的博客"></a><center>欢迎参观我的博客</center></h1><center>我会不定期在这里更新一些我的学习总结和一些摄影作品，希望你能够喜欢！<center><!-- ## Quick Start### Create a new post<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a> –&gt;</p>--></center></center>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 文件系统实现</title>
-      <link href="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/"/>
-      <url>/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/</url>
-      
-        <content type="html"><![CDATA[<h1 id="文件系统实现"><a href="#文件系统实现" class="headerlink" title="文件系统实现"></a>文件系统实现</h1><a id="more"></a><h2 id="文件系统结构"><a href="#文件系统结构" class="headerlink" title="文件系统结构"></a>文件系统结构</h2><p>磁盘提供大量的外存空间来维持文件系统。它有以下两个特点：</p><ul><li>可以原地重写，可以从磁盘上读一块，修改该块，并将它写回到原来位置。</li><li>可以直接访问磁盘上的任意一块信息。</li></ul><p><img src="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B01.jpg" alt="分层设计的文件系统" title="分层设计的文件系统"></p><p>I/O控制为最底层，由设备驱动程序和中断处理程序组成。</p><p>基本文件系统只需要向合适的设备驱动程序发送一般命令就可对磁盘上的物理块进行读写。</p><p>文件组织模块（file-organization module）知道文件及其逻辑块和物理块</p><p>逻辑文件系统管理元数据（文件系统的所有结构数据）。</p><p>文件控制块（file control block，FCB）包含文件的信息。</p><h2 id="文件系统实现-1"><a href="#文件系统实现-1" class="headerlink" title="文件系统实现"></a>文件系统实现</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ul><li><strong>引导控制块（boot control block）</strong>包括系统从改卷引导操作系统所需要的信息。</li><li><strong>卷控制块（volume control block）</strong>包括卷（或分区）的详细信息。</li><li>每个文件系统的目录结构用来组织文件。</li><li>每个文件的FCB包括很多该文件的详细信息。<h3 id="分区和安装"><a href="#分区和安装" class="headerlink" title="分区和安装"></a>分区和安装</h3>生的分区（raw）没有文件系统，熟的分区（cooked）有文件系统。根分区（root）包括操作系统内核或其他系统文件。<h3 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h3><img src="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B02.jpg" alt="虚拟文件系统示意图" title="虚拟文件系统示意图"></li></ul><p>第一层文件系统接口</p><p>第二层虚拟文件系统（VFS）层。通过定义一个清晰的VFS接口，将文件系统的通用性和具体实现分开。提供了在网络上唯一标识一个文件的机制。Linux中VFS定义的4种对象类型：</p><blockquote><ul><li><strong>索引节点对象（inode object）</strong>，表示一个单独的文件</li><li><strong>文件对象（file object）</strong>，表示一个打开的文件</li><li><strong>超级块对象（superblock object）</strong>，表示整个文件系统</li><li><strong>目录条目对象（dentry object）</strong>，表示要给单独的目录条目</li></ul></blockquote><p>第三层实现文件系统类型或远程文件系统协议</p><h2 id="目录实现"><a href="#目录实现" class="headerlink" title="目录实现"></a>目录实现</h2><h3 id="线性列表"><a href="#线性列表" class="headerlink" title="线性列表"></a>线性列表</h3><p>使用存储文件名和数据块指针的线性列表。编程简单但是运行费事。</p><h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><p>使用哈希数据结构。大大减少了目录搜索时间，但是要避免冲突。</p><h2 id="分配方法"><a href="#分配方法" class="headerlink" title="分配方法"></a>分配方法</h2><h3 id="连续分配（contiguous-allocation）"><a href="#连续分配（contiguous-allocation）" class="headerlink" title="连续分配（contiguous allocation）"></a>连续分配（contiguous allocation）</h3><p>要求每个文件在磁盘上占有一组连续的块。磁盘地址为磁盘定义了一个线性序列。困难是为新文件找到空间。是动态存储分配的一个具体应用。</p><h3 id="链接分配（linked-allocation）"><a href="#链接分配（linked-allocation）" class="headerlink" title="链接分配（linked allocation）"></a>链接分配（linked allocation）</h3><p>解决了连续分配的问题，每个文件是磁盘的链表。但是它只能顺序访问。</p><p>通过文件分配表（FAT）的使用。解决顺序访问的问题。</p><h3 id="索引分配（indexed-allocation）"><a href="#索引分配（indexed-allocation）" class="headerlink" title="索引分配（indexed allocation）"></a>索引分配（indexed allocation）</h3><p>通过把所有指针放在一起，解决不能随机访问和直接访问的问题。每个文件都有一个索引块，是一个磁盘块地址的数组。索引分配支持直接访问，且没有外部碎片的问题。</p><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>连续分配访问一次就能得到磁盘块。链接分配对于直接访问效率很低。索引分配更为复杂，使用的时候需要一大块空间。</p><h2 id="空闲空间管理"><a href="#空闲空间管理" class="headerlink" title="空闲空间管理"></a>空闲空间管理</h2><p>为了记录空闲空间，系统需要一个空闲空间链表（free-space list）。</p><h3 id="位向量（bit-vector）"><a href="#位向量（bit-vector）" class="headerlink" title="位向量（bit vector）"></a>位向量（bit vector）</h3><p>用一个标记位来表示块是否使用。</p><h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>将所有空闲磁盘块用链表连接起来，并将指向第一空闲块的指针保存在磁盘的特殊位置，同时也缓存在内存中。</p><h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>将n个空闲块的地址存在当一个空闲块中。</p><h3 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h3><p>记录第一块的地址和紧跟着第一块的连续的空间块的数量n。</p><h2 id="效率和性能"><a href="#效率和性能" class="headerlink" title="效率和性能"></a>效率和性能</h2><h3 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h3><p>磁盘空间的有效使用主要取决于所使用的磁盘分配和目录管理算法。</p><h3 id="性能-1"><a href="#性能-1" class="headerlink" title="性能"></a>性能</h3><p>有的系统有一块独立内存用作缓冲缓存；有的采用页面缓存（page cache）；有的采用虚拟地址来缓存文件数据（统一虚拟内存（unified virtual memory））；使用双重缓存（double caching）：页面缓存和缓冲缓存。</p><h2 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h2><h3 id="一致性检查（consistency-checker）"><a href="#一致性检查（consistency-checker）" class="headerlink" title="一致性检查（consistency checker）"></a>一致性检查（consistency checker）</h3><p>将目录结构数据与磁盘数据块相比较，并试图纠正所发现的不一致。</p><h3 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h3><p>将数据备份到另一个存储设备，需要的时候只需要从备份中恢复就可以。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 文件系统接口</title>
-      <link href="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/"/>
-      <url>/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/</url>
-      
-        <content type="html"><![CDATA[<h1 id="文件系统接口"><a href="#文件系统接口" class="headerlink" title="文件系统接口"></a>文件系统接口</h1><a id="more"></a><h2 id="文件概念"><a href="#文件概念" class="headerlink" title="文件概念"></a>文件概念</h2><p>文件是记录在外存上的相关信息的具有名称的集合。</p><h3 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h3><p>所有文件的信息都保存在目录结构中。</p><ul><li>名称</li><li>标识符：系统内文件的唯一标签，不可读。</li><li>类型</li><li>位置：指向设备和设备上文件位置的指针。</li><li>大小</li><li>保护</li><li>时间、日期和用户标识：文件创建、上次修改和上次访问的相关信息。<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3>文件是抽象数据类型。主要操作有：</li><li>创建文件</li><li>写文件</li><li>读文件</li><li>在文件内重定位</li><li>删除文件</li><li>截短文件</li></ul><p>每个打开文件有如下相关信息：</p><ul><li>文件指针</li><li>文件打开计数器</li><li>文件磁盘位置</li><li>访问权限</li></ul><p>有的文件提供一个文件锁。例如提供给读者的共享锁（shared lock），提供给写者的专用锁（exclusive lock）。另外操作系统提供强制（mandatory）或建议（advisory）文件加锁机制。</p><h3 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h3><p>文件名称包括两部分：<strong>名称</strong>和<strong>扩展名</strong>。其中扩展名就表明了文件的类型。</p><h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>文件结构也可以用文件类型表示。</p><h3 id="内部文件结构"><a href="#内部文件结构" class="headerlink" title="内部文件结构"></a>内部文件结构</h3><h2 id="访问方法"><a href="#访问方法" class="headerlink" title="访问方法"></a>访问方法</h2><h3 id="顺序访问"><a href="#顺序访问" class="headerlink" title="顺序访问"></a>顺序访问</h3><p>文件信息按顺序，一个记录接着一个记录地加以处理。</p><p>顺序访问基于文件的磁带模型。</p><h3 id="直接访问"><a href="#直接访问" class="headerlink" title="直接访问"></a>直接访问</h3><p>也称相对访问。文件由固定长度地逻辑记录组成，允许程序按任意顺序进行快速读写。文件可作为块或记录的编号序列。因此可以直接读取某个块，在直接读取时，读写顺序是没有限制的。</p><p>直接访问基于文件的磁带模型</p><h3 id="其他访问方式"><a href="#其他访问方式" class="headerlink" title="其他访问方式"></a>其他访问方式</h3><p>其他访问方式基于直接访问方式。通过建立索引，再访问文件。</p><h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><p>磁盘可以整体的用于一个文件系统。但是有时候需要装上多种文件系统。这些部分称为分区或片，也称小型磁盘。这些部分可以组合成一个更大的空间，卷（volume）。文件的信息保存在设备目录或卷表中。</p><h3 id="文件概述"><a href="#文件概述" class="headerlink" title="文件概述"></a>文件概述</h3><p>目录可以看作符号表，它能将文件名称转换成目录条目。</p><p>相关操作：</p><ul><li>搜索文件</li><li>创建文件</li><li>删除文件</li><li>遍历目录</li><li>重命名文件</li><li>跟踪文件系统<h3 id="单层结构目录"><a href="#单层结构目录" class="headerlink" title="单层结构目录"></a>单层结构目录</h3>所有文件都包含在同一目录。特点是便于理解和支持。<h3 id="双层结构目录"><a href="#双层结构目录" class="headerlink" title="双层结构目录"></a>双层结构目录</h3>在双层结构目录中，每个用户都有自己的用户文件目录（user file directory，UFD）。当一个用户作业开始执行或一个用户注册是，就搜索系统的主文件目录（master file directory，MFD）。<h3 id="树状结构目录"><a href="#树状结构目录" class="headerlink" title="树状结构目录"></a>树状结构目录</h3>对前面的推广，用户又创建自己的子目录。这时就有了路径：绝对路径和相对路径。绝对路径从根开始并给出路径上的目录名。相对路径从当前目录开始定义路径。<h3 id="无环图目录"><a href="#无环图目录" class="headerlink" title="无环图目录"></a>无环图目录</h3>共享子目录或文件可同时位于文件系统的两（或多）处。</li></ul><p>树状图禁止共享文件和目录，而无环图（acyclic graph）可以</p><h3 id="通用图目录"><a href="#通用图目录" class="headerlink" title="通用图目录"></a>通用图目录</h3><p>无环的优点是可以用简单的算法遍历图，并确定是否存在文件引用。建立通用的图原因时性能原因。</p><h2 id="文件系统安装"><a href="#文件系统安装" class="headerlink" title="文件系统安装"></a>文件系统安装</h2><p>文件系统在使用之前必须安装（mount）。安装的时候需要一个安装点（mount point），通常为空目录。</p><h2 id="文件共享"><a href="#文件共享" class="headerlink" title="文件共享"></a>文件共享</h2><h3 id="多用户"><a href="#多用户" class="headerlink" title="多用户"></a>多用户</h3><p>当一个操作系统有多个用户时，对于允许用户共享文件的目录结构，系统必须控制文件共享。</p><h3 id="远程文件系统"><a href="#远程文件系统" class="headerlink" title="远程文件系统"></a>远程文件系统</h3><p>在网络上的文件系统有三种实现方式：一时用户通过程序可实现在机器之间进行文件的人工传输（允许匿名访问）。二是用分布式文件系统（DFS），远程目录可从本机上直接访问。三是通过万维网的网站进行访问（和第一种类似）。</p><h4 id="客户机-服务器模型"><a href="#客户机-服务器模型" class="headerlink" title="客户机-服务器模型"></a>客户机-服务器模型</h4><p>远程文件系统允许一台计算机安装一台或多台远程机器上的一个或多个文件系统。这种情况下，包含文件的机器称为服务器，访问文件的称为客户机。客户机可通过网络访问，但是可能被欺骗。未经验证的客户机可能欺骗服务器进入服务器。</p><h4 id="分布式信息系统"><a href="#分布式信息系统" class="headerlink" title="分布式信息系统"></a>分布式信息系统</h4><p>也成为分布式命名服务，用来体统用于远程计算所需的信息的统一访问。域名系统（DNS）为网络提供了主机名称到网络地址的转换。</p><h4 id="故障模式"><a href="#故障模式" class="headerlink" title="故障模式"></a>故障模式</h4><p>本地文件系统可能因各种原因出错如元素据（metadata）的损坏、磁盘控制器故障等。</p><h3 id="一致性语义（consistency-semantics）"><a href="#一致性语义（consistency-semantics）" class="headerlink" title="一致性语义（consistency semantics）"></a>一致性语义（consistency semantics）</h3><p>评估文件系统对文件共享支持的一个重要准则。它是描述多用户同时访问共享文件时的语义，规定了一个用户所修改的数据何时对另一个用户可见。</p><h2 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h2><p>保证数据不受物理损坏和非法访问。</p><h3 id="访问类型"><a href="#访问类型" class="headerlink" title="访问类型"></a>访问类型</h3><p>控制访问（controlled access）有以下几种类型：</p><ul><li>读</li><li>写</li><li>执行</li><li>添加：将新信息添加到文件结尾部分</li><li>删除</li><li>列表清单：列出文件名称及其属性<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3>根据用户的身份来控制。所以可以增加一个访问控制列表（access-control list，ACL），给每个用户名设定所允许的访问类型。</li></ul><p>通常设定三个用户类型：</p><ul><li>拥有者</li><li>组：一组需要共享文件且有类似访问的用户形成同一组用户组。</li><li>其他<h3 id="其他保护方式"><a href="#其他保护方式" class="headerlink" title="其他保护方式"></a>其他保护方式</h3>给文件加上密码。</li></ul>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 死锁</title>
-      <link href="/2020/01/06/os%E6%AD%BB%E9%94%81/"/>
-      <url>/2020/01/06/os%E6%AD%BB%E9%94%81/</url>
-      
-        <content type="html"><![CDATA[<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为<strong>死锁（deadlock）</strong>。</p><a id="more"></a><h2 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h2><p>进程在使用资源前必须申请资源，在使用资源之后必须释放资源。在正常操作模式下，进程只能按如下顺序使用资源：</p><ol><li>申请：如果申请不被允许，那么进程必须等待，直到它获得该资源为止。</li><li>使用：对资源进行操作。</li><li>释放：使用完后释放资源。</li></ol><p>资源的申请与释放为系统调用。</p><h2 id="死锁特征"><a href="#死锁特征" class="headerlink" title="死锁特征"></a>死锁特征</h2><h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><ol><li><strong>互斥</strong>：至少有一个资源一次只有一个进程可以使用。</li><li><strong>占有并等待</strong>：一个进程必须占有至少一个资源并等待另一个资源，而该资源为其他进程占有。</li><li><strong>非抢占</strong>：资源不能被抢占</li><li><strong>循环等待</strong>：有一组等待进程{P₀，P₁，…，Pn}，P₀等待的资源为P₁所占有，P₁等待的资源为P₂所占有，…，Pn-1等待的资源为Pn所占有，Pn等待的资源为P₀所占有。</li></ol><p>必须这四个条件同时出现才会出现死锁。</p><h3 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h3><p>P-&gt;R为申请边，R-&gt;P为分配边。</p><p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%811.jpg" alt="资源分配图" title="资源分配图"></p><h3 id="死锁处理方法"><a href="#死锁处理方法" class="headerlink" title="死锁处理方法"></a>死锁处理方法</h3><p>从原理上来说有三种：</p><blockquote><ol><li>可使用协议以预防或避免死锁，确保系统不会进入死锁状态。</li><li>可允许系统进入死锁状态，然后检测它，并加以恢复。</li><li>可忽视这个问题，认为死锁不可能在系统内发生。</li></ol></blockquote><h4 id="采用死锁预防（deadlock-prevention）的方案"><a href="#采用死锁预防（deadlock-prevention）的方案" class="headerlink" title="采用死锁预防（deadlock prevention）的方案"></a>采用死锁预防（deadlock prevention）的方案</h4><p>确保至少一个必要条件（互斥、占有并等待、非抢占和循环等待）不成立。</p><h4 id="采用死锁避免（deadlock-avoidance）的方案"><a href="#采用死锁避免（deadlock-avoidance）的方案" class="headerlink" title="采用死锁避免（deadlock avoidance）的方案"></a>采用死锁避免（deadlock avoidance）的方案</h4><p>事先得到有关进程申请资源和使用资源的额外信息。然后确定该进程是否应该等待，是允许申请还是延迟。</p><h2 id="死锁避免（deadlock-avoidance）"><a href="#死锁避免（deadlock-avoidance）" class="headerlink" title="死锁避免（deadlock avoidance）"></a>死锁避免（deadlock avoidance）</h2><h3 id="安全状态"><a href="#安全状态" class="headerlink" title="安全状态"></a>安全状态</h3><p>如果系统能按某个顺序为每个进程分配资源并能避免死锁，那么系统状态就是安全的。即如果存在一个安全序列，那么系统处于安全状态。</p><h3 id="资源分配图算法"><a href="#资源分配图算法" class="headerlink" title="资源分配图算法"></a>资源分配图算法</h3><p>除了申请边和分配边外，引入需求边。假设进程i申请资源j。只有在将申请边i-&gt;j变成分配边j-&gt;i而不会导致资源分配图形成环时，才允许申请。</p><h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><p>资源分配图算法不适合于每种资源类型有多个实例的资源分配系统。在银行家算法中，如果客户的需求不能满足，银行决不会分配其现金。<br>死锁避免的资源分配图</p><p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%812.jpg" alt="死锁避免的资源分配图" title="死锁避免的资源分配图"></p><p>资源分配图的不安全状态</p><p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%813.jpg" alt="资源分配图的不安全状态" title="资源分配图的不安全状态"></p><p>所需数据结构：</p><blockquote><ul><li><strong>Availabe</strong>：长度为m的向量，表示每种资源的现有实例的数量。</li><li><strong>Max</strong>：n*m矩阵，定义每个进程的最大需求。</li><li><strong>Allocation</strong>：n*m矩阵，定义每个进程现在所分配的各种资源类型的实例数量。</li><li><strong>Need</strong>：n*m矩阵，表示每个进程还需要的剩余的资源。</li></ul></blockquote><h4 id="安全性算法"><a href="#安全性算法" class="headerlink" title="安全性算法"></a>安全性算法</h4><p>步骤：</p><p>1.设work和finish分别为长度m和n的向量。work=available，finish[0,…,n-1]=false。</p><p>2.查找这样的i使其满足</p><blockquote><ol><li>finish[i]=false</li><li>need[i]≤work</li></ol></blockquote><p>如果没有就跳转到第4步。</p><p>3.work=work+allocation[i];finish[i]=true<br>返回到第2步</p><p>4.如果对所有i，finish[i]=true，那么系统处于安全状态。</p><h4 id="资源请求算法"><a href="#资源请求算法" class="headerlink" title="资源请求算法"></a>资源请求算法</h4><p>request[i]为进程P[i]的请求向量。request[j]==k表示进程P[i]需要资源类型为j的实例数量为k。步骤：</p><ol><li>如果request[i]≤need[i]，那么调转到第2步。否则报错：进程所需资源超过最大请求。</li><li>如果request[i]≤available,那么跳转到第3步。否则报错：进程所需资源超过现有资源。</li><li>分配资源：<blockquote><ol><li>available=available-request[i];</li><li>allocation[i]=allocation[i]+request[i];</li><li>need[i]=need[i]-request[i];</li></ol></blockquote></li></ol><h2 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h2><p>系统提供：</p><ul><li>一个用来检查系统状态从而确定是否出现了死锁的算法</li><li>一个用来从死锁状态中恢复的算法<h3 id="每个资源类型只有单个实例"><a href="#每个资源类型只有单个实例" class="headerlink" title="每个资源类型只有单个实例"></a>每个资源类型只有单个实例</h3>如果每个资源类型只有单个实例，那就删除所有资源实例就能得到一个等待图（wait-for）。只要图中没有环就不会出现死锁。<h3 id="每种资源类型可有多个实例"><a href="#每种资源类型可有多个实例" class="headerlink" title="每种资源类型可有多个实例"></a>每种资源类型可有多个实例</h3>和银行家算法中的安全性算法相同。<h3 id="应用检测算法"><a href="#应用检测算法" class="headerlink" title="应用检测算法"></a>应用检测算法</h3>当经常发生死锁时，就应经常调用应用检测算法。但经常调用应用检测算法会增加开销。<h2 id="死锁恢复"><a href="#死锁恢复" class="headerlink" title="死锁恢复"></a>死锁恢复</h2><h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3>两种终止方法：</li><li>终止所有死锁进程。代价较高。</li><li>一次只终止一个进程直到取消死锁循环为止。开销较大。<h3 id="资源抢占"><a href="#资源抢占" class="headerlink" title="资源抢占"></a>资源抢占</h3>通过逐步从其他进程中抢占资源直到死锁打破。但是也有问题：</li></ul><ol><li>选择一个牺牲品</li><li>回滚：被抢占资源的进程回到一个安全的状态</li><li>饥饿：保证每次被抢占的不是同一个进程</li></ol>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS 进程同步</title>
-      <link href="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/"/>
-      <url>/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
-      
-        <content type="html"><![CDATA[<h1 id="OS-进程同步"><a href="#OS-进程同步" class="headerlink" title="OS 进程同步"></a>OS 进程同步</h1><p>多个进程对同一数据处理且执行结果与访问顺序有关，称为竞争条件（race condition）。这就是<strong>进程同步（process synchronization）</strong>和<strong>协调（coordination）</strong>问题。</p><a id="more"></a><h2 id="临界区问题（critical-section-problem）"><a href="#临界区问题（critical-section-problem）" class="headerlink" title="临界区问题（critical-section problem）"></a>临界区问题（critical-section problem）</h2><ul><li><p><strong>临界区（critical section）</strong>可能改变共同变量、更新一个表、写一个文件等的代码段。</p></li><li><p><strong>进入区（entry section）</strong>每个进程请求允许进入临界区的代码段</p></li><li><p><strong>退出区（exit section）</strong>退出临界区的代码段</p></li><li><p><strong>剩余区（remainder section）</strong>其他代码段</p><h3 id="临界区问题的解答的三个要求"><a href="#临界区问题的解答的三个要求" class="headerlink" title="临界区问题的解答的三个要求"></a>临界区问题的解答的三个要求</h3></li><li><p>互斥（mutual exclusion）</p><blockquote><ul><li>如果有进程在临界区执行，其他进程就不能进入。</li></ul></blockquote></li><li><p>前进（progress）</p><blockquote><ul><li>如果没有进程在其临界区执行，且有进程需要进入临界区，那么只有那些不在剩余区内执行的进程可参加选择确定下一个进入临界区的程序，且这个过程不能无限推迟。</li></ul></blockquote></li><li><p>有限等待（bounded waiting）</p><blockquote><ul><li>从一个进程做出进入临界区的请求直到该请求允许为止，其他进程允许进入其临界区的次数有上限。</li></ul></blockquote></li></ul><h4 id="两种用于处理操作系统内临界区问题的方法"><a href="#两种用于处理操作系统内临界区问题的方法" class="headerlink" title="两种用于处理操作系统内临界区问题的方法"></a>两种用于处理操作系统内临界区问题的方法</h4><p>抢占内核（preemptive kernel）<br>允许处于内核模式的进程被抢占</p><p>非抢占内核（nonpreemtive kernel）<br>不允许处于内核模式的进程被抢占</p><h2 id="Peterson算法"><a href="#Peterson算法" class="headerlink" title="Peterson算法"></a>Peterson算法</h2><p>这是一个经典的基于软件的临界区问题的解答</p><p>算法在两个进程之间共享两个数据项</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> turn;<span class="comment">//表示哪个进程可以进入其临界区</span></span><br><span class="line"><span class="keyword">bool</span> flag[<span class="number">2</span>];<span class="comment">//表示哪个进程想要进入临界区</span></span><br></pre></td></tr></table></figure><p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A51.jpg" alt="Peterson算法中的进程P的结构" title="Peterson算法中的进程P的结构"></p><h2 id="硬件同步"><a href="#硬件同步" class="headerlink" title="硬件同步"></a>硬件同步</h2><p>用一个锁来实现同步。即一个进程在进入临界区之前必须得到锁，而在其退出临界区时释放锁。</p><p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A52.jpg" alt="采用锁的临界区问题的解答" title="采用锁的临界区问题的解答"></p><p>在单处理器上这个问题可以简单的解决（在修改共享变量时禁止中断出现）。但是在多处理器上不可行。于世界提供了特殊迎接指令以允许能够原子地（不可中断地）检查和修改字的内容或交换两个字的内容。</p><p>使用TestAndSet()的有限等待互斥示例：</p><p>公用数据结构</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bool waiting[n];</span><br><span class="line">bool lock;</span><br></pre></td></tr></table></figure><p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A53.jpg" alt="使用TestAndSet的有限等待互斥" title="使用TestAndSet的有限等待互斥"></p><h2 id="信号量（semaphore）"><a href="#信号量（semaphore）" class="headerlink" title="信号量（semaphore）"></a>信号量（semaphore）</h2><p>通过两个标准原子操作：<strong>wait()</strong>（P（proberen，测试））和<strong>signal()</strong>（V（verhogen，增加））来访问。</p><p>wait()的定义</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wait(S)&#123;</span><br><span class="line">    <span class="keyword">while</span>(S&lt;=<span class="number">0</span>)</span><br><span class="line">    ;<span class="comment">//no-op</span></span><br><span class="line">    S--</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>signal()的定义</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">signal(S)&#123;</span><br><span class="line">    S++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>计数信号量的值域不受限制，而二进制信号量的值只能为0或1。有的系统将二进制信号量成为互斥锁。</p><p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A54.jpg" alt="使用信号量的互斥实现" title="使用信号量的互斥实现"></p><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>信号量的主要缺点是——都要求忙等待（busy waiting）。这种连续地循环地方式也称为自旋锁（spinlock）。</p><p>为了解决忙等可以修改信号量操作wait()和signal()的定义。当执行wait()操作时如果发现信号量值不为正，则阻塞自己，这个阻塞操作将进程放入到于信号量相关的等待队列中，并将该进程的状态切换成等待状态。然后在其它进程执行signal()操作后使用wakeup()操作来进行重新执行。</p><p>这里将信号量定义为以下结构</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">process</span> *<span class="title">list</span>;</span><span class="comment">//可以使用进程控制块中的一个链接域来实现</span></span><br><span class="line">&#125; semaphore;</span><br></pre></td></tr></table></figure><p>wait()</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wait(semaphore *S)&#123;</span><br><span class="line">    S-&gt;value--;</span><br><span class="line">    <span class="keyword">if</span> (S-&gt;value &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        add <span class="keyword">this</span> process to S-&gt;<span class="built_in">list</span>;</span><br><span class="line">        block();<span class="comment">//用block()挂起进程P</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>signal()</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">signal(semaphore *S)&#123;</span><br><span class="line">    S-&gt;value++;</span><br><span class="line">    <span class="keyword">if</span> (S-&gt;value &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        remove a process from S-&gt;<span class="built_in">list</span>;</span><br><span class="line">        wakeup(P);<span class="comment">//用wakeup(P)重新启动进程P</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>在SMP系统必须提供其他加锁技术，以确保两个操作可以原子地执行。在这里的wait()和signal()并没有完全取消忙等，是取消了进入临界区的忙等，而且将忙等限制在临界区内。</p><h3 id="死锁（deadlock）和饥饿（starvation）"><a href="#死锁（deadlock）和饥饿（starvation）" class="headerlink" title="死锁（deadlock）和饥饿（starvation）"></a>死锁（deadlock）和饥饿（starvation）</h3><p>当两个或多个进程无限的等待一个事件，而这个事件只能由这些进程产生，这些进程就称为死锁。与之相关的问题是无限期阻塞（indefinite blocking）和饥饿（starvation）。</p><h2 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h2><p>采用信号量作为同步问题的解答。</p><h3 id="有限缓冲问题（生产者消费者问题）"><a href="#有限缓冲问题（生产者消费者问题）" class="headerlink" title="有限缓冲问题（生产者消费者问题）"></a>有限缓冲问题（生产者消费者问题）</h3><p>假定缓冲池有n个缓冲项，每个缓冲项能存一个数据项。信号量mutex提供了对缓冲池访问的扶持要求，并初始化为1。信号量empty和full分别用来表示空缓冲项和满缓冲项的个数。信号量empty初始化为n；full初始化为0。</p><p>生产者进程结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//produce an item nextp</span></span><br><span class="line">    ...</span><br><span class="line">    wait(empty);</span><br><span class="line">    wait(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//add nextp to buffer</span></span><br><span class="line">    ...</span><br><span class="line">    signal(mutex);</span><br><span class="line">    signal(full);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure><p>消费者进程结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(full);</span><br><span class="line">    wait(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//remove an item from buffer to nextc</span></span><br><span class="line">    ...</span><br><span class="line">    signal(mutex);</span><br><span class="line">    signal(empty);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//consume an item in nextc</span></span><br><span class="line">    ...</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure><h3 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h3><p>一个数据库可以为多个并发进程所共享。大致可分为读者（只需要读数据库）写者（可能要更新数据库）。第一读者-写者问题：读者优先；第二读者-写者问题：写者优先。它们都会造成饥饿问题。这里演示第一读者-写者问题：</p><p>数据结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">semaphore mutex,wrt;<span class="comment">//wrt为读者和写者共用（写者互斥），mutex确保互斥</span></span><br><span class="line"><span class="keyword">int</span> readcount;<span class="comment">//读者的计数</span></span><br></pre></td></tr></table></figure><p>写者进程结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(wrt);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//writing is performed</span></span><br><span class="line">    ...</span><br><span class="line">    signal(wrt);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure><p>读者进程结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(mutex);<span class="comment">//需要保证if语句块中的代码能够执行，下同</span></span><br><span class="line">    readcount++;</span><br><span class="line">    <span class="keyword">if</span>( readcount == <span class="number">1</span>)</span><br><span class="line">        wait(wrt);<span class="comment">//一旦有读者，就和写者就无法进入</span></span><br><span class="line">    signal(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//reading is performed</span></span><br><span class="line">    ...</span><br><span class="line">    wait(mutex);</span><br><span class="line">    readcount--;</span><br><span class="line">    <span class="keyword">if</span>( readcount == <span class="number">0</span>)</span><br><span class="line">        signal(wrt);<span class="comment">//所有读者都读完后唤醒写者</span></span><br><span class="line">    signal(mutex);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure><p>这种问题在一下场景适合</p><blockquote><ul><li>当可以区分进程是读还是写数据</li><li>读者进程比写者进程多时（第一读者-写者问题）</li></ul></blockquote><h3 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h3><p>n哲学家进餐问题描述有五个哲学家，他们的生活方式是交替地进行思考和进餐，n哲学家们共用一张圆桌，分别坐在周围的五张椅子上，在圆桌上有五个碗和五支筷子，n平时哲学家进行思考，饥饿时便试图取其左、右最靠近他的筷子，只有在他拿到两支筷子时才能进餐，n进餐完毕，放下筷子又继续思考。</p><h4 id="第一种解法——每只筷子都用一个信号量来表示（会造成死锁）"><a href="#第一种解法——每只筷子都用一个信号量来表示（会造成死锁）" class="headerlink" title="第一种解法——每只筷子都用一个信号量来表示（会造成死锁）"></a>第一种解法——每只筷子都用一个信号量来表示（会造成死锁）</h4><p>共享数据：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">semaphore chopstick[<span class="number">5</span>];</span><br></pre></td></tr></table></figure><p>哲学家i的结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(chopstick[i]);</span><br><span class="line">    wait(chopstick[i+<span class="number">1</span>]%<span class="number">5</span>);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//eat</span></span><br><span class="line">    ...</span><br><span class="line">    signal(chopstick[i]);</span><br><span class="line">    signal(chopstick[i+<span class="number">1</span>]%<span class="number">5</span>);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//think</span></span><br><span class="line">    ...</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure><p>但是这种解答会造成死锁。</p><p>解决方法：</p><blockquote><p>1.最多只允许4个哲学家同时坐在位子上</p></blockquote><blockquote><p>2.只有两支筷子都可用时才允许一个哲学家拿起它们</p></blockquote><blockquote><p>3.使用非对称解决方法，即奇数哲学家先拿起左边的筷子，偶数哲学家先拿起右边的筷子</p></blockquote><h4 id="使用管程解决"><a href="#使用管程解决" class="headerlink" title="使用管程解决"></a>使用管程解决</h4><p>数据结构和算法：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">monitor dp</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> &#123; THINKING, HUNGRY, EATING &#125; state[<span class="number">5</span>];</span><br><span class="line">    condition self[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">pickup</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;<span class="comment">//拿起筷子的动作</span></span><br><span class="line">        state[i] = HUNGRY;</span><br><span class="line">        test(i);</span><br><span class="line">        <span class="keyword">if</span>(state[i] != EATING)</span><br><span class="line">            self[i].wait();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">putdown</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;<span class="comment">//放下筷子</span></span><br><span class="line">        state[i] = THINKING;</span><br><span class="line">        test((i+<span class="number">4</span>)%<span class="number">5</span>);</span><br><span class="line">        test((i+<span class="number">1</span>)%<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((state[(i+<span class="number">4</span>)%<span class="number">5</span>] != EATING))&amp;&amp;<span class="comment">//左边的筷子没有使用</span></span><br><span class="line">            (state[i] == HUNGRY)&amp;&amp;<span class="comment">//处于饥饿状态</span></span><br><span class="line">            (state[(i+<span class="number">1</span>)%<span class="number">5</span>] != EATING)&#123;<span class="comment">//右边的筷子没有使用</span></span><br><span class="line">                state[i] = EATING;</span><br><span class="line">                self[i].signal();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initialization_code()&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>;i++)</span><br><span class="line">            state[i] = THINKING;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>哲学家i的结构：</p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dp.pickup(i);</span><br><span class="line">...</span><br><span class="line">eat</span><br><span class="line">...</span><br><span class="line">dp.putdown(i);</span><br></pre></td></tr></table></figure><h2 id="管程（monitor）"><a href="#管程（monitor）" class="headerlink" title="管程（monitor）"></a>管程（monitor）</h2><p>为了防止由于编程等错误导致的wait()和signal()的位置调换或缺失，我们使用类型或抽象数据类型，封装了私有数据类型及操作数据的公有方法。管程结构确保一次只有一个进程能在管程内活动。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>OS CPU调度</title>
-      <link href="/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/"/>
-      <url>/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/</url>
-      
-        <content type="html"><![CDATA[<h1 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h1><a id="more"></a><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>多道程序的目标是在任何时候都有某些进程在运行，使CPU使用率最大化。当一个进程执行到等待的时候，操作系统就拿走CPU使用权交给其他就绪的进程。</p><h3 id="CPU-I-O区间周期"><a href="#CPU-I-O区间周期" class="headerlink" title="CPU-I/O区间周期"></a>CPU-I/O区间周期</h3><p>进程执行从<strong>CPU区间（CPU burst）</strong>开始，之后使<strong>I/O区间（I/O burst）</strong>，接着使另一个CPU区间，然后使另一个I/O区间，以此循环，最终在最后的CPU区间通过系统请求终止执行。I/O约束程序通常具有很多短CPU区间；CPU约束程序可能有少量的长CPU区间。</p><h3 id="CPU调度程序"><a href="#CPU调度程序" class="headerlink" title="CPU调度程序"></a>CPU调度程序</h3><p>CPU空闲时，操作系统就会从就绪队列中选择一个进程来执行。这个操作通常由<strong>短期调度程序（short-term scheduler）</strong>或CPU调度程序执行。</p><h3 id="抢占调度"><a href="#抢占调度" class="headerlink" title="抢占调度"></a>抢占调度</h3><p>CPU调度决策在如下4种环境发生：</p><blockquote><ul><li>1.当一个进程从运行状态切换到等待状态</li><li>2.当一个进程从运行状态切换到就绪状态</li><li>2.当一个进程从等待状态切换到就绪状态</li><li>3.当一个进程终止</li></ul></blockquote><p>当调度只能发生在第1和第4两种情况下时，称调度方案是<strong>非抢占的（nonpreemptive）</strong>或<strong>协作的（cooperative）</strong>；否则，称调度方案是<strong>抢占的（preemptive）</strong>。抢占调度对访问共享数据是有代价的，同时对内核设计也有影响。</p><h3 id="分派程序（dispatcher）"><a href="#分派程序（dispatcher）" class="headerlink" title="分派程序（dispatcher）"></a>分派程序（dispatcher）</h3><p>功能：</p><blockquote><ul><li>切换上下文</li><li>切换到用户模式</li><li>跳转到用户程序的合适位置，以重新启动程序</li></ul></blockquote><p>分配程序停止一个进程而启动另一个所要花费的时间称为分派延迟（dispatch latency）。</p><h2 id="调度准则"><a href="#调度准则" class="headerlink" title="调度准则"></a>调度准则</h2><ul><li><p>CPU使用率</p></li><li><p>吞吐量</p><blockquote><p>单位时间内所完成进程的数量</p></blockquote></li><li><p>周转时间</p><blockquote><p>从进程提交到进程完成的时间段称为周转时间</p></blockquote></li><li><p>等待时间</p><blockquote><p>在就绪队列中等待所花费的时间之和</p></blockquote></li><li><p>响应时间</p><blockquote><p>从进程提交到产生第一次响应的时间。</p></blockquote><h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h2></li><li><p><em>Gantt图*</em>通过条状图来显示项目，进度和其他时间相关的系统进展的内在关系随着时间进展的情况。</p><h3 id="先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）"><a href="#先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）" class="headerlink" title="先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）"></a>先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）</h3><p>先请求CPU的进程先分配到CPU。该策略可以用FIFO队列来容易地实现。</p></li></ul><p>优点：</p><blockquote><ul><li>代码编写简单且容易理解</li></ul></blockquote><p>缺点：</p><blockquote><ul><li>平均等待时间通常较长</li><li>容易产生护航效果（convoy effect）（所有其他进程都等待一个大进程释放CPU）</li></ul></blockquote><p>FCFS调度算法是非抢占式的。</p><h3 id="最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）"><a href="#最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）" class="headerlink" title="最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）"></a>最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）</h3><p>当CPU空闲时，它会赋给具有最短CPU区间的进程。如果两个进程有同样的长度，那么就可以使用FCFS调度来处理。通常用于长期调度。</p><p>优点：</p><blockquote><ul><li>平均等待时间最短</li></ul></blockquote><p>缺点：</p><blockquote><ul><li>需要知道下一个CPU区间的长度</li><li>不能再短期CPU调度层次上加以实现。</li></ul></blockquote><p><strong>近似SJF调度</strong>：<br>下一个CPU区间预测为以前CPU区间的测量长度的指数平均。</p><p>SJF调度算法可以时抢占或非抢占的。</p><p>抢占式SJF算法又称为<strong>最短剩余时间优先调度（shortest-remaining-time-first scheduling）</strong>：当一个新进程如果到达就绪队列且它的CPU区间更短，就抢占当前进程。</p><p>非抢占式允许当前运行的进程先完成其CPU区间。</p><h3 id="优先级调度（priority-scheduling-algorithm）"><a href="#优先级调度（priority-scheduling-algorithm）" class="headerlink" title="优先级调度（priority scheduling algorithm）"></a>优先级调度（priority scheduling algorithm）</h3><p>每个进程都有一个优先级与其相关联，具有最高优先级的进程会分配到CPU。具有相同优先级的按FCFS调度来处理。优先级可以通过内部或外部方式来定义。内部定义优先级使用一些测量数据（时间极限、内存要求、打开文件的数量和平均I/O区间与平均CPU区间之比）以计算进程优先级。外部优先级是通过操作系统外的准则（进程重要性、用于支付使用计算机的费用类型等）来定义的。</p><p>优先级调度可以说抢占式或非抢占式。</p><p>缺点：</p><blockquote><ul><li>会出现<strong>无穷阻塞（indefinite blocking）</strong>或<strong>饥饿（starvation）</strong>（指可以运行但是缺乏CPU的进程）</li></ul></blockquote><p>通过老化（aging，随着时间的增加增加优先级）可以解决阻塞问题。</p><h3 id="轮转法调度（round-robin，RR）"><a href="#轮转法调度（round-robin，RR）" class="headerlink" title="轮转法调度（round-robin，RR）"></a>轮转法调度（round-robin，RR）</h3><p>专门为分时系统设计。它类似于FCFS调度，但是增加了抢占切换进程。定义一个较小时间单元（时间片）为进程的CPU区间。若进程运行了一个时间片的时间还没有停止就被抢占，而CPU交给下一个进程。</p><p>缺点：</p><blockquote><ul><li>时间片太短会导致CPU效率降低，时间片太长RR调度也就变成了FCFS调度。</li></ul></blockquote><h3 id="多级队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级队列调度（multilevel queue scheduling algorithm）"></a>多级队列调度（multilevel queue scheduling algorithm）</h3><p>将进程分成不同的组，例如，前台（交互）进程和后台（批处理）进程。然后根据进程的属性（内存大小、进程优先级、进程类型），一个进程被永久的分配到一个队列。每个队列有自己的调度算法。另外，队列之间也有调度，通常采用固定优先级抢占调度，通常采用固定优先级抢占调度。</p><h3 id="多级反馈队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级反馈队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级反馈队列调度（multilevel queue scheduling algorithm）"></a>多级反馈队列调度（multilevel queue scheduling algorithm）</h3><p>为了解决多级队列调度不够灵活的问题，避免出现饥饿的发生，多级反馈队列调度允许进程在队列之间移动。通常是根据不同CPU区间的特点以区分进程。它通多下列参数来定义：</p><blockquote><ul><li>队列数量</li><li>每个队列的调度算法</li><li>用以确定何时升级到更高优先级队列的方法</li><li>用以确定何时降级到更低优先级队列的方法</li><li>用以确定进程在需要服务时应进入哪个队列的方法</li></ul></blockquote><p>缺点：</p><blockquote><ul><li>过于复杂</li></ul></blockquote><h2 id="多处理器调度"><a href="#多处理器调度" class="headerlink" title="多处理器调度"></a>多处理器调度</h2><p>如果有多个处理器，则负载分配（loading sharing）成为可能。</p><h3 id="多处理器调度的方法"><a href="#多处理器调度的方法" class="headerlink" title="多处理器调度的方法"></a>多处理器调度的方法</h3><h4 id="非对称多处理器（asymmetric-multiprocessing）"><a href="#非对称多处理器（asymmetric-multiprocessing）" class="headerlink" title="非对称多处理器（asymmetric multiprocessing）"></a>非对称多处理器（asymmetric multiprocessing）</h4><p>让一个处理器处理所有的调度决定、I/O处理以及其他的系统活动，其他的处理器只执行用户代码。</p><h4 id="对称多处理器（symmetric-multiproccessing，SMP）"><a href="#对称多处理器（symmetric-multiproccessing，SMP）" class="headerlink" title="对称多处理器（symmetric multiproccessing，SMP）"></a>对称多处理器（symmetric multiproccessing，SMP）</h4><p>每个处理器自我调度。所有进程可能处于一个共同的就绪队列中，或每个处理器都有它自己私有的就绪进程队列。</p><h3 id="处理器亲和性"><a href="#处理器亲和性" class="headerlink" title="处理器亲和性"></a>处理器亲和性</h3><p>努力使一个进程在同一个处理器上运行。不能做到保证叫做软亲和性（soft affinity），允许进程指定它不移植到其他处理器叫做硬亲和性（hard affinity）</p><h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h2 id="算法评估"><a href="#算法评估" class="headerlink" title="算法评估"></a>算法评估</h2><blockquote><ul><li>最大化CPU使用率，同时要求最大响应时间为1s</li><li>最大化吞吐量</li></ul></blockquote><h3 id="确定模型（deterministic-modeling）"><a href="#确定模型（deterministic-modeling）" class="headerlink" title="确定模型（deterministic modeling）"></a>确定模型（deterministic modeling）</h3><p>分析评估发（analytic evaluation），使用给定算法和系统负荷，产生公式或数字，以评估对于该负荷算法的性能。确定模型法使其中一种。主要比较平均等待时间。</p><h3 id="排队模型"><a href="#排队模型" class="headerlink" title="排队模型"></a>排队模型</h3><p>用到达率和服务率计算使用率、平均队列长度、平均等待时间，成为排队网络分析（queueing-network analysis）。</p><p><strong>Little公式</strong>：<br>设n为平均队列长度，W为队列的平均等待时间，λ为新进程到达队列的平均到达率。有</p><center>n=λ*W</center><h3 id="模拟（simulation）"><a href="#模拟（simulation）" class="headerlink" title="模拟（simulation）"></a>模拟（simulation）</h3><p>对计算机系统建模。用软件数据表示系统的主要组成部分。用一个变量的改变反映设备、进程、和调度程序的活动。</p><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最精确的办法就是实现代码将其放到操作系统内，并观测它如何工作，在真是操作系统内进行评估。</p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> OS </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-  
-  
+<search>
+  <entry>
+    <title>Python爬虫（五）——Beautiful Soup库</title>
+    <url>/2020/02/02/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Beautiful-Soup%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="Python爬虫（五）——Beautiful-Soup库"><a href="#Python爬虫（五）——Beautiful-Soup库" class="headerlink" title="Python爬虫（五）——Beautiful Soup库"></a>Python爬虫（五）——<a href="https://www.crummy.com/software/BeautifulSoup/" target="_blank" rel="noopener" title="Beautiful Soup简介">Beautiful Soup</a>库</h1><a id="more"></a>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><ul>
+<li><ol>
+<li>打开命令提示符</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>输入<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install beautifulsoup4</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>测试界面：</p>
+<blockquote>
+<p><a href="http://python123.io/ws/demo.html" target="_blank" rel="noopener">http://python123.io/ws/demo.html</a></p>
+</blockquote>
+<ul>
+<li>首先查看网页源代码（打开页面CTRL+U）</li>
+<li>然后打开IDLE，输入以下代码：<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://python123.io/ws/demo.html"</span>)</span><br><span class="line">r.text</span><br><span class="line">demo = r.text</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup <span class="comment">#Beautiful Soup库的缩写为bs4</span></span><br><span class="line">soup = BeautifulSoup(demo , <span class="string">"html.parser"</span>)<span class="comment">#这里需要一个解释器使用的是html的解释器</span></span><br><span class="line">print(soup.prettify()) <span class="comment">#如果出现之前看到的网页源代码即为安装成功</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>使用方法总结：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line">soup = BeautifulSoup(<span class="string">'&lt;p&gt;data&lt;/p&gt;'</span>,<span class="string">'html.parser'</span>) <span class="comment">#第一个参数是我们需要解析的HTML代码</span></span><br><span class="line">soup2 = BeautifulSoup(open(<span class="string">"D://demo.html"</span>),<span class="string">'html.parser'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>Beautiful Soup库是解析、遍历、维护“标签树”的功能库。</p>
+<h3 id="解析器"><a href="#解析器" class="headerlink" title="解析器"></a>解析器</h3><ul>
+<li>bs4的HTML解析器:html.parser 需要安装bs4库</li>
+<li>lxml的HTML解析器:lxml 需要安装lxml<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install lxml</span><br></pre></td></tr></table></figure></li>
+<li>lxml的HTML解析器:xml 需要安装lxml</li>
+<li>html5lib的解析器:html5lib 需要安装html5lib<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install html5lib</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="基本元素"><a href="#基本元素" class="headerlink" title="基本元素"></a>基本元素</h2><ul>
+<li>Tag 标签，最基本的信息组织单元，分别用&lt;&gt;和&lt;/&gt;标明开头和结尾。用.<tag>的方式获得</tag></li>
+<li>Name 标签的名字，格式：<tag>.name</tag></li>
+<li>Attributes 标签的属性，字典形式组织，格式：<tag>.attrs</tag></li>
+<li>NavigableString 标签内非属性字符，格式：<tag>.string</tag></li>
+<li>Comment 标签内字符串的注释部分，一种特殊的Comment类型</li>
+</ul>
+<p>可以用前面的demo来展示，在IDLE中输入：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">soup.title</span><br><span class="line">soup.a</span><br><span class="line">tag = soup.a</span><br><span class="line">tag.name</span><br><span class="line">tag.attrs</span><br><span class="line">tag.string</span><br></pre></td></tr></table></figure>
+<h2 id="基于bs4库的HTML内容遍历方法"><a href="#基于bs4库的HTML内容遍历方法" class="headerlink" title="基于bs4库的HTML内容遍历方法"></a>基于bs4库的HTML内容遍历方法</h2><p>这里使用前面的demo。</p>
+<h3 id="下行遍历"><a href="#下行遍历" class="headerlink" title="下行遍历"></a>下行遍历</h3><p>从标签树由根节点到叶子节点。</p>
+<h4 id="三个属性"><a href="#三个属性" class="headerlink" title="三个属性"></a>三个属性</h4><ul>
+<li>.contents 子节点的列表，将<tag>所有儿子节点存入列表</tag></li>
+<li>.children 子节点的迭代类型，与.contents类似，用于循环遍历儿子节点</li>
+<li>.descendants 子孙节点的迭代类型，包含所有子孙节点，用于循环遍历</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>使用前面的demo演示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">soup.head</span><br><span class="line">soup.head.contents</span><br><span class="line">soup.body.contents</span><br><span class="line">len(soup.body.contents)</span><br><span class="line">soup.body.contents[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">for</span> child <span class="keyword">in</span> soup.body.children:</span><br><span class="line">    print(child) <span class="comment">#遍历儿子节点</span></span><br><span class="line"><span class="keyword">for</span> child <span class="keyword">in</span> soup.body.contents:</span><br><span class="line">    print(child) <span class="comment">#遍历子孙节点</span></span><br></pre></td></tr></table></figure>
+<h3 id="上行遍历"><a href="#上行遍历" class="headerlink" title="上行遍历"></a>上行遍历</h3><p>从标签树由叶子节点到根节点。</p>
+<h4 id="两个属性"><a href="#两个属性" class="headerlink" title="两个属性"></a>两个属性</h4><ul>
+<li>.parent 节点的父亲标签</li>
+<li>.parents 节点的先辈标签的迭代类型，用于循环遍历先辈节点</li>
+</ul>
+<h4 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">soup.title.parent</span><br><span class="line">soup.html.parent <span class="comment">#html是文本最高标签，所以是自己</span></span><br><span class="line"><span class="keyword">for</span> parent <span class="keyword">in</span> soup.a.parents:</span><br><span class="line">    <span class="keyword">if</span> parent <span class="keyword">is</span> <span class="literal">None</span>: <span class="comment">#如果先辈是None，就不再打印</span></span><br><span class="line">        print(parent)</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        print(parent.name)</span><br></pre></td></tr></table></figure>
+<h3 id="平行遍历"><a href="#平行遍历" class="headerlink" title="平行遍历"></a>平行遍历</h3><p>在同一个父节点下的平级节点之间平行遍历，但是要注意到平行标签的下一个有可能为navigableString类型。</p>
+<h4 id="四个属性"><a href="#四个属性" class="headerlink" title="四个属性"></a>四个属性</h4><ul>
+<li>next_sibling 返回按照HTML文本顺序的下一个平行节点的标签</li>
+<li>previous_sibling 返回按照HTML文本顺序的上一个平行节点标签</li>
+<li>next_siblings 迭代类型，返回按照HTML文本顺序的后续所有平行节点标签</li>
+<li>previous_siblings 迭代类型，返回按照HTML文本顺序的前续所有平行节点标签</li>
+</ul>
+<h4 id="实例-2"><a href="#实例-2" class="headerlink" title="实例"></a>实例</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">soup.a.next_sibling</span><br><span class="line">soup.a.next_sibling.next_sibling</span><br><span class="line">soup.a.previous_sibling</span><br><span class="line"><span class="keyword">for</span> sibling <span class="keyword">in</span> soup.a.next_siblings:</span><br><span class="line">    print(sibling) <span class="comment">#遍历后续节点</span></span><br><span class="line"><span class="keyword">for</span> sibling <span class="keyword">in</span> soup.a.previous_siblings:</span><br><span class="line">    print(sibling) <span class="comment">#遍历前续节点</span></span><br></pre></td></tr></table></figure>
+<h2 id="基于bs4库的HTML格式输出"><a href="#基于bs4库的HTML格式输出" class="headerlink" title="基于bs4库的HTML格式输出"></a>基于bs4库的HTML格式输出</h2><p>为了方便程序的读取，这里可以使用prettify方法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#使用前面的demo</span></span><br><span class="line">print(soup.prettify())</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python爬虫（四）——五个基础爬虫实例</title>
+    <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%9B%9B%EF%BC%89%E2%80%94%E2%80%94%E4%BA%94%E4%B8%AA%E5%9F%BA%E7%A1%80%E7%88%AC%E8%99%AB%E5%AE%9E%E4%BE%8B/</url>
+    <content><![CDATA[<h1 id="Python爬虫（四）——五个基础爬虫实例"><a href="#Python爬虫（四）——五个基础爬虫实例" class="headerlink" title="Python爬虫（四）——五个基础爬虫实例"></a>Python爬虫（四）——五个基础爬虫实例</h1><a id="more"></a>
+<h2 id="爬取京东商城商品"><a href="#爬取京东商城商品" class="headerlink" title="爬取京东商城商品"></a>爬取京东商城商品</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://item.jd.com/100009996740.html"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status() <span class="comment">#不返回200产生异常</span></span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[:<span class="number">1000</span>])<span class="comment">#如果r.text过多会在IDLE上无法显示</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="爬取亚马逊商品界面"><a href="#爬取亚马逊商品界面" class="headerlink" title="爬取亚马逊商品界面"></a>爬取亚马逊商品界面</h2><p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://www.amazon.cn/b/ref=s9_acss_bw_cg_WKebook_1a1_w?node=116169071&amp;pf_rd_m=A1U5RCOVU0NYF2&amp;pf_rd_s=merchandised-search-9&amp;pf_rd_r=SGMKFB10R7MV2VEZXX20&amp;pf_rd_t=101&amp;pf_rd_p=d857603c-3657-40b3-a25b-d5fe03fd4e10&amp;pf_rd_i=116087071"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome:10.0'</span>&#125;<span class="comment">#与访问京东商城不同，我们需要更改headers字段模拟浏览器访问亚马逊商城。</span></span><br><span class="line">    r = requests.get(url,header=kv)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    print(r.text[<span class="number">1000</span>:<span class="number">2000</span>])</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="百度-360搜索关键词提交"><a href="#百度-360搜索关键词提交" class="headerlink" title="百度/360搜索关键词提交"></a>百度/360搜索关键词提交</h2><p>百度和360都提供了关键词提交接口：</p>
+<blockquote>
+<p>百度：<a href="http://www.baidu.com/s?wd=keyword" target="_blank" rel="noopener">http://www.baidu.com/s?wd=keyword</a></p>
+</blockquote>
+<blockquote>
+<p>360：<a href="http://www.so.com/s?q=keyword" target="_blank" rel="noopener">http://www.so.com/s?q=keyword</a></p>
+</blockquote>
+<p>所以我们只用替换关键词就可以了。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">keword = <span class="string">"Python爬虫"</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    kv =  &#123;<span class="string">'wd'</span>:keyword&#125;</span><br><span class="line">    user = &#123;<span class="string">'user-agent'</span>:<span class="string">'chrome/10.0'</span>&#125;</span><br><span class="line">    r = requests.get(<span class="string">'https://www.baidu.com/s'</span>,headers=user,params=kv)</span><br><span class="line">    print(r.request.url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    print(len(r.text))<span class="comment">#之后再加入爬取数据处理</span></span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="网络图片的爬取和存储"><a href="#网络图片的爬取和存储" class="headerlink" title="网络图片的爬取和存储"></a>网络图片的爬取和存储</h2><p>我们需要得到网络图片的地址（找到图片右键复制图片地址）。</p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">url = <span class="string">"http://image.ngchina.com.cn/userpic/107269/2019/11181936061072693671.jpeg"</span><span class="comment">#得到的图片地址</span></span><br><span class="line">path = <span class="string">"D:/getImage.jpg"</span><span class="comment">#你想保存的文件路径</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    <span class="keyword">with</span> open(path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(r.content)</span><br><span class="line">        f.close()</span><br><span class="line">        print(<span class="string">"文件保存成功"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="IP地址归属地的自动查询"><a href="#IP地址归属地的自动查询" class="headerlink" title="IP地址归属地的自动查询"></a>IP地址归属地的自动查询</h2><p>在IP138我们可以查询IP地址归属地。我们可以用它的url接口：</p>
+<blockquote>
+<p><a href="http://m.ip138.com/ip.asp?ip=ipaddress" target="_blank" rel="noopener">http://m.ip138.com/ip.asp?ip=ipaddress</a></p>
+</blockquote>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://m.ip138.com/ip.asp?ip="</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url+<span class="string">'124.127.207.15'</span>)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    r.text[<span class="number">-500</span>:]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python爬虫（三）——Robots协议</title>
+    <url>/2020/02/01/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94Robots%E5%8D%8F%E8%AE%AE/</url>
+    <content><![CDATA[<h1 id="Python爬虫（三）——Robots协议"><a href="#Python爬虫（三）——Robots协议" class="headerlink" title="Python爬虫（三）——Robots协议"></a>Python爬虫（三）——Robots协议</h1><p>Robots协议全称为Robots Exclusion Standard，网络爬虫排除标准。它的作用是告知网络爬虫哪些可以抓取哪些不可以。通常被放在网站根目录下的robots.txt。</p>
+<p>注：并不是所有网站都有Robots协议，如果没有默认为内容都可以爬取。</p>
+<h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#*代表所有，&#x2F;代表根目录</span><br><span class="line">User-agent:*</span><br><span class="line">Disallow:&#x2F;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>User-agent 限制的User-agent</li>
+<li>Disallow 不允许访问的目录<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2>自动或人工识别robots.tst，再进行内容爬取。</li>
+</ul>
+<p>你也可以不遵守robots.txt，但会产生风险。只有当你的程序不会对服务器产生威胁或者行为类似人类的时候可以不遵守robots.txt。这时候你获取的资源不能用于商业用途。</p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python爬虫（二）——requests库</title>
+    <url>/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="requests库"><a href="#requests库" class="headerlink" title="requests库"></a><a href="https://requests.readthedocs.io/en/master/" target="_blank" rel="noopener" title="requests库的信息">requests库</a></h1><p>公认的爬取网页最好的库</p>
+<a id="more"></a>
+<h2 id="安装方法"><a href="#安装方法" class="headerlink" title="安装方法"></a>安装方法</h2><p>用cmd打开控制台，输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>抓取百度的网页代码。</p>
+<p>打开IDLE输入一下代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">r.status_code</span><br><span class="line">r.encoding = <span class="string">"UTF-8"</span></span><br><span class="line">r.text</span><br></pre></td></tr></table></figure>
+<p>状态码为200即为成功，否则失败。</p>
+<p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests%E5%BA%93test.jpg" alt="爬取百度结果" title="爬取百度结果"></p>
+<h2 id="7个主要方法"><a href="#7个主要方法" class="headerlink" title="7个主要方法"></a>7个主要方法</h2><h3 id="requests-requests"><a href="#requests-requests" class="headerlink" title="requests.requests()"></a>requests.requests()</h3><p>构造一个请求，支撑所有方法的基础。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.requests(method,url,**kewargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>method：请求方式，对应get/put/post等七种</li>
+<li>url：获取页面的url链接</li>
+<li>**kwargs：13个控制访问参数。其中params的使用方法：<br><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/requests-kewargs.jpg" alt="kwargs使用方法" title="kwargs使用方法"></li>
+</ul>
+<h4 id="kwargs的13个参数"><a href="#kwargs的13个参数" class="headerlink" title="**kwargs的13个参数"></a>**kwargs的13个参数</h4><ul>
+<li><strong>params</strong>：字典或字节序列，作为参数增加到url中</li>
+<li><strong>data</strong>：字典、字节序列或文件对象，作为Request的内容</li>
+<li><strong>json</strong>：JSON格式的数据，作为Request的内容</li>
+<li><strong>headers</strong>：字典，HTTP定制头</li>
+<li>cookies：字典或CookieJar，Request中的cookie</li>
+<li>auth：元组，支持HTTP认证功能</li>
+<li>files：字典类型，传输文件</li>
+<li>timeout：设定超时时间，单位为秒</li>
+<li>proxies：字典类型，设定访问代理服务器，可以增加登录认证</li>
+<li>allow_redirects:True/False，默认为True，重定向开关</li>
+<li>stream：True/False，默认为True，获取内容立即下载开关</li>
+<li>verify：True/False，默认为True，认证SSL证书开关</li>
+<li>cert：本地SSL证书路径</li>
+</ul>
+<h3 id="requests-get"><a href="#requests-get" class="headerlink" title="requests.get()"></a>requests.get()</h3><p>获取HTML网页的主要方法，对应于与HTTP的GET方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r= requests.get(url)</span><br></pre></td></tr></table></figure>
+<p>构造一个向服务器请求资源的Request对象，返回一个包含服务器资源的Response对象。</p>
+<p>完整的格式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.get(url,params = <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：拟获取页面的url链接</li>
+<li>params：url中的额外参数，字典或字节流格式，可选</li>
+<li>**kwargs：12个控制访问的参数，可选。requests中除了params的参数</li>
+</ul>
+<p>get方法实际上使用了requests方法来封装。</p>
+<h4 id="Response对象"><a href="#Response对象" class="headerlink" title="Response对象"></a>Response对象</h4><h5 id="常用属性"><a href="#常用属性" class="headerlink" title="常用属性"></a>常用属性</h5><ul>
+<li>r.status_code HTTP请求的返回状态，200表示连接成功，404表示失败。</li>
+<li>r.text HTTP响应内容的字符串形式。即url对应的页面内容。</li>
+<li>r.encoding 从HTTP hear中<strong>猜测</strong>的响应内容编码方式。如果在返回的header中charset为空默认为ISO-8859-1。</li>
+<li>r.apparent_encoding 从内容中<strong>分析</strong>出的响应内容编码方式（备选编码方式）。</li>
+<li>r.content HTTP响应内容的二进制形式。</li>
+</ul>
+<h3 id="requests-head"><a href="#requests-head" class="headerlink" title="requests.head()"></a>requests.head()</h3><p>获取HTML网页头信息的方法，对应于HTTP的HEAD方法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.head(url,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：获取页面的url链接</li>
+<li>**kwargs：13个控制访问的参数</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = requests.head(<span class="string">'http://httpbin.org/get'</span>)</span><br><span class="line">r.headers</span><br><span class="line">r.text</span><br></pre></td></tr></table></figure>
+<h3 id="requests-post"><a href="#requests-post" class="headerlink" title="requests.post()"></a>requests.post()</h3><p>向HTML网页提交POST请求的方法，对应于HTTP的POST。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.post(url,data=<span class="literal">None</span>,json=<span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：更新页面的url链接</li>
+<li>data：字典、字节序列或文件，Request的内容</li>
+<li>json：JSON格式的数据，Request的内容</li>
+<li>**kwargs：11个控制访问的参数（除了requests中的data和json）</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">payload  = &#123;<span class="string">'key1'</span>:<span class="string">'value1'</span>, <span class="string">'key2'</span>:<span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.post(<span class="string">'http://httpbin.org/post'</span>, data = payload)</span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/post.jpg" alt="post请求结果" title="post请求结果"></p>
+<h3 id="requests-put"><a href="#requests-put" class="headerlink" title="requests.put()"></a>requests.put()</h3><p>向HTML网页提交PUT请求的方法，对应于HTTP的PUT。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.put(url,data= <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：更新页面的url链接</li>
+<li>data：字典、字节序列或文件，Request的内容</li>
+<li>**kwargs：12个控制访问的参数（除了requests中的data）</li>
+</ul>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">payload  = &#123;<span class="string">'key1'</span>:<span class="string">'value1'</span>, <span class="string">'key2'</span>:<span class="string">'value2'</span>&#125;</span><br><span class="line">r = requests.put(<span class="string">'http://httpbin.org/put'</span>, data = payload)</span><br><span class="line">print(r.text)</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<p><img src="/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94requests%E5%BA%93/put.jpg" alt="put请求结果" title="put请求结果"></p>
+<h3 id="requests-patch"><a href="#requests-patch" class="headerlink" title="requests.patch()"></a>requests.patch()</h3><p>向HTML网页提交局部修改请求的方法，对应于HTTP的PATCH。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.patch(url,data= <span class="literal">None</span>,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：更新页面的url链接</li>
+<li>data：字典、字节序列或文件，Request的内容</li>
+<li>**kwargs：12个控制访问的参数（除了requests中的data）</li>
+</ul>
+<h3 id="requests-delete"><a href="#requests-delete" class="headerlink" title="requests.delete()"></a>requests.delete()</h3><p>向HTML页面提交删除请求的方法，对应于HTTP的DELETE。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">requests.delete(url,**kwargs)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>url：更新页面的url链接</li>
+<li>**kwargs：13个控制访问的参数</li>
+</ul>
+<h2 id="通用代码框架"><a href="#通用代码框架" class="headerlink" title="通用代码框架"></a>通用代码框架</h2><h3 id="六种常见的异常"><a href="#六种常见的异常" class="headerlink" title="六种常见的异常"></a>六种常见的异常</h3><ul>
+<li>requests.ConnectionError 网络连接错误异常，如DNS查询失败、拒绝连接等。</li>
+<li>requests.HTTPError HTTP错误异常</li>
+<li>requests.URLRequired URL缺失异常</li>
+<li>requests.TooManyRedirects 超过最大重定向次数，产生重定向异常</li>
+<li>requests.ConnectTimeout 连接远程服务器超时异常</li>
+<li>requests.Timeout 请求URL超时，产生超市异常</li>
+</ul>
+<h3 id="r-raise-fo-status"><a href="#r-raise-fo-status" class="headerlink" title="r.raise_fo_status()"></a>r.raise_fo_status()</h3><p>如果返回值不是200，产生异常requests.HTTPError</p>
+<h3 id="通用代码框架-1"><a href="#通用代码框架-1" class="headerlink" title="通用代码框架"></a>通用代码框架</h3><p>爬取页面</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>)</span><br><span class="line">        r.raise_for_status() <span class="comment">#如果状态不是200，引发HTTPError异常</span></span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> t.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"产生异常"</span></span><br></pre></td></tr></table></figure>
+
+<p>最大的用处是使用户爬取网页变得更有效、更稳定、更可靠。</p>
+<h2 id="HTTP协议及Requests库方法"><a href="#HTTP协议及Requests库方法" class="headerlink" title="HTTP协议及Requests库方法"></a>HTTP协议及Requests库方法</h2><h3 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h3><p>Hypertext Transfer Protocol，超文本传输协议。是一个基于“请求与响应”模式、无状态的应用层协议。采用URL作为定位网络资源的格式（http:// host [:port] [path],host:合法的Internet主机或IP地址,port:端口号,path:请求资源的路径）。URL使通过HTTP协议存取资源的Internet路径。一个URL对应一个数据资源。</p>
+<h4 id="HTTP协议对资源的操作"><a href="#HTTP协议对资源的操作" class="headerlink" title="HTTP协议对资源的操作"></a>HTTP协议对资源的操作</h4><ul>
+<li>GET 请求获取URL位置的资源。</li>
+<li>HEAD 请求获取URL位置资源的响应消息报告，即获得该资源的头部信息。</li>
+<li>POST 请求向URL位置的资源后附加新的数据。</li>
+<li>PUT 请求向URL位置存储一个资源，<strong>覆盖</strong>原URL位置的资源。</li>
+<li>PATCH 请求<strong>局部更新</strong>URL位置的资源，即改变该处资源的部分内容。</li>
+<li>DELETE 请求i删除URL位置存储的资源。</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>由于网络安全的限制，我们最常使用的是requests.get()方法，某些时候会使用requests.head()方法。</p>
+<p>由于网络链接的问题我们需要一个通用代码框架。</p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python爬虫（一）——开发环境</title>
+    <url>/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <content><![CDATA[<h1 id="python爬虫（一）——开发环境"><a href="#python爬虫（一）——开发环境" class="headerlink" title="python爬虫（一）——开发环境"></a>python爬虫（一）——开发环境</h1><h2 id="IDLE"><a href="#IDLE" class="headerlink" title="IDLE"></a>IDLE</h2><p><a href="https://baike.baidu.com/item/IDLE" target="_blank" rel="noopener" title="about IDLE">IDLE</a>是Python的集成开发环境，被打包为Python包装的可选部分。它是一个入门级的代码编写工具，适合编写较短的程序。</p>
+<h2 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h2><p><a href="https://www.sublimetext.com/3" target="_blank" rel="noopener" title="Sublime Text download">Sublime Text</a>是一个专门为程序员开发的文本编辑器。它是一个收费软件，但是可以无限期的试用。Sublime Text 支持多种编程语言的语法高亮、拥有优秀的代码自动完成功能，还拥有代码片段（Snippet）的功能，可以将常用的代码片段保存起来，在需要时随时调用。支持 VIM 模式，可以使用Vim模式下的多数命令。</p>
+<h2 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h2><p><a href="https://www.jetbrains.com/pycharm/download/" target="_blank" rel="noopener" title="PyCharm download">PyCharm</a>是一个由JetBrains打造的Python IDE。它的社区版免费，使用简单，集成度高。适合于较复杂的工程。</p>
+<h2 id="Anaconda-amp-Spyder"><a href="#Anaconda-amp-Spyder" class="headerlink" title="Anaconda &amp; Spyder"></a>Anaconda &amp; Spyder</h2><p><a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener" title="Anaconda download">Anaconda</a>是一个开源的Python发行版本，包含了conda、Python的180多个科学包及其依赖项。它适合用于科学计算。</p>
+]]></content>
+      <tags>
+        <tag>python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2019摄影记录</title>
+    <url>/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="2019摄影记录"><a href="#2019摄影记录" class="headerlink" title="2019摄影记录"></a>2019摄影记录</h1><a id="more"></a>
+<p>在2019年10月4日，我拥有了人生里的第一台相机。在过去的几个月里，我带着它去了后海，去了古北水镇，还去了陶然亭。我也用它记录了我的学校，同学们的表演还有室友的生日。由于学校里事务繁多，没有能够抽出时间系统的学习摄影和后期，所以拍得一般。不过好歹也是自己拍出来的，敝帚自珍嘛。于是乎，我在这里列出几张自己比较喜欢的照片，也希望大家能够喜欢。</p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%90%8E%E6%B5%B7-%E6%9C%88%E4%BA%AE.jpg" alt="后海-月亮" title="后海-月亮"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%90%8E%E6%B5%B7-%E8%A1%97%E9%81%93.jpg" alt="后海-街道" title="后海-街道"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E6%9C%AC%E9%83%A8-%E9%93%B6%E6%9D%8F.jpg" alt="本部-银杏" title="本部-银杏"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E9%99%B6%E7%84%B6%E4%BA%AD-%E5%B0%8F%E6%8F%90%E7%90%B4.jpg" alt="陶然亭-小提琴" title="陶然亭-小提琴"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E9%99%B6%E7%84%B6%E4%BA%AD-%E9%A3%9E%E9%B8%9F.jpg" alt="陶然亭-飞鸟" title="陶然亭-飞鸟"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%8F%A4%E5%8C%97%E6%B0%B4%E9%95%87-%E6%B0%B4%E9%81%93.jpg" alt="古北水镇-水道" title="古北水镇-水道"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E5%8F%A4%E5%8C%97%E6%B0%B4%E9%95%87-%E6%B0%B4%E5%BA%93.jpg" alt="古北水镇-水库" title="古北水镇-水库"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E6%B2%99%E6%B2%B3-%E8%90%BD%E6%97%A5.jpg" alt="沙河-落日" title="沙河-落日"></p>
+<p><img src="/2020/01/09/2019%E6%91%84%E5%BD%B1%E8%AE%B0%E5%BD%95/%E7%94%9F%E6%97%A5-%E8%A1%97%E9%81%93.jpg" alt="生日-街道" title="生日-街道"></p>
+]]></content>
+      <tags>
+        <tag>摄影</tag>
+        <tag>2019</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 进程</title>
+    <url>/2020/01/08/os%E8%BF%9B%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>在CPU中的活动称为进程。</p>
+<a id="more"></a>
+<h2 id="进程概念"><a href="#进程概念" class="headerlink" title="进程概念"></a>进程概念</h2><h3 id="进程-1"><a href="#进程-1" class="headerlink" title="进程"></a>进程</h3><p>进程组成：</p>
+<blockquote>
+<ul>
+<li>文本段（或代码段）</li>
+<li>当前活动（通过程序计数器的值和处理器寄存器的内容来表示）</li>
+<li>堆栈段（临时数据，如函数参数、返回地址、局部变量）</li>
+<li>数据段（全局变量）</li>
+<li>堆（heap）</li>
+</ul>
+</blockquote>
+<h3 id="进程状态"><a href="#进程状态" class="headerlink" title="进程状态"></a>进程状态</h3><ul>
+<li>新的：进程正在被创建</li>
+<li>运行：指令正在被执行</li>
+<li>等待：进程等待某个事件发生</li>
+<li>就绪：进程等待分配处理器</li>
+<li>终止：进行完成执行</li>
+</ul>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A01.jpg" alt="进程状态图" title="进程状态图"></p>
+<h3 id="进程控制块（process-control-block，PCB）"><a href="#进程控制块（process-control-block，PCB）" class="headerlink" title="进程控制块（process control block，PCB）"></a>进程控制块（process control block，PCB）</h3><p>1.进程状态<br>2.程序计数器</p>
+<blockquote>
+<p>计数器表示进程要执行的下个指令的地址</p>
+</blockquote>
+<p>3.CPU寄存器</p>
+<blockquote>
+<p>累加器、索引寄存器、堆栈指针和通用寄存器等</p>
+</blockquote>
+<p>4.CPU调度信息</p>
+<blockquote>
+<p>进程优先级、调度队列的指针和其他调度参数。</p>
+</blockquote>
+<p>5.内存管理信息</p>
+<blockquote>
+<p>基址寄存器和界限寄存器的值、页表或段表</p>
+</blockquote>
+<p>6.记账信息</p>
+<blockquote>
+<p>CPU时间、实际使用时间、时间界限、记账数据、作业或进程数量</p>
+</blockquote>
+<p>7.I/O状态信息</p>
+<blockquote>
+<p>分配给进程的I/O设备列表、打开的文件列表等</p>
+</blockquote>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2><h3 id="调度队列"><a href="#调度队列" class="headerlink" title="调度队列"></a>调度队列</h3><p>1.作业队列</p>
+<blockquote>
+<p>该队列包括系统中的所有进程</p>
+</blockquote>
+<p>2.就绪队列（通常用链表实现）</p>
+<blockquote>
+<p>内存中就绪的、等待的进程</p>
+</blockquote>
+<p>3.设备队列</p>
+<blockquote>
+<p>等待特定I/O设备的进程</p>
+</blockquote>
+<h3 id="调度程序-scheduler"><a href="#调度程序-scheduler" class="headerlink" title="调度程序(scheduler)"></a>调度程序(scheduler)</h3><h4 id="长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））"><a href="#长期调度程序（long-term-scheduler，或作业调度程序（job-scheduler））" class="headerlink" title="长期调度程序（long-term scheduler，或作业调度程序（job scheduler））"></a>长期调度程序（long-term scheduler，或作业调度程序（job scheduler））</h4><blockquote>
+<p>一些批处理系统，进程更多的是被提交，所以都被放在大容量存储设备中。长期调度程序从大容量的存储设备中选择程序，放到内存中准备执行。</p>
+</blockquote>
+<h4 id="短期调度程序（short-term-scheduler，或CPU调度程序）"><a href="#短期调度程序（short-term-scheduler，或CPU调度程序）" class="headerlink" title="短期调度程序（short-term scheduler，或CPU调度程序）"></a>短期调度程序（short-term scheduler，或CPU调度程序）</h4><blockquote>
+<p>短期调度程序是从准备执行的进程中选择进程，然后为之分配CPU。</p>
+</blockquote>
+<h4 id="程序可以分为I-O为主和CPU为主"><a href="#程序可以分为I-O为主和CPU为主" class="headerlink" title="程序可以分为I/O为主和CPU为主"></a>程序可以分为I/O为主和CPU为主</h4><p><strong>I/O为主（I/O-bound progress）</strong>：</p>
+<blockquote>
+<p>执行I/O方面的时间更多</p>
+</blockquote>
+<p><strong>CPU为主（CPU-bound progress）</strong>：</p>
+<blockquote>
+<p>很少产生I/O请求</p>
+</blockquote>
+<h3 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h3><p>中断时，系统需要保存当前运行在CPU上的进程的上下文，从而在其处理完后能够恢复上下文。通常，通过执行一个<strong>状态保存（state save）</strong>来保存CPU当前状态，之后执行一个<strong>状态恢复（state restore）</strong>重新开始。<br>这个将CPU切换到另一个进程需要保存当前进程的状态并恢复另一个进程的状态称为<strong>上下文切换（context switch）</strong>。</p>
+<h2 id="进程操作"><a href="#进程操作" class="headerlink" title="进程操作"></a>进程操作</h2><h3 id="进程创建"><a href="#进程创建" class="headerlink" title="进程创建"></a>进程创建</h3><p>进程（父进程）在执行过程中，能够通过创建程序系统调用创建多个新进程（子进程）。创建进程需要一定的资源（如：CPU时间、内存、文件、I/O设备），子进程可能从系统获得资源，也可能直接从父进程中获得资源。<br>当进程创建新进程时有两种执行可能：</p>
+<blockquote>
+<p>1.父进程与子进程并发执行<br>2.父进程等待，知道某个或全部子进程执行完</p>
+</blockquote>
+<p>新进程的地址空间也有两种可能：</p>
+<blockquote>
+<p>1.子进程时父进程的复制品<br>2.子程序装入另一个新程序</p>
+</blockquote>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A02.jpg" alt="进程生成" title="进程生成"></p>
+<h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3><p>当进程完成执行最后的语句并使用系统调用exit()请求系统删除自身时，进程终止。<br>父进程终止子进程的原因：</p>
+<blockquote>
+<ul>
+<li>子进程使用了超过它所分配的资源</li>
+<li>分配给子进程的任务不再需要</li>
+<li>父进程退出（级联终止（cascading termination））</li>
+</ul>
+</blockquote>
+<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><p>需要提供环境以允许进程协作的理由:</p>
+<blockquote>
+<ul>
+<li>信息共享（information sharing）</li>
+<li>提高运算速度（computation speedup）</li>
+<li>模块化（modularity）</li>
+<li>方便（convenience）</li>
+</ul>
+</blockquote>
+<p>进程间通信机制（interprocess communication，IPC）：用来允许进程相互交换数据与信息。两种基本模式：</p>
+<blockquote>
+<p>1.共享内存<br>2.消息传递</p>
+</blockquote>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A03.jpg" alt="通信模型" title="通信模型"></p>
+<h3 id="共享内存系统"><a href="#共享内存系统" class="headerlink" title="共享内存系统"></a>共享内存系统</h3><p>采用共享内存的进程间通信需要建立共享内存区域。</p>
+<h4 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h4><p>生产者进程产生信息以供消费者进程消费，这就必须要求建立缓冲来满足生产者和消费者的消费。<strong>无限缓冲（unbounded-buffer）</strong>，对缓冲大小没有限制。<strong>有限缓冲（bounded-buffer）</strong>，缓冲大小固定。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BUFFER_SIZE 10</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125;item;</span><br><span class="line"></span><br><span class="line">item buffer[BUFFER_SIZE];</span><br><span class="line"><span class="keyword">int</span> in = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> out = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A04.jpg" alt="代码实例" title="生产者消费者问题"></p>
+<h3 id="消息传递系统"><a href="#消息传递系统" class="headerlink" title="消息传递系统"></a>消息传递系统</h3><p>需求：</p>
+<blockquote>
+<p>发送和接受<br>通信线路（communication link）</p>
+<blockquote>
+<ul>
+<li>直接或间接通信</li>
+<li>同步或异步通信</li>
+<li>自动或显示缓冲</li>
+</ul>
+</blockquote>
+</blockquote>
+<h4 id="1-命名"><a href="#1-命名" class="headerlink" title="1.命名"></a>1.命名</h4><p>直接通信：需要通信的每个进程必须明确地命名通信的接收者和发送者。<br>间接通信：通过邮箱或端口来发送和接受消息。</p>
+<h4 id="2-同步（阻塞或非阻塞——同步或异步）"><a href="#2-同步（阻塞或非阻塞——同步或异步）" class="headerlink" title="2.同步（阻塞或非阻塞——同步或异步）"></a>2.同步（阻塞或非阻塞——同步或异步）</h4><blockquote>
+<ul>
+<li>阻塞 send：发送进程阻塞，直到消息被接受进程或邮箱所接受</li>
+<li>非阻塞 send：发送进程发送消息并继续操作</li>
+<li>阻塞 receive：接收者阻塞，直到有消息可用</li>
+<li>非阻塞 receive：接收者收到一个有效消息或空消息</li>
+</ul>
+</blockquote>
+<p>都阻塞的时候，发送者和接收者之间就有一个集合点（rendzvous）。</p>
+<h4 id="3-缓冲"><a href="#3-缓冲" class="headerlink" title="3.缓冲"></a>3.缓冲</h4><blockquote>
+<ul>
+<li>零容量：队列的最大长度为0。这种情况必须阻塞发送。</li>
+<li>有限容量</li>
+<li>无限容量</li>
+</ul>
+</blockquote>
+<h2 id="客户机-服务器系统通信"><a href="#客户机-服务器系统通信" class="headerlink" title="客户机-服务器系统通信"></a>客户机-服务器系统通信</h2><h3 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h3><p>套接字（Socket）可定义为通信的端点。一对通过网络通信的进程需要使用一对Socket。</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A05.jpg" alt="使用Socket通信" title="使用Socket通信"></p>
+<h3 id="远程过程调用"><a href="#远程过程调用" class="headerlink" title="远程过程调用"></a>远程过程调用</h3><p>最为普通的远程服务——RPC方式</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A06.jpg" alt="远程过程调用（RPC）" title="远程过程调用（RPC）"></p>
+<h3 id="远程方法调用（remote-method-invocation）"><a href="#远程方法调用（remote-method-invocation）" class="headerlink" title="远程方法调用（remote method invocation）"></a>远程方法调用（remote method invocation）</h3><p>类似于RPC的Java特性</p>
+<p><img src="/2020/01/08/os%E8%BF%9B%E7%A8%8B/os%E7%AC%AC%E4%B8%89%E7%AB%A07.jpg" alt="远程方法调用" title="远程方法调用"></p>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 线程</title>
+    <url>/2020/01/08/os%E7%BA%BF%E7%A8%8B/</url>
+    <content><![CDATA[<h1 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h1><a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>线程是CPU使用的基本单元，它由线程ID、程序计数器、寄存器集合和栈组成。它与同属一个进程的其他线程共享代码段、数据段和其他操作系统资源。<br><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B4.jpg" alt="单线程和多线程的区别" title="多线程和单线程的区别"></p>
+<h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>有时候，一个应用程序可能需要执行多个相似的任务。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>1.响应度高</li>
+<li>2.资源共享：线程默认共享它们所属进程的内存和资源。</li>
+<li>3.经济：进程创建所需要的内存和资源的分配比较昂贵。</li>
+<li>4.多处理器体系结构的利用：充分使用多处理器体系结构。<h2 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h2>两种方法：<blockquote>
+<ul>
+<li>用户层的用户线程：受内核支持，而无需内核管理。</li>
+<li>内核层的内核线程：由操作系统直接支持和管理。</li>
+</ul>
+</blockquote>
+<h3 id="多对一模型"><a href="#多对一模型" class="headerlink" title="多对一模型"></a>多对一模型</h3>将许多用户线程映射到一个内核线程。例如Green thread和<strong>GNU可移植线程（GNU Portable Thread）</strong>。效率比较高，但因为任一时刻只有一个线程能访问内核，多个线程不能并行运行在多处理器上。</li>
+</ul>
+<p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B.jpg" alt="多对一模型" title="多对一模型"></p>
+<h3 id="一对一模型"><a href="#一对一模型" class="headerlink" title="一对一模型"></a>一对一模型</h3><p>每个用户线程映射到一个内核线程。例如Linux和Windows操作系统家族。能够很好的实现并发功能，但因为创建内核线程的开销会影响应用程序的性能，所以会限制系统所支持的线程的数量。</p>
+<p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B1.jpg" alt="一对一模型" title="一对一模型"></p>
+<h3 id="多对多模型"><a href="#多对多模型" class="headerlink" title="多对多模型"></a>多对多模型</h3><p>复用了许多用户线程到同样数量或更小的内核线程上。没有增加并发性，但不用担心线程过多且能并发执行。</p>
+<p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B2.jpg" alt="多对多模型" title="多对多模型"></p>
+<h2 id="线程库（thread-library）"><a href="#线程库（thread-library）" class="headerlink" title="线程库（thread library）"></a>线程库（thread library）</h2><p>提供创建和管理线程的API。</p>
+<p>实现线程库的两种方法：</p>
+<blockquote>
+<ul>
+<li>在用户空间中提供一个没有内核支持的库，调用函数只是一个本地函数调用而不是系统调用。</li>
+<li>执行一个由操作系统直接支持的内核级库，调用一个API通常会导致对内核的系统调用。</li>
+</ul>
+</blockquote>
+<p>当前使用的三种主要的线程库：1.Pthread、2.Win32、3.Java。</p>
+<h2 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h2><h3 id="系统调用fork-和exec"><a href="#系统调用fork-和exec" class="headerlink" title="系统调用fork()和exec()"></a>系统调用fork()和exec()</h3><h3 id="取消"><a href="#取消" class="headerlink" title="取消"></a>取消</h3><p><strong>线程取消（thread cancellation）</strong>，在线程完成之前来终止线程的任务。要取消的线程通常称为目标线程。</p>
+<blockquote>
+<ul>
+<li>1.异步取消（asynchronous cancellation）：一个线程立即终止目标线程。</li>
+<li>2.延迟取消（deferred cancellation）：目标线程不断地检查它是否应终止，这允许目标线程有机会以有序方式来终结自己。</li>
+</ul>
+</blockquote>
+<h3 id="信号处理"><a href="#信号处理" class="headerlink" title="信号处理"></a>信号处理</h3><p>所有信号具有同样的模式</p>
+<blockquote>
+<ul>
+<li>1.信号是由特事件的发生所产生的</li>
+<li>2.产生信号要发送到线程</li>
+<li>3一旦发送，信号必须加以处理</li>
+</ul>
+</blockquote>
+<p>每个信号可能由两种可能的处理程序的一种来处理：</p>
+<blockquote>
+<p>1.<strong>默认信号处理程序（default signal handler）</strong>，每个程序都有一个默认信号处理程序<br>2.用户定义的信号处理程</p>
+</blockquote>
+<h3 id="线程池（thread-pool）"><a href="#线程池（thread-pool）" class="headerlink" title="线程池（thread pool）"></a>线程池（thread pool）</h3><p>优点：</p>
+<blockquote>
+<ul>
+<li>通常用现有线程处理请求要比等待创建新的线程块</li>
+<li>线程池限制了在任何时候可用线程的数量（由系统CPU的数量、物理内存的大小和并发客户请求的期望值等确定）</li>
+</ul>
+</blockquote>
+<h3 id="线程特定数据（thread-specific-data）"><a href="#线程特定数据（thread-specific-data）" class="headerlink" title="线程特定数据（thread-specific data）"></a>线程特定数据（thread-specific data）</h3><p>同属一个进程的线程共享进程数据。不过一些线程在某些情况下需要一定数据的自己的副本。这些就称为线程特定数据。</p>
+<h3 id="调度程序激活（scheduler-activation）"><a href="#调度程序激活（scheduler-activation）" class="headerlink" title="调度程序激活（scheduler activation）"></a>调度程序激活（scheduler activation）</h3><p>一种解决用户线程库与内核间通信的方法。内核提供一组虚拟处理器（轻量级进程，LWP）给应用程序，应用程序可调度用户线程到一个可用的LWP上。这样就为线程提供了一个用户级的中间系统，它就可以通过系统调用获得内核提供的服务。</p>
+<p><img src="/2020/01/08/os%E7%BA%BF%E7%A8%8B/os%E7%BA%BF%E7%A8%8B3.jpg" alt="轻量级进程（LWP）" title="轻量级进程（LWP）"></p>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 操作系统结构</title>
+    <url>/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h1 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h1><a id="more"></a>
+<h2 id="操作系统服务"><a href="#操作系统服务" class="headerlink" title="操作系统服务"></a>操作系统服务</h2><h3 id="提供的函数"><a href="#提供的函数" class="headerlink" title="提供的函数"></a>提供的函数</h3><p>1.用户界面（user interface，UI）</p>
+<blockquote>
+<p>命令行界面（command-line interface，CLI）  采用文本命令，用一定的方法输入。<br>图形用户界面（graphical user interface，GUI）</p>
+</blockquote>
+<p>2.程序执行<br>3.I/O操作</p>
+<blockquote>
+<p>用户通常不能直接控制I/O设备，所以操作系统需要提供进行I/O操作的方法。</p>
+</blockquote>
+<p>4.文件系统操作</p>
+<blockquote>
+<p>程序需要读写文件和目录，也需要根据文件名来创建和删除文件、搜索一个给定的文件、列出文件信息。此外还包括基于文件所有权的允许或拒绝对文件或目录的访问管理</p>
+</blockquote>
+<p>5.通信</p>
+<blockquote>
+<p>一个进程需要与另一个进程交换信息。</p>
+<blockquote>
+<ol>
+<li>同一台计算机上两个程序之间。</li>
+<li>运行在网络连接起来的两台计算机上的进程之间。</li>
+</ol>
+</blockquote>
+</blockquote>
+<p>6.错误检测</p>
+<blockquote>
+<p>CPU或内存硬件、I/O设备和用户程序中出现的错误。</p>
+</blockquote>
+<p>7.资源分配</p>
+<blockquote>
+<p>同时有多个用户或多个作业运行时，系统必须为它们分配资源（CPU周期、内存、I/O设备等）。</p>
+</blockquote>
+<p>8.统计</p>
+<blockquote>
+<p>记录哪些用户使用了多少和什么类型的资源。</p>
+</blockquote>
+<p>9.保护和安全</p>
+<blockquote>
+<p>当多个程序并发时，一个程序不能干预另一个进程或操作系统本身。<br>同时系统也不能受到外界的侵犯。</p>
+</blockquote>
+<h2 id="操作系统用户界面"><a href="#操作系统用户界面" class="headerlink" title="操作系统用户界面"></a>操作系统用户界面</h2><h3 id="命令解释程序"><a href="#命令解释程序" class="headerlink" title="命令解释程序"></a>命令解释程序</h3><p>用于获取并执行用户指定的下一条命令。<br>1.命令解释程序本身包含代码以执行这些命令。<br>2.有系统程序实现绝大多数命令。</p>
+<h3 id="图形用户界面（GUI）"><a href="#图形用户界面（GUI）" class="headerlink" title="图形用户界面（GUI）"></a>图形用户界面（GUI）</h3><p>提供基于鼠标的窗口和菜单系统。</p>
+<h2 id="系统调用（system-call）"><a href="#系统调用（system-call）" class="headerlink" title="系统调用（system call）"></a>系统调用（system call）</h2><p>提供了操作系统提供的有效服务界面。应用程序开发人员根据<strong>应用程序接口</strong>（API）设计程序。组成API的函数就是操作系统提供的系统调用。</p>
+<h2 id="系统调用类型"><a href="#系统调用类型" class="headerlink" title="系统调用类型"></a>系统调用类型</h2><ul>
+<li>进程控制</li>
+<li>文件管理</li>
+<li>设备管理</li>
+<li>信息维护</li>
+<li>通信<h3 id="进程控制"><a href="#进程控制" class="headerlink" title="进程控制"></a>进程控制</h3>运行程序需要能够正常或非正常地中断其执行。<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3>创建和删除文件，读、写或重定位文件，确定和设置其属性（文件名、文件类型、保护模式、计账信息）。<h3 id="设备管理"><a href="#设备管理" class="headerlink" title="设备管理"></a>设备管理</h3>物理设备（磁带）抽象设备（文件）。<h3 id="信息维护"><a href="#信息维护" class="headerlink" title="信息维护"></a>信息维护</h3>用户程序和操作系统之间传递信息。<h3 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h3></li>
+</ul>
+<p>1.消息传递模型（message-passing model）</p>
+<blockquote>
+<p>通过彼此之间交换消息来交换信息。</p>
+</blockquote>
+<p>2.共享内存模型（shared-memory model）</p>
+<blockquote>
+<p>使用shared memory create和shared memoty attach 系统调用来获得其他进程所拥有的内存区域地访问权。</p>
+</blockquote>
+<h2 id="系统程序"><a href="#系统程序" class="headerlink" title="系统程序"></a>系统程序</h2><p>1.文件管理</p>
+<blockquote>
+<p>创建、删除、复制、重命名、打印、转储、列出和操作文件和目录。</p>
+</blockquote>
+<p>2.状态信息</p>
+<blockquote>
+<p>系统的日期、时间、可用内存、或磁盘空间的数量、用户数或类似的状态信息。</p>
+</blockquote>
+<p>3.文件修改<br>4.程序语言支持</p>
+<blockquote>
+<p>常用的程序设计语言的编译程序、汇编程序、调试程序和接师程序</p>
+</blockquote>
+<p>5.程序装入和执行<br>6.通信</p>
+<h2 id="操作系统设计和实现"><a href="#操作系统设计和实现" class="headerlink" title="操作系统设计和实现"></a>操作系统设计和实现</h2><h3 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h3><p>1.定义系统的目标和规格。<br>2.方便和容易使用、学习、可靠、安全和快速。<br>3.容易设计、实现和维护的同时灵活、可靠高效且没有错误。</p>
+<h3 id="机制（mechanism）和策略（policy）"><a href="#机制（mechanism）和策略（policy）" class="headerlink" title="机制（mechanism）和策略（policy）"></a>机制（mechanism）和策略（policy）</h3><ul>
+<li>机制   决定怎么做</li>
+<li>策略   决定做什么<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3>使用汇编和高级语言编写<h2 id="操作系统结构-1"><a href="#操作系统结构-1" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="简单结构"><a href="#简单结构" class="headerlink" title="简单结构"></a>简单结构</h3><img src="/2020/01/08/os%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84/os%E7%AC%AC%E4%BA%8C%E7%AB%A01.png" alt="MS-DOS层次结构" title="MS-DOS层次结构"><h3 id="分层方法"><a href="#分层方法" class="headerlink" title="分层方法"></a>分层方法</h3>分层法   操作系统分成若干层。最底层为硬件，最高层为用户接口。<h3 id="微内核（microkernel）"><a href="#微内核（microkernel）" class="headerlink" title="微内核（microkernel）"></a>微内核（microkernel）</h3>将所有非基本部分从内核中移走，并将它们实现为系统程序或用户程序。从而使客户程序和运行在用户空间的各种服务之间进行通信。<br>好处：<blockquote>
+<p>便于扩充操作系统。更好的安全性和可靠性。</p>
+</blockquote>
+</li>
+</ul>
+<p>坏处：</p>
+<blockquote>
+<p>由于系统功能总开销的增加而导致系统性能下降。</p>
+</blockquote>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>面向对象编程技术生成模块化的内核。</p>
+<h2 id="虚拟机（virtual-machine）"><a href="#虚拟机（virtual-machine）" class="headerlink" title="虚拟机（virtual machine）"></a>虚拟机（virtual machine）</h2><h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>底层机器的两种模式：用户模式和内核模式。</p>
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>优点是没有安全问题。但同时没有了资源共享。<br>共享实现的两种方法：</p>
+<blockquote>
+<p>1.通过共享小型磁盘来共享文件，模拟共享物理磁盘，用软件实现。<br>2.通过定义一个虚拟机的网络，模拟通信网络来传递消息。</p>
+</blockquote>
+<h2 id="系统生成（system-generation）"><a href="#系统生成（system-generation）" class="headerlink" title="系统生成（system generation）"></a>系统生成（system generation）</h2><p>对某个特定的计算机场所，配置和生成系统。</p>
+<h2 id="系统启动"><a href="#系统启动" class="headerlink" title="系统启动"></a>系统启动</h2><p>装入内核以启动计算机的过程称为引导系统。步骤：</p>
+<blockquote>
+<p>一个简单的引导程序从磁盘上调入一个较复杂的引导程序。然后后者再装入内核</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 导论</title>
+    <url>/2020/01/08/os%E5%AF%BC%E8%AE%BA/</url>
+    <content><![CDATA[<h1 id="导论"><a href="#导论" class="headerlink" title="导论"></a>导论</h1><a id="more"></a>
+<h2 id="操作系统做什么"><a href="#操作系统做什么" class="headerlink" title="操作系统做什么"></a>操作系统做什么</h2><h3 id="计算机组成"><a href="#计算机组成" class="headerlink" title="计算机组成"></a>计算机组成</h3><h4 id="计算机硬件"><a href="#计算机硬件" class="headerlink" title="计算机硬件"></a>计算机硬件</h4><p>中央处理单元（CPU）<br>内存（memory）<br>输入输出设备（IO）</p>
+<h4 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h4><p>系统程序<br>应用程序和用户</p>
+<h3 id="用户视角"><a href="#用户视角" class="headerlink" title="用户视角"></a>用户视角</h3><h4 id="在大型机或小型机相连的终端前"><a href="#在大型机或小型机相连的终端前" class="headerlink" title="在大型机或小型机相连的终端前"></a>在大型机或小型机相连的终端前</h4><p>对资源使用做优化<br>确保所有的CPU时间、内存和I/O都能够得到充分使用，同时用户不会使用超出其权限以外的资源。</p>
+<h4 id="在工作站前"><a href="#在工作站前" class="headerlink" title="在工作站前"></a>在工作站前</h4><p>个人使用性能和资源利用率的折中</p>
+<h4 id="单个用户独立使用"><a href="#单个用户独立使用" class="headerlink" title="单个用户独立使用"></a>单个用户独立使用</h4><p>为了方便个人使用</p>
+<h3 id="系统视角"><a href="#系统视角" class="headerlink" title="系统视角"></a>系统视角</h3><p>操作系统是控制程序</p>
+<h3 id="定义操作系统"><a href="#定义操作系统" class="headerlink" title="定义操作系统"></a>定义操作系统</h3><p>管理计算机硬件并提供应用程序运行环境的软件</p>
+<h2 id="计算机系统组织"><a href="#计算机系统组织" class="headerlink" title="计算机系统组织"></a>计算机系统组织</h2><h3 id="计算机系统操作"><a href="#计算机系统操作" class="headerlink" title="计算机系统操作"></a>计算机系统操作</h3><h4 id="引导程序（bootstrap-program）"><a href="#引导程序（bootstrap-program）" class="headerlink" title="引导程序（bootstrap program）"></a>引导程序（bootstrap program）</h4><p>计算机开始运行需要一个初始化程序</p>
+<h4 id="中断（interrupt）"><a href="#中断（interrupt）" class="headerlink" title="中断（interrupt）"></a>中断（interrupt）</h4><h5 id="事件的发生"><a href="#事件的发生" class="headerlink" title="事件的发生"></a>事件的发生</h5><h5 id="硬件"><a href="#硬件" class="headerlink" title="硬件"></a>硬件</h5><p>通过系统总线向CPU发出信号</p>
+<h5 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h5><p>系统调用（system call，监视器调用（monitor call））</p>
+<h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><h4 id="随机访问内存（random-access-memory，RAM）"><a href="#随机访问内存（random-access-memory，RAM）" class="headerlink" title="随机访问内存（random access memory，RAM）"></a>随机访问内存（random access memory，RAM）</h4><p>计算机程序运行的地方</p>
+<h4 id="动态随机访问内存（dynamic-random-access-memory，DRAM）"><a href="#动态随机访问内存（dynamic-random-access-memory，DRAM）" class="headerlink" title="动态随机访问内存（dynamic random access memory，DRAM）"></a>动态随机访问内存（dynamic random access memory，DRAM）</h4><p>处理器可以直接访问的唯一大容量存储区域</p>
+<h4 id="指令寄存器（instruction-register）"><a href="#指令寄存器（instruction-register）" class="headerlink" title="指令寄存器（instruction register）"></a>指令寄存器（instruction register）</h4><h4 id="辅存（secondary-storage）"><a href="#辅存（secondary-storage）" class="headerlink" title="辅存（secondary storage）"></a>辅存（secondary storage）</h4><p>内存的扩充<br>磁盘（magnetic disk）</p>
+<h3 id="I-O结构"><a href="#I-O结构" class="headerlink" title="I/O结构"></a>I/O结构</h3><h4 id="DMA（direct-memory-access，直接内存访问）"><a href="#DMA（direct-memory-access，直接内存访问）" class="headerlink" title="DMA（direct memory access，直接内存访问）"></a>DMA（direct memory access，直接内存访问）</h4><p>解决大块数据移动</p>
+<h2 id="计算机系统体系结构"><a href="#计算机系统体系结构" class="headerlink" title="计算机系统体系结构"></a>计算机系统体系结构</h2><h3 id="单处理器系统"><a href="#单处理器系统" class="headerlink" title="单处理器系统"></a>单处理器系统</h3><p>只有一个主CPU能够执行一个通用指令集</p>
+<h3 id="多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））"><a href="#多处理器系统（并行系统（parallel-system）或紧耦合系统（tightly-coupled-system））" class="headerlink" title="多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））"></a>多处理器系统（并行系统（parallel system）或紧耦合系统（tightly coupled system））</h3><h4 id="有多个紧密通信的CPU"><a href="#有多个紧密通信的CPU" class="headerlink" title="有多个紧密通信的CPU"></a>有多个紧密通信的CPU</h4><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><p>增加吞吐量<br>规模经济<br>增加可靠性</p>
+<h4 id="非对称对处理"><a href="#非对称对处理" class="headerlink" title="非对称对处理"></a>非对称对处理</h4><h4 id="对称多处理"><a href="#对称多处理" class="headerlink" title="对称多处理"></a>对称多处理</h4><h3 id="集群系统（clustered-system）"><a href="#集群系统（clustered-system）" class="headerlink" title="集群系统（clustered system）"></a>集群系统（clustered system）</h3><p>提供高可用性服务</p>
+<h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><h3 id="最重要的是有多道程序设计"><a href="#最重要的是有多道程序设计" class="headerlink" title="最重要的是有多道程序设计"></a>最重要的是有多道程序设计</h3><p>分时系统<br>交互计算机系统</p>
+<h3 id="作业池（job-pool）"><a href="#作业池（job-pool）" class="headerlink" title="作业池（job pool）"></a>作业池（job pool）</h3><p>作业调度（job scheduling）</p>
+<h3 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h3><h3 id="虚拟内存（virtual-memory）"><a href="#虚拟内存（virtual-memory）" class="headerlink" title="虚拟内存（virtual memory）"></a>虚拟内存（virtual memory）</h3><p>逻辑内存（logical memory）</p>
+<h3 id="物理内存（physical-memory）"><a href="#物理内存（physical-memory）" class="headerlink" title="物理内存（physical memory）"></a>物理内存（physical memory）</h3><h2 id="操作系统操作"><a href="#操作系统操作" class="headerlink" title="操作系统操作"></a>操作系统操作</h2><h3 id="双重模式操作"><a href="#双重模式操作" class="headerlink" title="双重模式操作"></a>双重模式操作</h3><p>用户模式（user mode）</p>
+<blockquote>
+<p>用户应用程序运行的时候系统处于的模式。</p>
+</blockquote>
+<p>监督程序模式（monitor mode），也称管理模式（supervisor mode）、系统模式（system mode）和特权模式（privileged mode）</p>
+<blockquote>
+<p>用来执行系统服务，只有在内核模式的时候才能执行特权指令。</p>
+</blockquote>
+<p>模式位（mode bit）</p>
+<blockquote>
+<p>标识所处的状态</p>
+</blockquote>
+<p>特权指令（privileged mode）</p>
+<blockquote>
+<p>能够引起损害的机器指令</p>
+</blockquote>
+<h3 id="定时器（timer）"><a href="#定时器（timer）" class="headerlink" title="定时器（timer）"></a>定时器（timer）</h3><h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>程序计数器</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><h2 id="存储管理"><a href="#存储管理" class="headerlink" title="存储管理"></a>存储管理</h2><h3 id="文件系统管理"><a href="#文件系统管理" class="headerlink" title="文件系统管理"></a>文件系统管理</h3><p>创建和删除文件<br>创建和删除目录来组织文件<br>提供操作文件和目录的原语<br>将文件映射到二级存储上<br>在稳定存储介质上备份文件</p>
+<h3 id="大容量存储器管理"><a href="#大容量存储器管理" class="headerlink" title="大容量存储器管理"></a>大容量存储器管理</h3><p>空闲空间管理<br>存储空间分配<br>磁盘调度</p>
+<h3 id="高速缓存"><a href="#高速缓存" class="headerlink" title="高速缓存"></a>高速缓存</h3><p>高速缓存一致性（cache coherency）<br>需要特定信息时，首先检查是否在高数缓存中。如果不在，使用位于内存中的信息。</p>
+<h3 id="I-O系统"><a href="#I-O系统" class="headerlink" title="I/O系统"></a>I/O系统</h3><p>一个包括缓冲、高速缓存和假脱机的内存管理部分<br>通用的设备驱动器接口<br>特定硬件设备的驱动程序</p>
+<h2 id="保护和安全"><a href="#保护和安全" class="headerlink" title="保护和安全"></a>保护和安全</h2><h3 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h3><p>一种控制进程或用户对计算机系统资源的访问的机制</p>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>防止系统不受外部或内部攻击</p>
+<h2 id="分布式系统"><a href="#分布式系统" class="headerlink" title="分布式系统"></a>分布式系统</h2><p>局域网（local-area network，LAN）<br>广域网（wide-area network，WAN）<br>域域网（metropoltan-area network）<br>小域网（small-area network）</p>
+<h2 id="专用系统"><a href="#专用系统" class="headerlink" title="专用系统"></a>专用系统</h2><h3 id="实时嵌入式系统"><a href="#实时嵌入式系统" class="headerlink" title="实时嵌入式系统"></a>实时嵌入式系统</h3><p>实时操作系统<br>当对处理器操作或数据流动有严格时间要求时，就需要使用实时系统。</p>
+<h3 id="多媒体系统"><a href="#多媒体系统" class="headerlink" title="多媒体系统"></a>多媒体系统</h3><p>用来处理传统的数据</p>
+<h3 id="手持系统（handheld-system）"><a href="#手持系统（handheld-system）" class="headerlink" title="手持系统（handheld system）"></a>手持系统（handheld system）</h3><h2 id="计算环境"><a href="#计算环境" class="headerlink" title="计算环境"></a>计算环境</h2><h3 id="传统计算"><a href="#传统计算" class="headerlink" title="传统计算"></a>传统计算</h3><h3 id="客户机-服务器计算"><a href="#客户机-服务器计算" class="headerlink" title="客户机-服务器计算"></a>客户机-服务器计算</h3><h4 id="服务器系统（server-system）"><a href="#服务器系统（server-system）" class="headerlink" title="服务器系统（server system）"></a>服务器系统（server system）</h4><p>计算服务器<br>提供接口以接受用户所发出的执行操作的请求，执行操作，并将操作结果反回给客户机。<br>文件服务器系统<br>提供文件系统接口，以便客户机能创建、更新、访问和删除文件。</p>
+<h4 id="客户机系统（client-system）"><a href="#客户机系统（client-system）" class="headerlink" title="客户机系统（client system）"></a>客户机系统（client system）</h4><h3 id="对等计算"><a href="#对等计算" class="headerlink" title="对等计算"></a>对等计算</h3><p>p2p</p>
+<h3 id="基于web的计算"><a href="#基于web的计算" class="headerlink" title="基于web的计算"></a>基于web的计算</h3>]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Welcome</title>
+    <url>/2020/01/08/hello-world/</url>
+    <content><![CDATA[<h1 id="欢迎参观我的博客"><a href="#欢迎参观我的博客" class="headerlink" title="欢迎参观我的博客"></a><center>欢迎参观我的博客</center></h1><center>我会不定期在这里更新一些我的学习总结和一些摄影作品，希望你能够喜欢！<center>
+
+
+<!-- ## Quick Start
+
+### Create a new post
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a> –&gt;</p>
+--></center></center>]]></content>
+  </entry>
+  <entry>
+    <title>OS 文件系统实现</title>
+    <url>/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h1 id="文件系统实现"><a href="#文件系统实现" class="headerlink" title="文件系统实现"></a>文件系统实现</h1><a id="more"></a>
+<h2 id="文件系统结构"><a href="#文件系统结构" class="headerlink" title="文件系统结构"></a>文件系统结构</h2><p>磁盘提供大量的外存空间来维持文件系统。它有以下两个特点：</p>
+<ul>
+<li>可以原地重写，可以从磁盘上读一块，修改该块，并将它写回到原来位置。</li>
+<li>可以直接访问磁盘上的任意一块信息。</li>
+</ul>
+<p><img src="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B01.jpg" alt="分层设计的文件系统" title="分层设计的文件系统"></p>
+<p>I/O控制为最底层，由设备驱动程序和中断处理程序组成。</p>
+<p>基本文件系统只需要向合适的设备驱动程序发送一般命令就可对磁盘上的物理块进行读写。</p>
+<p>文件组织模块（file-organization module）知道文件及其逻辑块和物理块</p>
+<p>逻辑文件系统管理元数据（文件系统的所有结构数据）。</p>
+<p>文件控制块（file control block，FCB）包含文件的信息。</p>
+<h2 id="文件系统实现-1"><a href="#文件系统实现-1" class="headerlink" title="文件系统实现"></a>文件系统实现</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><ul>
+<li><strong>引导控制块（boot control block）</strong>包括系统从改卷引导操作系统所需要的信息。</li>
+<li><strong>卷控制块（volume control block）</strong>包括卷（或分区）的详细信息。</li>
+<li>每个文件系统的目录结构用来组织文件。</li>
+<li>每个文件的FCB包括很多该文件的详细信息。<h3 id="分区和安装"><a href="#分区和安装" class="headerlink" title="分区和安装"></a>分区和安装</h3>生的分区（raw）没有文件系统，熟的分区（cooked）有文件系统。根分区（root）包括操作系统内核或其他系统文件。<h3 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h3><img src="/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B0/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%9E%E7%8E%B02.jpg" alt="虚拟文件系统示意图" title="虚拟文件系统示意图"></li>
+</ul>
+<p>第一层文件系统接口</p>
+<p>第二层虚拟文件系统（VFS）层。通过定义一个清晰的VFS接口，将文件系统的通用性和具体实现分开。提供了在网络上唯一标识一个文件的机制。Linux中VFS定义的4种对象类型：</p>
+<blockquote>
+<ul>
+<li><strong>索引节点对象（inode object）</strong>，表示一个单独的文件</li>
+<li><strong>文件对象（file object）</strong>，表示一个打开的文件</li>
+<li><strong>超级块对象（superblock object）</strong>，表示整个文件系统</li>
+<li><strong>目录条目对象（dentry object）</strong>，表示要给单独的目录条目</li>
+</ul>
+</blockquote>
+<p>第三层实现文件系统类型或远程文件系统协议</p>
+<h2 id="目录实现"><a href="#目录实现" class="headerlink" title="目录实现"></a>目录实现</h2><h3 id="线性列表"><a href="#线性列表" class="headerlink" title="线性列表"></a>线性列表</h3><p>使用存储文件名和数据块指针的线性列表。编程简单但是运行费事。</p>
+<h3 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h3><p>使用哈希数据结构。大大减少了目录搜索时间，但是要避免冲突。</p>
+<h2 id="分配方法"><a href="#分配方法" class="headerlink" title="分配方法"></a>分配方法</h2><h3 id="连续分配（contiguous-allocation）"><a href="#连续分配（contiguous-allocation）" class="headerlink" title="连续分配（contiguous allocation）"></a>连续分配（contiguous allocation）</h3><p>要求每个文件在磁盘上占有一组连续的块。磁盘地址为磁盘定义了一个线性序列。困难是为新文件找到空间。是动态存储分配的一个具体应用。</p>
+<h3 id="链接分配（linked-allocation）"><a href="#链接分配（linked-allocation）" class="headerlink" title="链接分配（linked allocation）"></a>链接分配（linked allocation）</h3><p>解决了连续分配的问题，每个文件是磁盘的链表。但是它只能顺序访问。</p>
+<p>通过文件分配表（FAT）的使用。解决顺序访问的问题。</p>
+<h3 id="索引分配（indexed-allocation）"><a href="#索引分配（indexed-allocation）" class="headerlink" title="索引分配（indexed allocation）"></a>索引分配（indexed allocation）</h3><p>通过把所有指针放在一起，解决不能随机访问和直接访问的问题。每个文件都有一个索引块，是一个磁盘块地址的数组。索引分配支持直接访问，且没有外部碎片的问题。</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>连续分配访问一次就能得到磁盘块。链接分配对于直接访问效率很低。索引分配更为复杂，使用的时候需要一大块空间。</p>
+<h2 id="空闲空间管理"><a href="#空闲空间管理" class="headerlink" title="空闲空间管理"></a>空闲空间管理</h2><p>为了记录空闲空间，系统需要一个空闲空间链表（free-space list）。</p>
+<h3 id="位向量（bit-vector）"><a href="#位向量（bit-vector）" class="headerlink" title="位向量（bit vector）"></a>位向量（bit vector）</h3><p>用一个标记位来表示块是否使用。</p>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>将所有空闲磁盘块用链表连接起来，并将指向第一空闲块的指针保存在磁盘的特殊位置，同时也缓存在内存中。</p>
+<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>将n个空闲块的地址存在当一个空闲块中。</p>
+<h3 id="计数"><a href="#计数" class="headerlink" title="计数"></a>计数</h3><p>记录第一块的地址和紧跟着第一块的连续的空间块的数量n。</p>
+<h2 id="效率和性能"><a href="#效率和性能" class="headerlink" title="效率和性能"></a>效率和性能</h2><h3 id="效率"><a href="#效率" class="headerlink" title="效率"></a>效率</h3><p>磁盘空间的有效使用主要取决于所使用的磁盘分配和目录管理算法。</p>
+<h3 id="性能-1"><a href="#性能-1" class="headerlink" title="性能"></a>性能</h3><p>有的系统有一块独立内存用作缓冲缓存；有的采用页面缓存（page cache）；有的采用虚拟地址来缓存文件数据（统一虚拟内存（unified virtual memory））；使用双重缓存（double caching）：页面缓存和缓冲缓存。</p>
+<h2 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h2><h3 id="一致性检查（consistency-checker）"><a href="#一致性检查（consistency-checker）" class="headerlink" title="一致性检查（consistency checker）"></a>一致性检查（consistency checker）</h3><p>将目录结构数据与磁盘数据块相比较，并试图纠正所发现的不一致。</p>
+<h3 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h3><p>将数据备份到另一个存储设备，需要的时候只需要从备份中恢复就可以。</p>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 文件系统接口</title>
+    <url>/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/</url>
+    <content><![CDATA[<h1 id="文件系统接口"><a href="#文件系统接口" class="headerlink" title="文件系统接口"></a>文件系统接口</h1><a id="more"></a>
+<h2 id="文件概念"><a href="#文件概念" class="headerlink" title="文件概念"></a>文件概念</h2><p>文件是记录在外存上的相关信息的具有名称的集合。</p>
+<h3 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h3><p>所有文件的信息都保存在目录结构中。</p>
+<ul>
+<li>名称</li>
+<li>标识符：系统内文件的唯一标签，不可读。</li>
+<li>类型</li>
+<li>位置：指向设备和设备上文件位置的指针。</li>
+<li>大小</li>
+<li>保护</li>
+<li>时间、日期和用户标识：文件创建、上次修改和上次访问的相关信息。<h3 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h3>文件是抽象数据类型。主要操作有：</li>
+<li>创建文件</li>
+<li>写文件</li>
+<li>读文件</li>
+<li>在文件内重定位</li>
+<li>删除文件</li>
+<li>截短文件</li>
+</ul>
+<p>每个打开文件有如下相关信息：</p>
+<ul>
+<li>文件指针</li>
+<li>文件打开计数器</li>
+<li>文件磁盘位置</li>
+<li>访问权限</li>
+</ul>
+<p>有的文件提供一个文件锁。例如提供给读者的共享锁（shared lock），提供给写者的专用锁（exclusive lock）。另外操作系统提供强制（mandatory）或建议（advisory）文件加锁机制。</p>
+<h3 id="文件类型"><a href="#文件类型" class="headerlink" title="文件类型"></a>文件类型</h3><p>文件名称包括两部分：<strong>名称</strong>和<strong>扩展名</strong>。其中扩展名就表明了文件的类型。</p>
+<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p>文件结构也可以用文件类型表示。</p>
+<h3 id="内部文件结构"><a href="#内部文件结构" class="headerlink" title="内部文件结构"></a>内部文件结构</h3><h2 id="访问方法"><a href="#访问方法" class="headerlink" title="访问方法"></a>访问方法</h2><h3 id="顺序访问"><a href="#顺序访问" class="headerlink" title="顺序访问"></a>顺序访问</h3><p>文件信息按顺序，一个记录接着一个记录地加以处理。</p>
+<p>顺序访问基于文件的磁带模型。</p>
+<h3 id="直接访问"><a href="#直接访问" class="headerlink" title="直接访问"></a>直接访问</h3><p>也称相对访问。文件由固定长度地逻辑记录组成，允许程序按任意顺序进行快速读写。文件可作为块或记录的编号序列。因此可以直接读取某个块，在直接读取时，读写顺序是没有限制的。</p>
+<p>直接访问基于文件的磁带模型</p>
+<h3 id="其他访问方式"><a href="#其他访问方式" class="headerlink" title="其他访问方式"></a>其他访问方式</h3><p>其他访问方式基于直接访问方式。通过建立索引，再访问文件。</p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><h3 id="存储结构"><a href="#存储结构" class="headerlink" title="存储结构"></a>存储结构</h3><p>磁盘可以整体的用于一个文件系统。但是有时候需要装上多种文件系统。这些部分称为分区或片，也称小型磁盘。这些部分可以组合成一个更大的空间，卷（volume）。文件的信息保存在设备目录或卷表中。</p>
+<h3 id="文件概述"><a href="#文件概述" class="headerlink" title="文件概述"></a>文件概述</h3><p>目录可以看作符号表，它能将文件名称转换成目录条目。</p>
+<p>相关操作：</p>
+<ul>
+<li>搜索文件</li>
+<li>创建文件</li>
+<li>删除文件</li>
+<li>遍历目录</li>
+<li>重命名文件</li>
+<li>跟踪文件系统<h3 id="单层结构目录"><a href="#单层结构目录" class="headerlink" title="单层结构目录"></a>单层结构目录</h3>所有文件都包含在同一目录。特点是便于理解和支持。<h3 id="双层结构目录"><a href="#双层结构目录" class="headerlink" title="双层结构目录"></a>双层结构目录</h3>在双层结构目录中，每个用户都有自己的用户文件目录（user file directory，UFD）。当一个用户作业开始执行或一个用户注册是，就搜索系统的主文件目录（master file directory，MFD）。<h3 id="树状结构目录"><a href="#树状结构目录" class="headerlink" title="树状结构目录"></a>树状结构目录</h3>对前面的推广，用户又创建自己的子目录。这时就有了路径：绝对路径和相对路径。绝对路径从根开始并给出路径上的目录名。相对路径从当前目录开始定义路径。<h3 id="无环图目录"><a href="#无环图目录" class="headerlink" title="无环图目录"></a>无环图目录</h3>共享子目录或文件可同时位于文件系统的两（或多）处。</li>
+</ul>
+<p>树状图禁止共享文件和目录，而无环图（acyclic graph）可以</p>
+<h3 id="通用图目录"><a href="#通用图目录" class="headerlink" title="通用图目录"></a>通用图目录</h3><p>无环的优点是可以用简单的算法遍历图，并确定是否存在文件引用。建立通用的图原因时性能原因。</p>
+<h2 id="文件系统安装"><a href="#文件系统安装" class="headerlink" title="文件系统安装"></a>文件系统安装</h2><p>文件系统在使用之前必须安装（mount）。安装的时候需要一个安装点（mount point），通常为空目录。</p>
+<h2 id="文件共享"><a href="#文件共享" class="headerlink" title="文件共享"></a>文件共享</h2><h3 id="多用户"><a href="#多用户" class="headerlink" title="多用户"></a>多用户</h3><p>当一个操作系统有多个用户时，对于允许用户共享文件的目录结构，系统必须控制文件共享。</p>
+<h3 id="远程文件系统"><a href="#远程文件系统" class="headerlink" title="远程文件系统"></a>远程文件系统</h3><p>在网络上的文件系统有三种实现方式：一时用户通过程序可实现在机器之间进行文件的人工传输（允许匿名访问）。二是用分布式文件系统（DFS），远程目录可从本机上直接访问。三是通过万维网的网站进行访问（和第一种类似）。</p>
+<h4 id="客户机-服务器模型"><a href="#客户机-服务器模型" class="headerlink" title="客户机-服务器模型"></a>客户机-服务器模型</h4><p>远程文件系统允许一台计算机安装一台或多台远程机器上的一个或多个文件系统。这种情况下，包含文件的机器称为服务器，访问文件的称为客户机。客户机可通过网络访问，但是可能被欺骗。未经验证的客户机可能欺骗服务器进入服务器。</p>
+<h4 id="分布式信息系统"><a href="#分布式信息系统" class="headerlink" title="分布式信息系统"></a>分布式信息系统</h4><p>也成为分布式命名服务，用来体统用于远程计算所需的信息的统一访问。域名系统（DNS）为网络提供了主机名称到网络地址的转换。</p>
+<h4 id="故障模式"><a href="#故障模式" class="headerlink" title="故障模式"></a>故障模式</h4><p>本地文件系统可能因各种原因出错如元素据（metadata）的损坏、磁盘控制器故障等。</p>
+<h3 id="一致性语义（consistency-semantics）"><a href="#一致性语义（consistency-semantics）" class="headerlink" title="一致性语义（consistency semantics）"></a>一致性语义（consistency semantics）</h3><p>评估文件系统对文件共享支持的一个重要准则。它是描述多用户同时访问共享文件时的语义，规定了一个用户所修改的数据何时对另一个用户可见。</p>
+<h2 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h2><p>保证数据不受物理损坏和非法访问。</p>
+<h3 id="访问类型"><a href="#访问类型" class="headerlink" title="访问类型"></a>访问类型</h3><p>控制访问（controlled access）有以下几种类型：</p>
+<ul>
+<li>读</li>
+<li>写</li>
+<li>执行</li>
+<li>添加：将新信息添加到文件结尾部分</li>
+<li>删除</li>
+<li>列表清单：列出文件名称及其属性<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3>根据用户的身份来控制。所以可以增加一个访问控制列表（access-control list，ACL），给每个用户名设定所允许的访问类型。</li>
+</ul>
+<p>通常设定三个用户类型：</p>
+<ul>
+<li>拥有者</li>
+<li>组：一组需要共享文件且有类似访问的用户形成同一组用户组。</li>
+<li>其他<h3 id="其他保护方式"><a href="#其他保护方式" class="headerlink" title="其他保护方式"></a>其他保护方式</h3>给文件加上密码。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 死锁</title>
+    <url>/2020/01/06/os%E6%AD%BB%E9%94%81/</url>
+    <content><![CDATA[<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><p>如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为<strong>死锁（deadlock）</strong>。</p>
+<a id="more"></a>
+<h2 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h2><p>进程在使用资源前必须申请资源，在使用资源之后必须释放资源。在正常操作模式下，进程只能按如下顺序使用资源：</p>
+<ol>
+<li>申请：如果申请不被允许，那么进程必须等待，直到它获得该资源为止。</li>
+<li>使用：对资源进行操作。</li>
+<li>释放：使用完后释放资源。</li>
+</ol>
+<p>资源的申请与释放为系统调用。</p>
+<h2 id="死锁特征"><a href="#死锁特征" class="headerlink" title="死锁特征"></a>死锁特征</h2><h3 id="必要条件"><a href="#必要条件" class="headerlink" title="必要条件"></a>必要条件</h3><ol>
+<li><strong>互斥</strong>：至少有一个资源一次只有一个进程可以使用。</li>
+<li><strong>占有并等待</strong>：一个进程必须占有至少一个资源并等待另一个资源，而该资源为其他进程占有。</li>
+<li><strong>非抢占</strong>：资源不能被抢占</li>
+<li><strong>循环等待</strong>：有一组等待进程{P₀，P₁，…，Pn}，P₀等待的资源为P₁所占有，P₁等待的资源为P₂所占有，…，Pn-1等待的资源为Pn所占有，Pn等待的资源为P₀所占有。</li>
+</ol>
+<p>必须这四个条件同时出现才会出现死锁。</p>
+<h3 id="资源分配图"><a href="#资源分配图" class="headerlink" title="资源分配图"></a>资源分配图</h3><p>P-&gt;R为申请边，R-&gt;P为分配边。</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%811.jpg" alt="资源分配图" title="资源分配图"></p>
+<h3 id="死锁处理方法"><a href="#死锁处理方法" class="headerlink" title="死锁处理方法"></a>死锁处理方法</h3><p>从原理上来说有三种：</p>
+<blockquote>
+<ol>
+<li>可使用协议以预防或避免死锁，确保系统不会进入死锁状态。</li>
+<li>可允许系统进入死锁状态，然后检测它，并加以恢复。</li>
+<li>可忽视这个问题，认为死锁不可能在系统内发生。</li>
+</ol>
+</blockquote>
+<h4 id="采用死锁预防（deadlock-prevention）的方案"><a href="#采用死锁预防（deadlock-prevention）的方案" class="headerlink" title="采用死锁预防（deadlock prevention）的方案"></a>采用死锁预防（deadlock prevention）的方案</h4><p>确保至少一个必要条件（互斥、占有并等待、非抢占和循环等待）不成立。</p>
+<h4 id="采用死锁避免（deadlock-avoidance）的方案"><a href="#采用死锁避免（deadlock-avoidance）的方案" class="headerlink" title="采用死锁避免（deadlock avoidance）的方案"></a>采用死锁避免（deadlock avoidance）的方案</h4><p>事先得到有关进程申请资源和使用资源的额外信息。然后确定该进程是否应该等待，是允许申请还是延迟。</p>
+<h2 id="死锁避免（deadlock-avoidance）"><a href="#死锁避免（deadlock-avoidance）" class="headerlink" title="死锁避免（deadlock avoidance）"></a>死锁避免（deadlock avoidance）</h2><h3 id="安全状态"><a href="#安全状态" class="headerlink" title="安全状态"></a>安全状态</h3><p>如果系统能按某个顺序为每个进程分配资源并能避免死锁，那么系统状态就是安全的。即如果存在一个安全序列，那么系统处于安全状态。</p>
+<h3 id="资源分配图算法"><a href="#资源分配图算法" class="headerlink" title="资源分配图算法"></a>资源分配图算法</h3><p>除了申请边和分配边外，引入需求边。假设进程i申请资源j。只有在将申请边i-&gt;j变成分配边j-&gt;i而不会导致资源分配图形成环时，才允许申请。</p>
+<h3 id="银行家算法"><a href="#银行家算法" class="headerlink" title="银行家算法"></a>银行家算法</h3><p>资源分配图算法不适合于每种资源类型有多个实例的资源分配系统。在银行家算法中，如果客户的需求不能满足，银行决不会分配其现金。<br>死锁避免的资源分配图</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%812.jpg" alt="死锁避免的资源分配图" title="死锁避免的资源分配图"></p>
+<p>资源分配图的不安全状态</p>
+<p><img src="/2020/01/06/os%E6%AD%BB%E9%94%81/os%E6%AD%BB%E9%94%813.jpg" alt="资源分配图的不安全状态" title="资源分配图的不安全状态"></p>
+<p>所需数据结构：</p>
+<blockquote>
+<ul>
+<li><strong>Availabe</strong>：长度为m的向量，表示每种资源的现有实例的数量。</li>
+<li><strong>Max</strong>：n*m矩阵，定义每个进程的最大需求。</li>
+<li><strong>Allocation</strong>：n*m矩阵，定义每个进程现在所分配的各种资源类型的实例数量。</li>
+<li><strong>Need</strong>：n*m矩阵，表示每个进程还需要的剩余的资源。</li>
+</ul>
+</blockquote>
+<h4 id="安全性算法"><a href="#安全性算法" class="headerlink" title="安全性算法"></a>安全性算法</h4><p>步骤：</p>
+<p>1.设work和finish分别为长度m和n的向量。work=available，finish[0,…,n-1]=false。</p>
+<p>2.查找这样的i使其满足</p>
+<blockquote>
+<ol>
+<li>finish[i]=false</li>
+<li>need[i]≤work</li>
+</ol>
+</blockquote>
+<p>如果没有就跳转到第4步。</p>
+<p>3.work=work+allocation[i];finish[i]=true<br>返回到第2步</p>
+<p>4.如果对所有i，finish[i]=true，那么系统处于安全状态。</p>
+<h4 id="资源请求算法"><a href="#资源请求算法" class="headerlink" title="资源请求算法"></a>资源请求算法</h4><p>request[i]为进程P[i]的请求向量。request[j]==k表示进程P[i]需要资源类型为j的实例数量为k。步骤：</p>
+<ol>
+<li>如果request[i]≤need[i]，那么调转到第2步。否则报错：进程所需资源超过最大请求。</li>
+<li>如果request[i]≤available,那么跳转到第3步。否则报错：进程所需资源超过现有资源。</li>
+<li>分配资源：<blockquote>
+<ol>
+<li>available=available-request[i];</li>
+<li>allocation[i]=allocation[i]+request[i];</li>
+<li>need[i]=need[i]-request[i];</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+<h2 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h2><p>系统提供：</p>
+<ul>
+<li>一个用来检查系统状态从而确定是否出现了死锁的算法</li>
+<li>一个用来从死锁状态中恢复的算法<h3 id="每个资源类型只有单个实例"><a href="#每个资源类型只有单个实例" class="headerlink" title="每个资源类型只有单个实例"></a>每个资源类型只有单个实例</h3>如果每个资源类型只有单个实例，那就删除所有资源实例就能得到一个等待图（wait-for）。只要图中没有环就不会出现死锁。<h3 id="每种资源类型可有多个实例"><a href="#每种资源类型可有多个实例" class="headerlink" title="每种资源类型可有多个实例"></a>每种资源类型可有多个实例</h3>和银行家算法中的安全性算法相同。<h3 id="应用检测算法"><a href="#应用检测算法" class="headerlink" title="应用检测算法"></a>应用检测算法</h3>当经常发生死锁时，就应经常调用应用检测算法。但经常调用应用检测算法会增加开销。<h2 id="死锁恢复"><a href="#死锁恢复" class="headerlink" title="死锁恢复"></a>死锁恢复</h2><h3 id="进程终止"><a href="#进程终止" class="headerlink" title="进程终止"></a>进程终止</h3>两种终止方法：</li>
+<li>终止所有死锁进程。代价较高。</li>
+<li>一次只终止一个进程直到取消死锁循环为止。开销较大。<h3 id="资源抢占"><a href="#资源抢占" class="headerlink" title="资源抢占"></a>资源抢占</h3>通过逐步从其他进程中抢占资源直到死锁打破。但是也有问题：</li>
+</ul>
+<ol>
+<li>选择一个牺牲品</li>
+<li>回滚：被抢占资源的进程回到一个安全的状态</li>
+<li>饥饿：保证每次被抢占的不是同一个进程</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS 进程同步</title>
+    <url>/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[<h1 id="OS-进程同步"><a href="#OS-进程同步" class="headerlink" title="OS 进程同步"></a>OS 进程同步</h1><p>多个进程对同一数据处理且执行结果与访问顺序有关，称为竞争条件（race condition）。这就是<strong>进程同步（process synchronization）</strong>和<strong>协调（coordination）</strong>问题。</p>
+<a id="more"></a>
+<h2 id="临界区问题（critical-section-problem）"><a href="#临界区问题（critical-section-problem）" class="headerlink" title="临界区问题（critical-section problem）"></a>临界区问题（critical-section problem）</h2><ul>
+<li><p><strong>临界区（critical section）</strong>可能改变共同变量、更新一个表、写一个文件等的代码段。</p>
+</li>
+<li><p><strong>进入区（entry section）</strong>每个进程请求允许进入临界区的代码段</p>
+</li>
+<li><p><strong>退出区（exit section）</strong>退出临界区的代码段</p>
+</li>
+<li><p><strong>剩余区（remainder section）</strong>其他代码段</p>
+<h3 id="临界区问题的解答的三个要求"><a href="#临界区问题的解答的三个要求" class="headerlink" title="临界区问题的解答的三个要求"></a>临界区问题的解答的三个要求</h3></li>
+<li><p>互斥（mutual exclusion）</p>
+<blockquote>
+<ul>
+<li>如果有进程在临界区执行，其他进程就不能进入。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>前进（progress）</p>
+<blockquote>
+<ul>
+<li>如果没有进程在其临界区执行，且有进程需要进入临界区，那么只有那些不在剩余区内执行的进程可参加选择确定下一个进入临界区的程序，且这个过程不能无限推迟。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>有限等待（bounded waiting）</p>
+<blockquote>
+<ul>
+<li>从一个进程做出进入临界区的请求直到该请求允许为止，其他进程允许进入其临界区的次数有上限。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h4 id="两种用于处理操作系统内临界区问题的方法"><a href="#两种用于处理操作系统内临界区问题的方法" class="headerlink" title="两种用于处理操作系统内临界区问题的方法"></a>两种用于处理操作系统内临界区问题的方法</h4><p>抢占内核（preemptive kernel）<br>允许处于内核模式的进程被抢占</p>
+<p>非抢占内核（nonpreemtive kernel）<br>不允许处于内核模式的进程被抢占</p>
+<h2 id="Peterson算法"><a href="#Peterson算法" class="headerlink" title="Peterson算法"></a>Peterson算法</h2><p>这是一个经典的基于软件的临界区问题的解答</p>
+<p>算法在两个进程之间共享两个数据项</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> turn;<span class="comment">//表示哪个进程可以进入其临界区</span></span><br><span class="line"><span class="keyword">bool</span> flag[<span class="number">2</span>];<span class="comment">//表示哪个进程想要进入临界区</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A51.jpg" alt="Peterson算法中的进程P的结构" title="Peterson算法中的进程P的结构"></p>
+<h2 id="硬件同步"><a href="#硬件同步" class="headerlink" title="硬件同步"></a>硬件同步</h2><p>用一个锁来实现同步。即一个进程在进入临界区之前必须得到锁，而在其退出临界区时释放锁。</p>
+<p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A52.jpg" alt="采用锁的临界区问题的解答" title="采用锁的临界区问题的解答"></p>
+<p>在单处理器上这个问题可以简单的解决（在修改共享变量时禁止中断出现）。但是在多处理器上不可行。于世界提供了特殊迎接指令以允许能够原子地（不可中断地）检查和修改字的内容或交换两个字的内容。</p>
+<p>使用TestAndSet()的有限等待互斥示例：</p>
+<p>公用数据结构</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bool waiting[n];</span><br><span class="line">bool lock;</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A53.jpg" alt="使用TestAndSet的有限等待互斥" title="使用TestAndSet的有限等待互斥"></p>
+<h2 id="信号量（semaphore）"><a href="#信号量（semaphore）" class="headerlink" title="信号量（semaphore）"></a>信号量（semaphore）</h2><p>通过两个标准原子操作：<strong>wait()</strong>（P（proberen，测试））和<strong>signal()</strong>（V（verhogen，增加））来访问。</p>
+<p>wait()的定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">wait(S)&#123;</span><br><span class="line">    <span class="keyword">while</span>(S&lt;=<span class="number">0</span>)</span><br><span class="line">    ;<span class="comment">//no-op</span></span><br><span class="line">    S--</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>signal()的定义</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">signal(S)&#123;</span><br><span class="line">    S++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h3><p>计数信号量的值域不受限制，而二进制信号量的值只能为0或1。有的系统将二进制信号量成为互斥锁。</p>
+<p><img src="/2020/01/06/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A5/os%E8%BF%9B%E7%A8%8B%E5%90%8C%E6%AD%A54.jpg" alt="使用信号量的互斥实现" title="使用信号量的互斥实现"></p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>信号量的主要缺点是——都要求忙等待（busy waiting）。这种连续地循环地方式也称为自旋锁（spinlock）。</p>
+<p>为了解决忙等可以修改信号量操作wait()和signal()的定义。当执行wait()操作时如果发现信号量值不为正，则阻塞自己，这个阻塞操作将进程放入到于信号量相关的等待队列中，并将该进程的状态切换成等待状态。然后在其它进程执行signal()操作后使用wakeup()操作来进行重新执行。</p>
+<p>这里将信号量定义为以下结构</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> value;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">process</span> *<span class="title">list</span>;</span><span class="comment">//可以使用进程控制块中的一个链接域来实现</span></span><br><span class="line">&#125; semaphore;</span><br></pre></td></tr></table></figure>
+<p>wait()</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">wait(semaphore *S)&#123;</span><br><span class="line">    S-&gt;value--;</span><br><span class="line">    <span class="keyword">if</span> (S-&gt;value &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        add <span class="keyword">this</span> process to S-&gt;<span class="built_in">list</span>;</span><br><span class="line">        block();<span class="comment">//用block()挂起进程P</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>signal()</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">signal(semaphore *S)&#123;</span><br><span class="line">    S-&gt;value++;</span><br><span class="line">    <span class="keyword">if</span> (S-&gt;value &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">        remove a process from S-&gt;<span class="built_in">list</span>;</span><br><span class="line">        wakeup(P);<span class="comment">//用wakeup(P)重新启动进程P</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在SMP系统必须提供其他加锁技术，以确保两个操作可以原子地执行。在这里的wait()和signal()并没有完全取消忙等，是取消了进入临界区的忙等，而且将忙等限制在临界区内。</p>
+<h3 id="死锁（deadlock）和饥饿（starvation）"><a href="#死锁（deadlock）和饥饿（starvation）" class="headerlink" title="死锁（deadlock）和饥饿（starvation）"></a>死锁（deadlock）和饥饿（starvation）</h3><p>当两个或多个进程无限的等待一个事件，而这个事件只能由这些进程产生，这些进程就称为死锁。与之相关的问题是无限期阻塞（indefinite blocking）和饥饿（starvation）。</p>
+<h2 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h2><p>采用信号量作为同步问题的解答。</p>
+<h3 id="有限缓冲问题（生产者消费者问题）"><a href="#有限缓冲问题（生产者消费者问题）" class="headerlink" title="有限缓冲问题（生产者消费者问题）"></a>有限缓冲问题（生产者消费者问题）</h3><p>假定缓冲池有n个缓冲项，每个缓冲项能存一个数据项。信号量mutex提供了对缓冲池访问的扶持要求，并初始化为1。信号量empty和full分别用来表示空缓冲项和满缓冲项的个数。信号量empty初始化为n；full初始化为0。</p>
+<p>生产者进程结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//produce an item nextp</span></span><br><span class="line">    ...</span><br><span class="line">    wait(empty);</span><br><span class="line">    wait(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//add nextp to buffer</span></span><br><span class="line">    ...</span><br><span class="line">    signal(mutex);</span><br><span class="line">    signal(full);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>消费者进程结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(full);</span><br><span class="line">    wait(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//remove an item from buffer to nextc</span></span><br><span class="line">    ...</span><br><span class="line">    signal(mutex);</span><br><span class="line">    signal(empty);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//consume an item in nextc</span></span><br><span class="line">    ...</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="读者-写者问题"><a href="#读者-写者问题" class="headerlink" title="读者-写者问题"></a>读者-写者问题</h3><p>一个数据库可以为多个并发进程所共享。大致可分为读者（只需要读数据库）写者（可能要更新数据库）。第一读者-写者问题：读者优先；第二读者-写者问题：写者优先。它们都会造成饥饿问题。这里演示第一读者-写者问题：</p>
+<p>数据结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">semaphore mutex,wrt;<span class="comment">//wrt为读者和写者共用（写者互斥），mutex确保互斥</span></span><br><span class="line"><span class="keyword">int</span> readcount;<span class="comment">//读者的计数</span></span><br></pre></td></tr></table></figure>
+<p>写者进程结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(wrt);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//writing is performed</span></span><br><span class="line">    ...</span><br><span class="line">    signal(wrt);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>读者进程结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(mutex);<span class="comment">//需要保证if语句块中的代码能够执行，下同</span></span><br><span class="line">    readcount++;</span><br><span class="line">    <span class="keyword">if</span>( readcount == <span class="number">1</span>)</span><br><span class="line">        wait(wrt);<span class="comment">//一旦有读者，就和写者就无法进入</span></span><br><span class="line">    signal(mutex);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//reading is performed</span></span><br><span class="line">    ...</span><br><span class="line">    wait(mutex);</span><br><span class="line">    readcount--;</span><br><span class="line">    <span class="keyword">if</span>( readcount == <span class="number">0</span>)</span><br><span class="line">        signal(wrt);<span class="comment">//所有读者都读完后唤醒写者</span></span><br><span class="line">    signal(mutex);</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>这种问题在一下场景适合</p>
+<blockquote>
+<ul>
+<li>当可以区分进程是读还是写数据</li>
+<li>读者进程比写者进程多时（第一读者-写者问题）</li>
+</ul>
+</blockquote>
+<h3 id="哲学家就餐问题"><a href="#哲学家就餐问题" class="headerlink" title="哲学家就餐问题"></a>哲学家就餐问题</h3><p>n哲学家进餐问题描述有五个哲学家，他们的生活方式是交替地进行思考和进餐，n哲学家们共用一张圆桌，分别坐在周围的五张椅子上，在圆桌上有五个碗和五支筷子，n平时哲学家进行思考，饥饿时便试图取其左、右最靠近他的筷子，只有在他拿到两支筷子时才能进餐，n进餐完毕，放下筷子又继续思考。</p>
+<h4 id="第一种解法——每只筷子都用一个信号量来表示（会造成死锁）"><a href="#第一种解法——每只筷子都用一个信号量来表示（会造成死锁）" class="headerlink" title="第一种解法——每只筷子都用一个信号量来表示（会造成死锁）"></a>第一种解法——每只筷子都用一个信号量来表示（会造成死锁）</h4><p>共享数据：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">semaphore chopstick[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>哲学家i的结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    wait(chopstick[i]);</span><br><span class="line">    wait(chopstick[i+<span class="number">1</span>]%<span class="number">5</span>);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//eat</span></span><br><span class="line">    ...</span><br><span class="line">    signal(chopstick[i]);</span><br><span class="line">    signal(chopstick[i+<span class="number">1</span>]%<span class="number">5</span>);</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//think</span></span><br><span class="line">    ...</span><br><span class="line">&#125;<span class="keyword">while</span>(<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>但是这种解答会造成死锁。</p>
+<p>解决方法：</p>
+<blockquote>
+<p>1.最多只允许4个哲学家同时坐在位子上</p>
+</blockquote>
+<blockquote>
+<p>2.只有两支筷子都可用时才允许一个哲学家拿起它们</p>
+</blockquote>
+<blockquote>
+<p>3.使用非对称解决方法，即奇数哲学家先拿起左边的筷子，偶数哲学家先拿起右边的筷子</p>
+</blockquote>
+<h4 id="使用管程解决"><a href="#使用管程解决" class="headerlink" title="使用管程解决"></a>使用管程解决</h4><p>数据结构和算法：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">monitor dp</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">enum</span> &#123; THINKING, HUNGRY, EATING &#125; state[<span class="number">5</span>];</span><br><span class="line">    condition self[<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">pickup</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;<span class="comment">//拿起筷子的动作</span></span><br><span class="line">        state[i] = HUNGRY;</span><br><span class="line">        test(i);</span><br><span class="line">        <span class="keyword">if</span>(state[i] != EATING)</span><br><span class="line">            self[i].wait();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">putdown</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;<span class="comment">//放下筷子</span></span><br><span class="line">        state[i] = THINKING;</span><br><span class="line">        test((i+<span class="number">4</span>)%<span class="number">5</span>);</span><br><span class="line">        test((i+<span class="number">1</span>)%<span class="number">5</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>((state[(i+<span class="number">4</span>)%<span class="number">5</span>] != EATING))&amp;&amp;<span class="comment">//左边的筷子没有使用</span></span><br><span class="line">            (state[i] == HUNGRY)&amp;&amp;<span class="comment">//处于饥饿状态</span></span><br><span class="line">            (state[(i+<span class="number">1</span>)%<span class="number">5</span>] != EATING)&#123;<span class="comment">//右边的筷子没有使用</span></span><br><span class="line">                state[i] = EATING;</span><br><span class="line">                self[i].signal();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    initialization_code()&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>;i++)</span><br><span class="line">            state[i] = THINKING;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哲学家i的结构：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">dp.pickup(i);</span><br><span class="line">...</span><br><span class="line">eat</span><br><span class="line">...</span><br><span class="line">dp.putdown(i);</span><br></pre></td></tr></table></figure>
+<h2 id="管程（monitor）"><a href="#管程（monitor）" class="headerlink" title="管程（monitor）"></a>管程（monitor）</h2><p>为了防止由于编程等错误导致的wait()和signal()的位置调换或缺失，我们使用类型或抽象数据类型，封装了私有数据类型及操作数据的公有方法。管程结构确保一次只有一个进程能在管程内活动。</p>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OS CPU调度</title>
+    <url>/2020/01/06/osCPU%E8%B0%83%E5%BA%A6/</url>
+    <content><![CDATA[<h1 id="CPU调度"><a href="#CPU调度" class="headerlink" title="CPU调度"></a>CPU调度</h1><a id="more"></a>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p>多道程序的目标是在任何时候都有某些进程在运行，使CPU使用率最大化。当一个进程执行到等待的时候，操作系统就拿走CPU使用权交给其他就绪的进程。</p>
+<h3 id="CPU-I-O区间周期"><a href="#CPU-I-O区间周期" class="headerlink" title="CPU-I/O区间周期"></a>CPU-I/O区间周期</h3><p>进程执行从<strong>CPU区间（CPU burst）</strong>开始，之后使<strong>I/O区间（I/O burst）</strong>，接着使另一个CPU区间，然后使另一个I/O区间，以此循环，最终在最后的CPU区间通过系统请求终止执行。I/O约束程序通常具有很多短CPU区间；CPU约束程序可能有少量的长CPU区间。</p>
+<h3 id="CPU调度程序"><a href="#CPU调度程序" class="headerlink" title="CPU调度程序"></a>CPU调度程序</h3><p>CPU空闲时，操作系统就会从就绪队列中选择一个进程来执行。这个操作通常由<strong>短期调度程序（short-term scheduler）</strong>或CPU调度程序执行。</p>
+<h3 id="抢占调度"><a href="#抢占调度" class="headerlink" title="抢占调度"></a>抢占调度</h3><p>CPU调度决策在如下4种环境发生：</p>
+<blockquote>
+<ul>
+<li>1.当一个进程从运行状态切换到等待状态</li>
+<li>2.当一个进程从运行状态切换到就绪状态</li>
+<li>2.当一个进程从等待状态切换到就绪状态</li>
+<li>3.当一个进程终止</li>
+</ul>
+</blockquote>
+<p>当调度只能发生在第1和第4两种情况下时，称调度方案是<strong>非抢占的（nonpreemptive）</strong>或<strong>协作的（cooperative）</strong>；否则，称调度方案是<strong>抢占的（preemptive）</strong>。抢占调度对访问共享数据是有代价的，同时对内核设计也有影响。</p>
+<h3 id="分派程序（dispatcher）"><a href="#分派程序（dispatcher）" class="headerlink" title="分派程序（dispatcher）"></a>分派程序（dispatcher）</h3><p>功能：</p>
+<blockquote>
+<ul>
+<li>切换上下文</li>
+<li>切换到用户模式</li>
+<li>跳转到用户程序的合适位置，以重新启动程序</li>
+</ul>
+</blockquote>
+<p>分配程序停止一个进程而启动另一个所要花费的时间称为分派延迟（dispatch latency）。</p>
+<h2 id="调度准则"><a href="#调度准则" class="headerlink" title="调度准则"></a>调度准则</h2><ul>
+<li><p>CPU使用率</p>
+</li>
+<li><p>吞吐量</p>
+<blockquote>
+<p>单位时间内所完成进程的数量</p>
+</blockquote>
+</li>
+<li><p>周转时间</p>
+<blockquote>
+<p>从进程提交到进程完成的时间段称为周转时间</p>
+</blockquote>
+</li>
+<li><p>等待时间</p>
+<blockquote>
+<p>在就绪队列中等待所花费的时间之和</p>
+</blockquote>
+</li>
+<li><p>响应时间</p>
+<blockquote>
+<p>从进程提交到产生第一次响应的时间。</p>
+</blockquote>
+<h2 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h2></li>
+<li><p><em>Gantt图*</em>通过条状图来显示项目，进度和其他时间相关的系统进展的内在关系随着时间进展的情况。</p>
+<h3 id="先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）"><a href="#先到先服务调度（first-come-first-served-FCFS-scheduling-algorithm）" class="headerlink" title="先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）"></a>先到先服务调度（first-come,first-served(FCFS) scheduling algorithm）</h3><p>先请求CPU的进程先分配到CPU。该策略可以用FIFO队列来容易地实现。</p>
+</li>
+</ul>
+<p>优点：</p>
+<blockquote>
+<ul>
+<li>代码编写简单且容易理解</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>平均等待时间通常较长</li>
+<li>容易产生护航效果（convoy effect）（所有其他进程都等待一个大进程释放CPU）</li>
+</ul>
+</blockquote>
+<p>FCFS调度算法是非抢占式的。</p>
+<h3 id="最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）"><a href="#最短作业优先调度（shortest-job-first-SJF-scheduling-algorithm）" class="headerlink" title="最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）"></a>最短作业优先调度（shortest-job-first(SJF) scheduling algorithm）</h3><p>当CPU空闲时，它会赋给具有最短CPU区间的进程。如果两个进程有同样的长度，那么就可以使用FCFS调度来处理。通常用于长期调度。</p>
+<p>优点：</p>
+<blockquote>
+<ul>
+<li>平均等待时间最短</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>需要知道下一个CPU区间的长度</li>
+<li>不能再短期CPU调度层次上加以实现。</li>
+</ul>
+</blockquote>
+<p><strong>近似SJF调度</strong>：<br>下一个CPU区间预测为以前CPU区间的测量长度的指数平均。</p>
+<p>SJF调度算法可以时抢占或非抢占的。</p>
+<p>抢占式SJF算法又称为<strong>最短剩余时间优先调度（shortest-remaining-time-first scheduling）</strong>：当一个新进程如果到达就绪队列且它的CPU区间更短，就抢占当前进程。</p>
+<p>非抢占式允许当前运行的进程先完成其CPU区间。</p>
+<h3 id="优先级调度（priority-scheduling-algorithm）"><a href="#优先级调度（priority-scheduling-algorithm）" class="headerlink" title="优先级调度（priority scheduling algorithm）"></a>优先级调度（priority scheduling algorithm）</h3><p>每个进程都有一个优先级与其相关联，具有最高优先级的进程会分配到CPU。具有相同优先级的按FCFS调度来处理。优先级可以通过内部或外部方式来定义。内部定义优先级使用一些测量数据（时间极限、内存要求、打开文件的数量和平均I/O区间与平均CPU区间之比）以计算进程优先级。外部优先级是通过操作系统外的准则（进程重要性、用于支付使用计算机的费用类型等）来定义的。</p>
+<p>优先级调度可以说抢占式或非抢占式。</p>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>会出现<strong>无穷阻塞（indefinite blocking）</strong>或<strong>饥饿（starvation）</strong>（指可以运行但是缺乏CPU的进程）</li>
+</ul>
+</blockquote>
+<p>通过老化（aging，随着时间的增加增加优先级）可以解决阻塞问题。</p>
+<h3 id="轮转法调度（round-robin，RR）"><a href="#轮转法调度（round-robin，RR）" class="headerlink" title="轮转法调度（round-robin，RR）"></a>轮转法调度（round-robin，RR）</h3><p>专门为分时系统设计。它类似于FCFS调度，但是增加了抢占切换进程。定义一个较小时间单元（时间片）为进程的CPU区间。若进程运行了一个时间片的时间还没有停止就被抢占，而CPU交给下一个进程。</p>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>时间片太短会导致CPU效率降低，时间片太长RR调度也就变成了FCFS调度。</li>
+</ul>
+</blockquote>
+<h3 id="多级队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级队列调度（multilevel queue scheduling algorithm）"></a>多级队列调度（multilevel queue scheduling algorithm）</h3><p>将进程分成不同的组，例如，前台（交互）进程和后台（批处理）进程。然后根据进程的属性（内存大小、进程优先级、进程类型），一个进程被永久的分配到一个队列。每个队列有自己的调度算法。另外，队列之间也有调度，通常采用固定优先级抢占调度，通常采用固定优先级抢占调度。</p>
+<h3 id="多级反馈队列调度（multilevel-queue-scheduling-algorithm）"><a href="#多级反馈队列调度（multilevel-queue-scheduling-algorithm）" class="headerlink" title="多级反馈队列调度（multilevel queue scheduling algorithm）"></a>多级反馈队列调度（multilevel queue scheduling algorithm）</h3><p>为了解决多级队列调度不够灵活的问题，避免出现饥饿的发生，多级反馈队列调度允许进程在队列之间移动。通常是根据不同CPU区间的特点以区分进程。它通多下列参数来定义：</p>
+<blockquote>
+<ul>
+<li>队列数量</li>
+<li>每个队列的调度算法</li>
+<li>用以确定何时升级到更高优先级队列的方法</li>
+<li>用以确定何时降级到更低优先级队列的方法</li>
+<li>用以确定进程在需要服务时应进入哪个队列的方法</li>
+</ul>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<ul>
+<li>过于复杂</li>
+</ul>
+</blockquote>
+<h2 id="多处理器调度"><a href="#多处理器调度" class="headerlink" title="多处理器调度"></a>多处理器调度</h2><p>如果有多个处理器，则负载分配（loading sharing）成为可能。</p>
+<h3 id="多处理器调度的方法"><a href="#多处理器调度的方法" class="headerlink" title="多处理器调度的方法"></a>多处理器调度的方法</h3><h4 id="非对称多处理器（asymmetric-multiprocessing）"><a href="#非对称多处理器（asymmetric-multiprocessing）" class="headerlink" title="非对称多处理器（asymmetric multiprocessing）"></a>非对称多处理器（asymmetric multiprocessing）</h4><p>让一个处理器处理所有的调度决定、I/O处理以及其他的系统活动，其他的处理器只执行用户代码。</p>
+<h4 id="对称多处理器（symmetric-multiproccessing，SMP）"><a href="#对称多处理器（symmetric-multiproccessing，SMP）" class="headerlink" title="对称多处理器（symmetric multiproccessing，SMP）"></a>对称多处理器（symmetric multiproccessing，SMP）</h4><p>每个处理器自我调度。所有进程可能处于一个共同的就绪队列中，或每个处理器都有它自己私有的就绪进程队列。</p>
+<h3 id="处理器亲和性"><a href="#处理器亲和性" class="headerlink" title="处理器亲和性"></a>处理器亲和性</h3><p>努力使一个进程在同一个处理器上运行。不能做到保证叫做软亲和性（soft affinity），允许进程指定它不移植到其他处理器叫做硬亲和性（hard affinity）</p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><h2 id="算法评估"><a href="#算法评估" class="headerlink" title="算法评估"></a>算法评估</h2><blockquote>
+<ul>
+<li>最大化CPU使用率，同时要求最大响应时间为1s</li>
+<li>最大化吞吐量</li>
+</ul>
+</blockquote>
+<h3 id="确定模型（deterministic-modeling）"><a href="#确定模型（deterministic-modeling）" class="headerlink" title="确定模型（deterministic modeling）"></a>确定模型（deterministic modeling）</h3><p>分析评估发（analytic evaluation），使用给定算法和系统负荷，产生公式或数字，以评估对于该负荷算法的性能。确定模型法使其中一种。主要比较平均等待时间。</p>
+<h3 id="排队模型"><a href="#排队模型" class="headerlink" title="排队模型"></a>排队模型</h3><p>用到达率和服务率计算使用率、平均队列长度、平均等待时间，成为排队网络分析（queueing-network analysis）。</p>
+<p><strong>Little公式</strong>：<br>设n为平均队列长度，W为队列的平均等待时间，λ为新进程到达队列的平均到达率。有</p>
+<center>n=λ*W</center>
+
+<h3 id="模拟（simulation）"><a href="#模拟（simulation）" class="headerlink" title="模拟（simulation）"></a>模拟（simulation）</h3><p>对计算机系统建模。用软件数据表示系统的主要组成部分。用一个变量的改变反映设备、进程、和调度程序的活动。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>最精确的办法就是实现代码将其放到操作系统内，并观测它如何工作，在真是操作系统内进行评估。</p>
+]]></content>
+      <tags>
+        <tag>OS</tag>
+      </tags>
+  </entry>
 </search>

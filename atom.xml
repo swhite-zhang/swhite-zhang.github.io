@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-02-01T13:53:31.625Z</updated>
+  <updated>2020-02-02T14:06:04.831Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python爬虫（五）——Beautiful Soup库</title>
+    <link href="http://blog.ascrush.cn/2020/02/02/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Beautiful-Soup%E5%BA%93/"/>
+    <id>http://blog.ascrush.cn/2020/02/02/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Beautiful-Soup%E5%BA%93/</id>
+    <published>2020-02-02T12:16:51.000Z</published>
+    <updated>2020-02-02T14:06:04.831Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python爬虫（五）——Beautiful-Soup库&quot;&gt;&lt;a href=&quot;#Python爬虫（五）——Beautiful-Soup库&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（五）——Beautiful Soup库&quot;&gt;&lt;/a&gt;Python爬虫（五）——&lt;a href=&quot;https://www.crummy.com/software/BeautifulSoup/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; title=&quot;Beautiful Soup简介&quot;&gt;Beautiful Soup&lt;/a&gt;库&lt;/h1&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>Python爬虫（四）——五个基础爬虫实例</title>
