@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="manifest" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://blog.ascrush.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Python爬虫（六）——信息组织和提取">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫（六）——信息组织和提取">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/02/03/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AD%EF%BC%89%E2%80%94%E2%80%94%E4%BF%A1%E6%81%AF%E7%BB%84%E7%BB%87%E5%92%8C%E6%8F%90%E5%8F%96/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="Python爬虫（六）——信息组织和提取">
+<meta property="article:published_time" content="2020-02-03T07:37:18.000Z">
+<meta property="article:modified_time" content="2020-02-03T08:53:46.871Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.ascrush.cn/2020/02/03/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AD%EF%BC%89%E2%80%94%E2%80%94%E4%BF%A1%E6%81%AF%E7%BB%84%E7%BB%87%E5%92%8C%E6%8F%90%E5%8F%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Python爬虫（六）——信息组织和提取 | Ascrush</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ascrush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Ascrush's blog</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.ascrush.cn/2020/02/03/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AD%EF%BC%89%E2%80%94%E2%80%94%E4%BF%A1%E6%81%AF%E7%BB%84%E7%BB%87%E5%92%8C%E6%8F%90%E5%8F%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="欢迎参观我的博客网站~">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ascrush">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python爬虫（六）——信息组织和提取
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建于：2020-02-03 15:37:18 / 更新于：16:53:46" itemprop="dateCreated datePublished" datetime="2020-02-03T15:37:18+08:00">2020-02-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python爬虫（六）——信息组织和提取"><a href="#Python爬虫（六）——信息组织和提取" class="headerlink" title="Python爬虫（六）——信息组织和提取"></a>Python爬虫（六）——信息组织和提取</h1><a id="more"></a>
+<h2 id="信息的标记"><a href="#信息的标记" class="headerlink" title="信息的标记"></a>信息的标记</h2><p>对一组相关的信息进行标记有以下优点：</p>
+<ul>
+<li>可形成信息组织结构，增加了信息维度</li>
+<li>可用于信息、存储或展示</li>
+<li>标记的结构与信息一样具有重要价值</li>
+<li>更利于程序理解和运用</li>
+</ul>
+<h3 id="信息标记的种类"><a href="#信息标记的种类" class="headerlink" title="信息标记的种类"></a>信息标记的种类</h3><h4 id="XML"><a href="#XML" class="headerlink" title="XML"></a><a href="https://www.w3school.com.cn/xml/index.asp" target="_blank" rel="noopener" title="w3school XML">XML</a></h4><p>eXtensible Markup Language，是基于HTML发展而来的一种通用的信息表达格式。用尖括号和标签表达信息的标记形式。最早的通用信息标记语言，可拓展性好，但繁琐。通常在Internet上交互和传递。</p>
+<p>实例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">school</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>BUPT<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">address</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">city</span>&gt;</span>北京市<span class="tag">&lt;/<span class="name">city</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">street</span>&gt;</span>北京市西土城路10号<span class="tag">&lt;/<span class="name">street</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">zipcode</span>&gt;</span>100876<span class="tag">&lt;/<span class="name">zipcode</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">address</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">school</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a><a href="https://www.w3school.com.cn/json/index.asp" target="_blank" rel="noopener" title="w3school JSON">JSON</a></h4><p>JavaScript Object Notation，它由有类型的键值对组成。对于JavaScript等语言来说处理JSON格式很方便。信息有类型，适合程序处理（js），较XML简洁。移动应用云端和节点的通信，一般应用于程序在接口的地方，但无注释。</p>
+<p>实例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"BUPT"</span>,</span><br><span class="line">    <span class="attr">"address"</span>: &#123;</span><br><span class="line">        <span class="attr">"city"</span>: <span class="string">"北京市"</span>,</span><br><span class="line">        <span class="attr">"street"</span>: <span class="string">"北京市西土城路10号"</span>,</span><br><span class="line">        <span class="attr">"zipcode"</span>: <span class="number">100876</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="YAML"><a href="#YAML" class="headerlink" title="YAML"></a><a href="https://yaml.org/" target="_blank" rel="noopener" title="official website">YAML</a></h4><p>YAML Ain’t Markup Language，它由无类型的键值对组成，它利用缩进来表示所属，用减号表示并列关系。信息无类型，文本信息比例最高，可读性好。应用于各类系统的配置文件中。</p>
+<p>实例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">"name":</span> <span class="string">"BUPT"</span><span class="string">，</span></span><br><span class="line"><span class="attr">"address":</span> </span><br><span class="line">    <span class="attr">"city":</span> <span class="string">"北京市"</span><span class="string">,</span></span><br><span class="line">    <span class="attr">"street":</span> <span class="string">"北京市西土城路10号"</span><span class="string">,</span></span><br><span class="line">    <span class="attr">"zipcode":</span> <span class="string">"100876"</span></span><br></pre></td></tr></table></figure>
+<h2 id="信息提取的一般方法"><a href="#信息提取的一般方法" class="headerlink" title="信息提取的一般方法"></a>信息提取的一般方法</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>使用标记解析器完整解析信息的标记形式，再提取关键信息。</p>
+<p>优点：</p>
+<blockquote>
+<p>信息解析准确</p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>提取过程繁琐，速度慢</p>
+</blockquote>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>无视标记形式，使用文本查找函数直接搜索关键信息。</p>
+<p>优点：</p>
+<blockquote>
+<p>提取过程简洁，速度较快</p>
+</blockquote>
+<p>缺点：</p>
+<blockquote>
+<p>提取结果准确性和信息内容直接相关</p>
+</blockquote>
+<h3 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3><p>使用标记解析器解析信息，再使用文本查找函数直接搜索关键信息。</p>
+<p>实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#提取HTML中所有的url链接</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://python123.io/ws/demo.html"</span>)</span><br><span class="line">r.text</span><br><span class="line">demo = r.text</span><br><span class="line">soup = BeautifulSoup(demo, <span class="string">"html.parser"</span>)</span><br><span class="line"><span class="keyword">for</span> link <span class="keyword">in</span> soup.find_all(<span class="string">'a'</span>):</span><br><span class="line">    print(link.get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="基于bs4的HTML内容查找方法"><a href="#基于bs4的HTML内容查找方法" class="headerlink" title="基于bs4的HTML内容查找方法"></a>基于bs4的HTML内容查找方法</h2><p><a href="https://www.crummy.com/software/BeautifulSoup/" target="_blank" rel="noopener" title="Beautiful Soup简介">Beautiful Soup</a>中提供了一个方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;&gt;.find_all(name,attrs,recursive,string,**kwargs)</span><br></pre></td></tr></table></figure>
+<p>它返回一个列表类型，存储查找的结果。</p>
+<ul>
+<li>name：对标签名称的检索字符串<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">"http://python123.io/ws/demo.html"</span>)</span><br><span class="line">demo = r.text</span><br><span class="line">soup= BeautifulSoup(demo,<span class="string">"html.parser"</span>)</span><br><span class="line">soup.find_all(<span class="string">'a'</span>) <span class="comment">#输出一个列表类型，其中包含了所有出现的a标签</span></span><br><span class="line">soup.find_all([<span class="string">'a'</span>,<span class="string">'b'</span>]) <span class="comment">#这时候a标签和b标签会作为一个列表形式打印</span></span><br><span class="line"><span class="keyword">for</span> tag <span class="keyword">in</span> soup.find_all(<span class="literal">True</span>): <span class="comment">#如果参数为True，则会包含所有的标签</span></span><br><span class="line">    print(tag.name)</span><br></pre></td></tr></table></figure>
+如果我们希望只显示以b开头的标签：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#这里我们需要使用正则表达式</span></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">for</span> tag <span class="keyword">in</span> soup.find_all(re.compile(<span class="string">'b'</span>)): <span class="comment">#正则表达式返回的是以b开头的所有的信息</span></span><br><span class="line">    print(tag.name)</span><br></pre></td></tr></table></figure></li>
+<li>attrs：对标签属性值的检索字符串，可标注属性检索<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">soup.find_all(<span class="string">'p'</span>,<span class="string">'course'</span>) <span class="comment">#p标签中包含course的信息</span></span><br><span class="line">soup.find_all(id=<span class="string">'link1'</span>) <span class="comment">#也可以直接对属性进行约定</span></span><br><span class="line">soup.find_all(id=<span class="string">'link'</span>) <span class="comment">#如果不包含所约定的标签返回列表</span></span><br><span class="line">soup.find_all(id=re.compile(<span class="string">'link'</span>)) <span class="comment">#这时我们可以利用正则表达式</span></span><br></pre></td></tr></table></figure></li>
+<li>recursive：是否对标签树中所有子孙节点全部检索，默认为True<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">soup.find_all(<span class="string">'a'</span>, recursive=<span class="literal">False</span>) <span class="comment">#这时候返回空列表，说明儿子节点中没有a标签</span></span><br></pre></td></tr></table></figure></li>
+<li>string 对字符串区域检索字符串的参数<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">soup.find_all(string=<span class="string">"Advanced Python"</span>) <span class="comment">#必须精确的输入字符串区域的字符串才能检索</span></span><br><span class="line">soup.find_all(string=re.compile(<span class="string">"Python"</span>))<span class="comment">#如果你想检索带有Python的字符串则同样可以利用正则表达式</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>由于这个方法经常使用，我们可以世界使用soup()来代替soup.find_all()。</p>
+<h3 id="拓展方法"><a href="#拓展方法" class="headerlink" title="拓展方法"></a>拓展方法</h3><ul>
+<li>.find() 搜索且只返回一个结果，字符串类型</li>
+<li>.find_parents() 在先辈节点中搜索，返回列表类型</li>
+<li>.find_parent() 在先辈节点中返回一个结果，返回列表类型</li>
+<li>.find_next_siblings() 在后续平行节点中搜索，字符串类型</li>
+<li>.find_next_sibling() 在后续平行节点中返回一个结果，返回列表类型</li>
+<li>.find_previous_siblings() 在前序平行节点中搜索，字符串类型</li>
+<li>.find_previous_sibling() 在前序平行节点中返回一个结果，返回列表类型</li>
+</ul>
+<p>它们的参数都和.find_all()的参数一样，区别仅在于检索区域和返回内容的不同。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/02/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%BA%94%EF%BC%89%E2%80%94%E2%80%94Beautiful-Soup%E5%BA%93/" rel="prev" title="Python爬虫（五）——Beautiful Soup库">
+      <i class="fa fa-chevron-left"></i> Python爬虫（五）——Beautiful Soup库
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python爬虫（六）——信息组织和提取"><span class="nav-number">1.</span> <span class="nav-text">Python爬虫（六）——信息组织和提取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#信息的标记"><span class="nav-number">1.1.</span> <span class="nav-text">信息的标记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#信息标记的种类"><span class="nav-number">1.1.1.</span> <span class="nav-text">信息标记的种类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#XML"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">XML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JSON"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">JSON</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#YAML"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">YAML</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信息提取的一般方法"><span class="nav-number">1.2.</span> <span class="nav-text">信息提取的一般方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一"><span class="nav-number">1.2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法三"><span class="nav-number">1.2.3.</span> <span class="nav-text">方法三</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于bs4的HTML内容查找方法"><span class="nav-number">1.3.</span> <span class="nav-text">基于bs4的HTML内容查找方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拓展方法"><span class="nav-number">1.3.1.</span> <span class="nav-text">拓展方法</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="博主"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ascrush</p>
+  <div class="site-description" itemprop="description">欢迎参观我的博客网站~</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swhite-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swhite-zhang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zzzhhh@bupt.edu.cn" title="E-Mail → zzzhhh@bupt.edu.cn"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      
+      
+        <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 16.67px;">爬虫</a>
+          </div>
+        </div>
+      
+    </div>
+  </aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ascrush</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
