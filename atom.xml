@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-02-03T08:53:46.871Z</updated>
+  <updated>2020-02-03T13:26:23.945Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python爬虫（七）——中国大学排名爬虫</title>
+    <link href="http://blog.ascrush.cn/2020/02/03/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%83%EF%BC%89%E2%80%94%E2%80%94%E4%B8%AD%E5%9B%BD%E5%A4%A7%E5%AD%A6%E6%8E%92%E5%90%8D%E7%88%AC%E8%99%AB/"/>
+    <id>http://blog.ascrush.cn/2020/02/03/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%83%EF%BC%89%E2%80%94%E2%80%94%E4%B8%AD%E5%9B%BD%E5%A4%A7%E5%AD%A6%E6%8E%92%E5%90%8D%E7%88%AC%E8%99%AB/</id>
+    <published>2020-02-03T11:33:50.000Z</published>
+    <updated>2020-02-03T13:26:23.945Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python爬虫（七）——中国大学排名定向爬虫&quot;&gt;&lt;a href=&quot;#Python爬虫（七）——中国大学排名定向爬虫&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（七）——中国大学排名定向爬虫&quot;&gt;&lt;/a&gt;Python爬虫（七）——中国大学排名定向爬虫&lt;/h1&gt;&lt;p&gt;我们将使用上海交大开发的软科排名。网站：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.zuihaodaxue.com/BCSR/ruanjiangongcheng2019.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;http://www.zuihaodaxue.com/BCSR/ruanjiangongcheng2019.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们的目的是从这个网页中提取出2019年中国软件工程学科的排名、大学名称和总分。我们将会使用requests和bs4库。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>Python爬虫（六）——信息组织和提取</title>
