@@ -226,7 +226,7 @@
 </tr>
 <tr>
 <td>+?</td>
-<td>前一个正闭包的最小匹配</td>
+<td>前一个字符正闭包的最小匹配</td>
 </tr>
 <tr>
 <td>??</td>
@@ -239,8 +239,8 @@
 </tbody></table>
 ]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -310,8 +310,8 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_univ_list</span><span class="params">(ulist, num)</span>:</span></span><br><span class="line">    tplt = <span class="string">"&#123;0:&#123;3&#125;^10&#125;\t&#123;1:&#123;4&#125;^10&#125;\t&#123;2:&#123;5&#125;^10&#125;"</span>  <span class="comment">#定义一个输出模板的变量</span></span><br><span class="line">    print(tplt.format(<span class="string">"排名"</span>, <span class="string">"学校名称"</span>, <span class="string">"总分"</span>, chr(<span class="number">12288</span>), chr(<span class="number">12288</span>), chr(<span class="number">12288</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num):</span><br><span class="line">        u = ulist[i]</span><br><span class="line">        print(<span class="string">" "</span>+tplt.format(u[<span class="number">0</span>], u[<span class="number">1</span>], u[<span class="number">2</span>], chr(<span class="number">12288</span>), chr(<span class="number">12288</span>), chr(<span class="number">12288</span>)))</span><br></pre></td></tr></table></figure>
 <h2 id="全部代码"><a href="#全部代码" class="headerlink" title="全部代码"></a>全部代码</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> bs4</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_HTML_text</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:  <span class="comment">#使用之前的代码框架返回html</span></span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>)</span><br><span class="line">        r.raise_for_status()  <span class="comment">#如果出现异常返回空字符串</span></span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_univ_list</span><span class="params">(ulist, html)</span>:</span></span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)  <span class="comment">#解析网页代码</span></span><br><span class="line">    <span class="keyword">for</span> tr <span class="keyword">in</span> soup.find(<span class="string">'tbody'</span>):</span><br><span class="line">        <span class="keyword">if</span> isinstance(tr, bs4.element.Tag) <span class="keyword">and</span> len(tr(<span class="string">'td'</span>)) == <span class="number">7</span>:  <span class="comment">#检测标签的类型，过滤不是bs4中定义的Tag类型，这里需要引用bs4库</span></span><br><span class="line">            tds = tr(<span class="string">'td'</span>)</span><br><span class="line">            ulist.append([tds[<span class="number">0</span>].string, tds[<span class="number">3</span>].string, tds[<span class="number">6</span>].string])  <span class="comment">#注意排名、大学名称和分数在第几个</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_univ_list</span><span class="params">(ulist, num)</span>:</span></span><br><span class="line">    tplt = <span class="string">"&#123;0:&#123;3&#125;^10&#125;\t&#123;1:&#123;4&#125;^10&#125;\t&#123;2:&#123;5&#125;^10&#125;"</span>  <span class="comment">#定义一个输出模板的变量</span></span><br><span class="line">    print(tplt.format(<span class="string">"排名"</span>, <span class="string">"学校名称"</span>, <span class="string">"总分"</span>, chr(<span class="number">12288</span>), chr(<span class="number">12288</span>), chr(<span class="number">12288</span>)))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(num):</span><br><span class="line">        u = ulist[i]</span><br><span class="line">        print(<span class="string">" "</span>+tplt.format(u[<span class="number">0</span>], u[<span class="number">1</span>], u[<span class="number">2</span>], chr(<span class="number">12288</span>), chr(<span class="number">12288</span>), chr(<span class="number">12288</span>)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">uinfo = []</span><br><span class="line">url = <span class="string">'http://www.zuihaodaxue.com/BCSR/ruanjiangongcheng2019.html'</span></span><br><span class="line">html = get_HTML_text(url)</span><br><span class="line">fill_univ_list(uinfo, html)</span><br><span class="line">print_univ_list(uinfo, <span class="number">20</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -380,8 +380,8 @@
 <p>它们的参数都和.find_all()的参数一样，区别仅在于检索区域和返回内容的不同。</p>
 ]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -456,8 +456,8 @@
 <h2 id="基于bs4库的HTML格式输出"><a href="#基于bs4库的HTML格式输出" class="headerlink" title="基于bs4库的HTML格式输出"></a>基于bs4库的HTML格式输出</h2><p>为了方便程序的读取，这里可以使用prettify方法：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#使用前面的demo</span></span><br><span class="line">print(soup.prettify())</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -488,8 +488,8 @@
 <p>代码：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">"https://m.ip138.com/ip.asp?ip="</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    r = requests.get(url+<span class="string">'124.127.207.15'</span>)</span><br><span class="line">    r.raise_for_status()</span><br><span class="line">    r.encoding = r.aparent_encoding</span><br><span class="line">    r.text[<span class="number">-500</span>:]</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">"爬取失败"</span>)</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -505,8 +505,8 @@
 <p>你也可以不遵守robots.txt，但会产生风险。只有当你的程序不会对服务器产生威胁或者行为类似人类的时候可以不遵守robots.txt。这时候你获取的资源不能用于商业用途。</p>
 ]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -632,21 +632,21 @@
 <p>由于网络链接的问题我们需要一个通用代码框架。</p>
 ]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
-    <title>python爬虫（一）——开发环境</title>
-    <url>/2020/01/30/python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
+    <title>Python爬虫（一）——开发环境</title>
+    <url>/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<h1 id="python爬虫（一）——开发环境"><a href="#python爬虫（一）——开发环境" class="headerlink" title="python爬虫（一）——开发环境"></a>python爬虫（一）——开发环境</h1><h2 id="IDLE"><a href="#IDLE" class="headerlink" title="IDLE"></a>IDLE</h2><p><a href="https://baike.baidu.com/item/IDLE" target="_blank" rel="noopener" title="about IDLE">IDLE</a>是Python的集成开发环境，被打包为Python包装的可选部分。它是一个入门级的代码编写工具，适合编写较短的程序。</p>
 <h2 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h2><p><a href="https://www.sublimetext.com/3" target="_blank" rel="noopener" title="Sublime Text download">Sublime Text</a>是一个专门为程序员开发的文本编辑器。它是一个收费软件，但是可以无限期的试用。Sublime Text 支持多种编程语言的语法高亮、拥有优秀的代码自动完成功能，还拥有代码片段（Snippet）的功能，可以将常用的代码片段保存起来，在需要时随时调用。支持 VIM 模式，可以使用Vim模式下的多数命令。</p>
 <h2 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h2><p><a href="https://www.jetbrains.com/pycharm/download/" target="_blank" rel="noopener" title="PyCharm download">PyCharm</a>是一个由JetBrains打造的Python IDE。它的社区版免费，使用简单，集成度高。适合于较复杂的工程。</p>
 <h2 id="Anaconda-amp-Spyder"><a href="#Anaconda-amp-Spyder" class="headerlink" title="Anaconda &amp; Spyder"></a>Anaconda &amp; Spyder</h2><p><a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener" title="Anaconda download">Anaconda</a>是一个开源的Python发行版本，包含了conda、Python的180多个科学包及其依赖项。它适合用于科学计算。</p>
 ]]></content>
       <tags>
-        <tag>爬虫</tag>
         <tag>Python</tag>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
