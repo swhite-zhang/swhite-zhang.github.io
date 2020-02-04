@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="manifest" href="/images/avatar.jpg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://blog.ascrush.cn').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"always","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="Python爬虫（八）——正则表达式概念正则表达式（regular expression，RE）是一种通用的字符表达框架，用来简洁表达一组字符串的表达式。 作用 表达文本类型的特征 查找或替换一组字符串 匹配字符串的全部或部分  使用将符合正则表达式语法的字符串转换成正则表达式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫（八）——正则表达式">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Ascrush">
+<meta property="og:description" content="Python爬虫（八）——正则表达式概念正则表达式（regular expression，RE）是一种通用的字符表达框架，用来简洁表达一组字符串的表达式。 作用 表达文本类型的特征 查找或替换一组字符串 匹配字符串的全部或部分  使用将符合正则表达式语法的字符串转换成正则表达式。">
+<meta property="article:published_time" content="2020-02-04T09:23:04.000Z">
+<meta property="article:modified_time" content="2020-02-04T12:28:45.827Z">
+<meta property="article:author" content="Ascrush">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.ascrush.cn/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Python爬虫（八）——正则表达式 | Ascrush</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Ascrush" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Ascrush</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Ascrush's blog</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://blog.ascrush.cn/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="欢迎参观我的博客网站~">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ascrush">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python爬虫（八）——正则表达式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建于：2020-02-04 17:23:04 / 更新于：20:28:45" itemprop="dateCreated datePublished" datetime="2020-02-04T17:23:04+08:00">2020-02-04</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Python爬虫（八）——正则表达式"><a href="#Python爬虫（八）——正则表达式" class="headerlink" title="Python爬虫（八）——正则表达式"></a>Python爬虫（八）——正则表达式</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>正则表达式（regular expression，RE）是一种通用的字符表达框架，用来简洁表达一组字符串的表达式。</p>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><ul>
+<li>表达文本类型的特征</li>
+<li>查找或替换一组字符串</li>
+<li>匹配字符串的全部或部分</li>
+</ul>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>将符合正则表达式语法的字符串转换成正则表达式。</p>
+<a id="more"></a>
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><p>正则表达式由字符和操作符构成</p>
+<h3 id="常用操作符"><a href="#常用操作符" class="headerlink" title="常用操作符"></a>常用操作符</h3><p><strong>注</strong>：由于md的表格无法显示|的原因，这里使用中文字符丨表示</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>说明</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.</td>
+<td>表示任何单个字符</td>
+<td></td>
+</tr>
+<tr>
+<td>[]</td>
+<td>字符集，对单个字符给出取值范围</td>
+<td>[abc]表示a、b、c，[a-z]表示a到z单个字符</td>
+</tr>
+<tr>
+<td>[^]</td>
+<td>非字符集，对单个字符给出排除范围</td>
+<td>[^abc]表示非a或b或c的单个字符</td>
+</tr>
+<tr>
+<td>*</td>
+<td>克林闭包</td>
+<td></td>
+</tr>
+<tr>
+<td>+</td>
+<td>正闭包</td>
+<td></td>
+</tr>
+<tr>
+<td>?</td>
+<td>前一个字符0次或1次拓展</td>
+<td>a?表示Φ或a</td>
+</tr>
+<tr>
+<td>丨</td>
+<td>左右表达式任意一个</td>
+<td>ab丨de表示ab或de</td>
+</tr>
+<tr>
+<td>{m}</td>
+<td>扩展前一个字符m次</td>
+<td>ab{2}c表示abbc</td>
+</tr>
+<tr>
+<td>{m,n}</td>
+<td>扩展前一个字符m至n次（包含n）</td>
+<td>ab{1,2}c表示abc或abbc</td>
+</tr>
+<tr>
+<td>^</td>
+<td>匹配字符串开头</td>
+<td>^abc表示abc且abc在字符串的开头</td>
+</tr>
+<tr>
+<td>$</td>
+<td>匹配字符串结尾</td>
+<td>abc$表示abc且abc在字符串的结尾</td>
+</tr>
+<tr>
+<td>()</td>
+<td>分组标记，内部只能使用</td>
+<td>操作符</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>数字，等价于[0-9]</td>
+<td></td>
+</tr>
+<tr>
+<td>\w</td>
+<td>单词字符，等价于[A-Za-z0-9_</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h2><p>Re库是Python的标准库，主要用于字符串匹配。它使用raw string类型表示正则表达式。</p>
+<p>调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br></pre></td></tr></table></figure>
+<p>raw string不包含转义符，只用在普通string类型的字符串之前加上r就可。它也可使用string类型。</p>
+<h3 id="主要功能函数"><a href="#主要功能函数" class="headerlink" title="主要功能函数"></a>主要功能函数</h3><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.search()</td>
+<td>在一个字符串中搜索匹配正则表达式的第一个位置，返回一个match对象</td>
+</tr>
+<tr>
+<td>.match()</td>
+<td>从一个字符串的开始位置起匹配正则表达式，返回match对象</td>
+</tr>
+<tr>
+<td>.findall()</td>
+<td>搜索字符串，以列表类型返回全部能匹配的字符串</td>
+</tr>
+<tr>
+<td>.split()</td>
+<td>将一个字符串按照正则表达式匹配结果进行分割，返回列表类型</td>
+</tr>
+<tr>
+<td>.finditer()</td>
+<td>搜索字符串，返回一个匹配结果的迭代类型，每个迭代元素是match对象</td>
+</tr>
+<tr>
+<td>.sub()</td>
+<td>在于给字符串中替换所有匹配正则表达式的子串，返回代替后的字符串</td>
+</tr>
+</tbody></table>
+<h4 id="search-pattern-string-flags-0"><a href="#search-pattern-string-flags-0" class="headerlink" title=".search(pattern,string,flags=0)"></a>.search(pattern,string,flags=0)</h4><ul>
+<li>pattern<br>正则表达式的字符串或原生字符串表示</li>
+<li>string<br>待匹配字符串</li>
+<li>flags 使用标记<ul>
+<li>re.I/re.IGNORECASE<br>忽略正则表达式的大小写</li>
+<li>re.M/re.MULTILINE<br>正则表达式中的^操作符能够将给定字符串的每行当作匹配开始</li>
+<li>re.S/re.DOTALL<br>正则表达式中的.操作符能够匹配所有字符</li>
+</ul>
+</li>
+</ul>
+<h4 id="match-pattern-string-flags-0"><a href="#match-pattern-string-flags-0" class="headerlink" title=".match(pattern,string,flags=0)"></a>.match(pattern,string,flags=0)</h4><p>参数和search方法相同</p>
+<h4 id="findall-pattern-string-flags-0"><a href="#findall-pattern-string-flags-0" class="headerlink" title=".findall(pattern,string,flags=0)"></a>.findall(pattern,string,flags=0)</h4><p>参数和search方法相同</p>
+<h4 id="split-pattern-sting-maxsplit-0-flags-0"><a href="#split-pattern-sting-maxsplit-0-flags-0" class="headerlink" title=".split(pattern,sting,maxsplit=0,flags=0)"></a>.split(pattern,sting,maxsplit=0,flags=0)</h4><ul>
+<li>maxsplit<br>最大分割数（<strong>匹配次数</strong>），剩余部分作为最后一个元素输出</li>
+</ul>
+<h4 id="finditer-pattern-string-flags-0"><a href="#finditer-pattern-string-flags-0" class="headerlink" title=".finditer(pattern,string,flags=0)"></a>.finditer(pattern,string,flags=0)</h4><p>参数和search方法相同</p>
+<h4 id="sub-pattern-repl-string-count-0-flags-0"><a href="#sub-pattern-repl-string-count-0-flags-0" class="headerlink" title=".sub(pattern,repl,string,count=0,flags=0)"></a>.sub(pattern,repl,string,count=0,flags=0)</h4><ul>
+<li>repl<br>替换匹配字符串的字符串</li>
+<li>count<br>最大替换次数</li>
+</ul>
+<h3 id="两种用法"><a href="#两种用法" class="headerlink" title="两种用法"></a>两种用法</h3><p>函数式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rst = re.search(pattern,string,flags=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>面向对象式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pat = re.compile(pattern,flags=<span class="number">0</span>)</span><br><span class="line">rest = pat.search(string)</span><br></pre></td></tr></table></figure>
+<h4 id="complie-pattern-flags-0"><a href="#complie-pattern-flags-0" class="headerlink" title=".complie(pattern,flags=0)"></a>.complie(pattern,flags=0)</h4><p>将正则表达式的字符串形式编译成正则表达式对象</p>
+<ul>
+<li>pattern<br>正则表达式的字符串或原生字符串表示</li>
+<li>flags 使用标记<ul>
+<li>re.I/re.IGNORECASE<br>忽略正则表达式的大小写</li>
+<li>re.M/re.MULTILINE<br>正则表达式中的^操作符能够将给定字符串的每行当作匹配开始</li>
+<li>re.S/re.DOTALL<br>正则表达式中的.操作符能够匹配所有字符</li>
+</ul>
+</li>
+</ul>
+<p>我们要清楚字符串和原生字符串表示并不是正则表达式，只有当使用compile方法返回的对象才是正则表达式。这个对象也有以上六种方法。</p>
+<h2 id="match对象"><a href="#match对象" class="headerlink" title="match对象"></a>match对象</h2><p>match对象是一次匹配的结果，包含了匹配的信息。</p>
+<h3 id="主要属性"><a href="#主要属性" class="headerlink" title="主要属性"></a>主要属性</h3><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.string</td>
+<td>待匹配的文本</td>
+</tr>
+<tr>
+<td>.re</td>
+<td>匹配时使用的pattern对象</td>
+</tr>
+<tr>
+<td>.pos</td>
+<td>正则表达式搜索文本的开始位置</td>
+</tr>
+<tr>
+<td>.endpos</td>
+<td>正则表达式搜索文本的结束位置</td>
+</tr>
+</tbody></table>
+<h3 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>.group(0)</td>
+<td>获得匹配后的字符串</td>
+</tr>
+<tr>
+<td>.start()</td>
+<td>匹配字符串在原始字符串的开始位置</td>
+</tr>
+<tr>
+<td>.end()</td>
+<td>匹配字符串在原始字符串的结束位置</td>
+</tr>
+</tbody></table>
+<h2 id="贪婪匹配和最小匹配"><a href="#贪婪匹配和最小匹配" class="headerlink" title="贪婪匹配和最小匹配"></a>贪婪匹配和最小匹配</h2><h3 id="贪婪匹配"><a href="#贪婪匹配" class="headerlink" title="贪婪匹配"></a>贪婪匹配</h3><p>Re库的默认匹配方式，输出匹配最长的字串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match = re.search(<span class="string">r'PY.*N'</span>, <span class="string">'PYANBNCNDN'</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="最小匹配"><a href="#最小匹配" class="headerlink" title="最小匹配"></a>最小匹配</h3><p>输出最短的字符串</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match = re.search(<span class="string">r'PY.*?N'</span>, <span class="string">'PYANBNCNDN'</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="最小匹配操作符"><a href="#最小匹配操作符" class="headerlink" title="最小匹配操作符"></a>最小匹配操作符</h4><p><strong>注</strong>：这里都是前一个字符</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*?</td>
+<td>前一个字符克林闭包的最小匹配</td>
+</tr>
+<tr>
+<td>+?</td>
+<td>前一个正闭包的最小匹配</td>
+</tr>
+<tr>
+<td>??</td>
+<td>前一个字符0次或1次拓展的最小匹配</td>
+</tr>
+<tr>
+<td>{m,n}?</td>
+<td>扩展前一个字符m至n次（含n次）的最小匹配</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/04/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%A6%82%E8%A7%88/" rel="prev" title="C++程序设计语言（一）——概览">
+      <i class="fa fa-chevron-left"></i> C++程序设计语言（一）——概览
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python爬虫（八）——正则表达式"><span class="nav-number">1.</span> <span class="nav-text">Python爬虫（八）——正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#作用"><span class="nav-number">1.1.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法"><span class="nav-number">1.2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常用操作符"><span class="nav-number">1.2.1.</span> <span class="nav-text">常用操作符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-1"><span class="nav-number">1.3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要功能函数"><span class="nav-number">1.3.1.</span> <span class="nav-text">主要功能函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#search-pattern-string-flags-0"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">.search(pattern,string,flags&#x3D;0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#match-pattern-string-flags-0"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">.match(pattern,string,flags&#x3D;0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#findall-pattern-string-flags-0"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">.findall(pattern,string,flags&#x3D;0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#split-pattern-sting-maxsplit-0-flags-0"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">.split(pattern,sting,maxsplit&#x3D;0,flags&#x3D;0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#finditer-pattern-string-flags-0"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">.finditer(pattern,string,flags&#x3D;0)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sub-pattern-repl-string-count-0-flags-0"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">.sub(pattern,repl,string,count&#x3D;0,flags&#x3D;0)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种用法"><span class="nav-number">1.3.2.</span> <span class="nav-text">两种用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#complie-pattern-flags-0"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">.complie(pattern,flags&#x3D;0)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#match对象"><span class="nav-number">1.4.</span> <span class="nav-text">match对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要属性"><span class="nav-number">1.4.1.</span> <span class="nav-text">主要属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用方法"><span class="nav-number">1.4.2.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#贪婪匹配和最小匹配"><span class="nav-number">1.5.</span> <span class="nav-text">贪婪匹配和最小匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#贪婪匹配"><span class="nav-number">1.5.1.</span> <span class="nav-text">贪婪匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最小匹配"><span class="nav-number">1.5.2.</span> <span class="nav-text">最小匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最小匹配操作符"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">最小匹配操作符</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="博主"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Ascrush</p>
+  <div class="site-description" itemprop="description">欢迎参观我的博客网站~</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swhite-zhang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swhite-zhang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/zzzhhh@bupt.edu.cn" title="E-Mail → zzzhhh@bupt.edu.cn"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+      
+      
+        <div class="widget-wrap">
+          <h3 class="widget-title">Tag Cloud</h3>
+          <div class="widget tagcloud">
+            <a href="/tags/2019/" style="font-size: 10px;">2019</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/OS/" style="font-size: 20px;">OS</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/%E6%91%84%E5%BD%B1/" style="font-size: 10px;">摄影</a> <a href="/tags/%E7%88%AC%E8%99%AB/" style="font-size: 15px;">爬虫</a>
+          </div>
+        </div>
+      
+    </div>
+  </aside>
+  
+  <div id="sidebar-dimmer"></div>
+
+
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ascrush</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
