@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-02-06T07:56:26.688Z</updated>
+  <updated>2020-02-06T14:35:14.451Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python爬虫（十）———股票定向爬虫</title>
+    <link href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/"/>
+    <id>http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/</id>
+    <published>2020-02-06T08:29:08.000Z</published>
+    <updated>2020-02-06T14:35:14.451Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python爬虫（十）———股票定向爬虫&quot;&gt;&lt;a href=&quot;#Python爬虫（十）———股票定向爬虫&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（十）———股票定向爬虫&quot;&gt;&lt;/a&gt;Python爬虫（十）———股票定向爬虫&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;目标：获取上交所和深交所的所有股票的名称和交易信息&lt;/li&gt;
+&lt;li&gt;输出：保存到文件中&lt;/li&gt;
+&lt;li&gt;技术路线：requests-bs4-re&lt;/li&gt;&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
   
   <entry>
     <title>Python爬虫（九）——京东比价定向爬虫</title>
@@ -418,25 +442,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;文件系统接口&quot;&gt;&lt;a href=&quot;#文件系统接口&quot; class=&quot;headerlink&quot; title=&quot;文件系统接口&quot;&gt;&lt;/a&gt;文件系统接口&lt;/h1&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OS 死锁</title>
-    <link href="http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/"/>
-    <id>http://blog.ascrush.cn/2020/01/06/os%E6%AD%BB%E9%94%81/</id>
-    <published>2020-01-06T11:12:45.000Z</published>
-    <updated>2020-01-07T16:14:30.853Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;死锁&quot;&gt;&lt;a href=&quot;#死锁&quot; class=&quot;headerlink&quot; title=&quot;死锁&quot;&gt;&lt;/a&gt;死锁&lt;/h1&gt;&lt;p&gt;如果一组进程中每一个进程都处于等待状态，而这一事件只能由这一组进程的另一进程引起，那么这组进程将永远处于等待状态。这种情况就称为&lt;strong&gt;死锁（deadlock）&lt;/strong&gt;。&lt;/p&gt;
     
     </summary>
     
