@@ -1,6 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Python爬虫（九）——京东比价定向爬虫</title>
+    <url>/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/</url>
+    <content><![CDATA[<h1 id="Python爬虫（九）——京东比价定向爬虫"><a href="#Python爬虫（九）——京东比价定向爬虫" class="headerlink" title="Python爬虫（九）——京东比价定向爬虫"></a>Python爬虫（九）——京东比价定向爬虫</h1><ul>
+<li>目标：获取淘宝搜索页面的信息，提取其中的商品名称和价格。</li>
+<li>要求：淘宝的搜索接口 翻页的处理</li>
+<li>技术路线：requests-re</li>
+</ul>
+<a id="more"></a>
+<h2 id="判断可行性"><a href="#判断可行性" class="headerlink" title="判断可行性"></a>判断可行性</h2><h3 id="查看链接"><a href="#查看链接" class="headerlink" title="查看链接"></a>查看链接</h3><p>第一页：<br><a href="https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=1" target="_blank" rel="noopener">https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=1</a></p>
+<p>第二页：<br><a href="https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=3" target="_blank" rel="noopener">https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=3</a></p>
+<p>第三页：<br><a href="https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=5" target="_blank" rel="noopener">https://search.jd.com/Search?keyword=相机&amp;enc=utf-8&amp;page=5</a></p>
+<p>由上我们可以猜测最后的s变量和页码有关。</p>
+<h3 id="查看robots协议"><a href="#查看robots协议" class="headerlink" title="查看robots协议"></a>查看robots协议</h3><p>打开淘宝的robots.txt。发现：</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/JDRobots.png" alt="京东robots协议" title="京东robots协议"></p>
+<p>结果我们发现它不允许我们爬取。不过我们如果行为就像人类的行为，没有过度消耗服务器的资源仅仅是用于学习和探索那是没有问题的。</p>
+<h2 id="程序的设计"><a href="#程序的设计" class="headerlink" title="程序的设计"></a>程序的设计</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
+<li>提交上屏搜索请求，循环获取页面</li>
+<li>对于每个页面，提取商品名称和价格信息</li>
+<li>将信息输出到屏幕上</li>
+</ol>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="def-getHTMLText-url"><a href="#def-getHTMLText-url" class="headerlink" title="def getHTMLText(url)"></a>def getHTMLText(url)</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>: <span class="comment"># 利用前面的代码框架返回页面的text</span></span><br><span class="line">        r=requests.get(url,timeout=<span class="number">30</span>)</span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        r.encoding=r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<p>这时我们发现无法得到结果，查看后发现界面跳转到了登录界面，于是我们加入cookies参数来解决这个问题。</p>
+<p>那么如何得到cookie呢？我们打开这个网页，按下f12打开开发者模式：</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/developer.png" alt="开发者模式" title="开发者模式"></p>
+<p>然后选中network刷新一下界面，在最上面找到Search?keyword=这个包：</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/searchpacket.png" alt="searchpacket" title="searchpacket"></p>
+<p>然后我们在右边的Request Hearders中就能找到自己的cookie：</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/request.png" alt="requestHeaders" title="requestHeaders"></p>
+<p>代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:  <span class="comment"># 利用前面的代码框架返回页面的text</span></span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>&#125;, cookies=&#123;</span><br><span class="line">                         <span class="string">'cookie'</span>: <span class="string">'你的cookie'</span>&#125;)</span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br></pre></td></tr></table></figure>
+<h4 id="parsePage-ilt-html"><a href="#parsePage-ilt-html" class="headerlink" title="parsePage(ilt, html)"></a>parsePage(ilt, html)</h4><p>我们首先打开网页的源代码找到商品的信息。</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/goodsInfo.png" alt="商品信息" title="商品信息"></p>
+<p>我们发现淘宝商品的名字在标签em中且<strong>都有相机</strong>，而价格在标签i中且都是由<strong>数字.数字</strong>组成，于是利用以下两个正则表达式表示：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#价格</span></span><br><span class="line"><span class="string">r'\&lt;i\&gt;[\d]*\.[\d]*\&lt;\/i\&gt;'</span></span><br><span class="line"><span class="comment">#商品名称</span></span><br><span class="line"><span class="string">r'\&lt;em\&gt;.*相机.*\&lt;\/em\&gt;'</span></span><br></pre></td></tr></table></figure>
+<p>那么方法的代码为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parsePage</span><span class="params">(ilt, html)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 商品价格由数字和小数点组成所以用[\d.]*\.[\d]*来表示</span></span><br><span class="line">        plt = re.findall(<span class="string">r'\&lt;i\&gt;[\d]*\.[\d]*\&lt;\/i\&gt;'</span>, html)</span><br><span class="line">        tlt = re.findall(<span class="string">r'\&lt;em\&gt;.*相机.*\&lt;\/em\&gt;'</span>, html)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(plt)):</span><br><span class="line">            price = plt[i][<span class="number">3</span>:<span class="number">-4</span>]  <span class="comment"># 直接利用python字符串特性得到价格</span></span><br><span class="line">            <span class="keyword">if</span> re.findall(<span class="string">r'.*京品数码.*'</span>, tlt[i]) <span class="keyword">or</span> re.findall(<span class="string">r'.*京东国际.*'</span>, tlt[i]) <span class="keyword">or</span> re.findall(<span class="string">r'.*京东超市.*'</span>, tlt[i]):</span><br><span class="line">                print(<span class="string">'here'</span>)</span><br><span class="line">                <span class="comment"># 通过最小匹配来得到第一个&lt;之前的内容</span></span><br><span class="line">                title = re.findall(<span class="string">r'span\&gt;.*?\&lt;'</span>, tlt[i])[<span class="number">0</span>][<span class="number">5</span>:<span class="number">-1</span>]+<span class="string">'相机'</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 同样的方法获得其他类型商品名称</span></span><br><span class="line">                title = re.findall(<span class="string">r'em\&gt;.*?\&lt;'</span>, tlt[i])[<span class="number">0</span>][<span class="number">3</span>:<span class="number">-1</span>]+<span class="string">'相机'</span></span><br><span class="line">            ilt.append([price, title])</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="printGoodLists-ilt"><a href="#printGoodLists-ilt" class="headerlink" title="printGoodLists(ilt)"></a>printGoodLists(ilt)</h4><p>最后将结果打印出来，这里我也遇到了一些问题：<strong>无法打印出界面中所有的商品，我用BeautifulSoup+re分析也是同样的结果，如果你知道问题的所在希望能够给我留言或者私信我。</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printGoodLists</span><span class="params">(ilt)</span>:</span></span><br><span class="line">    tplt = <span class="string">"&#123;:4&#125;\t&#123;:8&#125;\t&#123;:16&#125;"</span>  <span class="comment"># 给出打印模板，第一个长度为4，第二个长度为8，最后一个长度为16</span></span><br><span class="line">    print(tplt.format(<span class="string">"序号"</span>, <span class="string">"价格"</span>, <span class="string">"商品名称"</span>))</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> goods <span class="keyword">in</span> ilt:</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        print(tplt.format(count, goods[<span class="number">0</span>], goods[<span class="number">1</span>]))</span><br><span class="line">    print(<span class="string">""</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#encoding='utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:  <span class="comment"># 利用前面的代码框架返回页面的text</span></span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>, headers=&#123;<span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'</span>&#125;, cookies=&#123;</span><br><span class="line">                         <span class="string">'cookie'</span>: <span class="string">'你的cookie'</span>&#125;)</span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        r.encoding = r.apparent_encoding</span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parsePage</span><span class="params">(ilt, html)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># 商品价格由数字和小数点组成所以用[\d.]*\.[\d]*来表示</span></span><br><span class="line">        plt = re.findall(<span class="string">r'\&lt;i\&gt;[\d]*\.[\d]*\&lt;\/i\&gt;'</span>, html)</span><br><span class="line">        tlt = re.findall(<span class="string">r'\&lt;em\&gt;.*相机.*\&lt;\/em\&gt;'</span>, html)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(plt)):</span><br><span class="line">            price = plt[i][<span class="number">3</span>:<span class="number">-4</span>]  <span class="comment"># 直接利用python字符串特性得到价格</span></span><br><span class="line">            <span class="keyword">if</span> re.findall(<span class="string">r'.*京品数码.*'</span>, tlt[i]) <span class="keyword">or</span> re.findall(<span class="string">r'.*京东国际.*'</span>, tlt[i]) <span class="keyword">or</span> re.findall(<span class="string">r'.*京东超市.*'</span>, tlt[i]):</span><br><span class="line">                <span class="comment"># 通过最小匹配来得到第一个&lt;之前的内容</span></span><br><span class="line">                title = re.findall(<span class="string">r'span\&gt;.*?\&lt;'</span>, tlt[i])[<span class="number">0</span>][<span class="number">5</span>:<span class="number">-1</span>]+<span class="string">'相机'</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 同样的方法获得其他类型商品名称</span></span><br><span class="line">                title = re.findall(<span class="string">r'em\&gt;.*?\&lt;'</span>, tlt[i])[<span class="number">0</span>][<span class="number">3</span>:<span class="number">-1</span>]+<span class="string">'相机'</span></span><br><span class="line">            ilt.append([price, title])</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printGoodLists</span><span class="params">(ilt)</span>:</span></span><br><span class="line">    tplt = <span class="string">"&#123;:4&#125;\t&#123;:8&#125;\t&#123;:16&#125;"</span>  <span class="comment"># 给出打印模板，第一个长度为4，第二个长度为8，最后一个长度为16</span></span><br><span class="line">    print(tplt.format(<span class="string">"序号"</span>, <span class="string">"价格"</span>, <span class="string">"商品名称"</span>))</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> goods <span class="keyword">in</span> ilt:</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        print(tplt.format(count, goods[<span class="number">0</span>], goods[<span class="number">1</span>]))</span><br><span class="line">    print(<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">goods = <span class="string">'相机'</span></span><br><span class="line">depth = <span class="number">3</span></span><br><span class="line">startUrl = <span class="string">'https://search.jd.com/Search?keyword='</span>+goods+<span class="string">'&amp;enc=utf-8'</span></span><br><span class="line">infoList = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(depth):  <span class="comment"># 这里通过循环来查询多个页面并保存再infoList中</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        page = i*<span class="number">2</span>+<span class="number">1</span></span><br><span class="line">        url = startUrl+<span class="string">'&amp;page='</span>+str(page)  <span class="comment"># 利用之前观察的页面url来设定每个页面的url</span></span><br><span class="line">        html = getHTMLText(url)</span><br><span class="line">        parsePage(infoList, html)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">printGoodLists(infoList)</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<p><img src="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/result.png" alt="运行结果" title="运行结果"></p>
+]]></content>
+      <tags>
+        <tag>Python</tag>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C++程序设计语言（二）——基础</title>
+    <url>/2020/02/05/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="C-程序设计语言（二）——基础"><a href="#C-程序设计语言（二）——基础" class="headerlink" title="C++程序设计语言（二）——基础"></a>C++程序设计语言（二）——基础</h1><a id="more"></a>
+<h2 id="源文件（program-file）和编码规范（coding-convention）"><a href="#源文件（program-file）和编码规范（coding-convention）" class="headerlink" title="源文件（program file）和编码规范（coding convention）"></a>源文件（program file）和编码规范（coding convention）</h2><p>C++的源文件分为.h头文件和.cpp源文件。</p>
+<p>好的编码规范可以使代码更加易于维护和阅读，避免混乱和出现一些低级错误。这里推荐两个编码规范：</p>
+<blockquote>
+<p>Google开源项目风格指南：<a href="https://github.com/zh-google-styleguide/zh-google-styleguide" target="_blank" rel="noopener">https://github.com/zh-google-styleguide/zh-google-styleguide</a></p>
+</blockquote>
+<blockquote>
+<p>goesoft编码风格指南：<a href="https://geosoft.no/development/cppstyle.html" target="_blank" rel="noopener">https://geosoft.no/development/cppstyle.html</a></p>
+</blockquote>
+<h2 id="命名空间（namespace）"><a href="#命名空间（namespace）" class="headerlink" title="命名空间（namespace）"></a>命名空间（namespace）</h2><p>命名空间是一个范围，用于限定符号的限定域，避免名字出现冲突。</p>
+<p>再编程的时候应该尽量避免出现以下情况：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br></pre></td></tr></table></figure>
+<p>应该用以下类似代码来替换：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cout</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">cin</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> str;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; str;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="处理错误"><a href="#处理错误" class="headerlink" title="处理错误"></a>处理错误</h2><h3 id="语法错误（Syntax-Error）"><a href="#语法错误（Syntax-Error）" class="headerlink" title="语法错误（Syntax Error）"></a>语法错误（Syntax Error）</h3><p>违反了编程语言的语句形式，或使用规则，一般由编译器检查指出。</p>
+<h4 id="常见的语法错误"><a href="#常见的语法错误" class="headerlink" title="常见的语法错误"></a>常见的语法错误</h4><ul>
+<li>写错关键字</li>
+<li>遗漏分号</li>
+<li>遗漏括号</li>
+<li>遗漏引导</li>
+</ul>
+<h3 id="运行时错误（Runtime-Error）"><a href="#运行时错误（Runtime-Error）" class="headerlink" title="运行时错误（Runtime Error）"></a>运行时错误（Runtime Error）</h3><p>程序运行时，遇到一个无法执行的操作。编译器无法检查指出。</p>
+<h3 id="逻辑错误（Logic-Error）"><a href="#逻辑错误（Logic-Error）" class="headerlink" title="逻辑错误（Logic Error）"></a>逻辑错误（Logic Error）</h3><p>程序运行的结果和预期不符。编译器无法检查指出。</p>
+<h2 id="输入和输出（Input-and-Output）"><a href="#输入和输出（Input-and-Output）" class="headerlink" title="输入和输出（Input and Output）"></a>输入和输出（Input and Output）</h2><p>C++使用流的概念对屏幕、键盘或文件进行输入输出操作。</p>
+<h3 id="标准I-O（standard-I-O）"><a href="#标准I-O（standard-I-O）" class="headerlink" title="标准I/O（standard I/O）"></a>标准I/O（standard I/O）</h3><table>
+<thead>
+<tr>
+<th>流</th>
+<th>描述</th>
+<th>操作符</th>
+<th>函数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cin</td>
+<td>标准输入流</td>
+<td>&gt;&gt;</td>
+<td><strong>cin.get()</strong>从流中读取一个字符,<strong>cin.getline()</strong>从六种读取字符直至换行符或指定分隔符,<strong>cin.ignore()</strong>从六种读取并舍弃指定数量的字符</td>
+</tr>
+<tr>
+<td>cout</td>
+<td>标准输出流</td>
+<td>&lt;&lt;</td>
+<td>cout.put()将字符写到流中,cout.flush()将流中缓存内容全部输出</td>
+</tr>
+<tr>
+<td>cerr</td>
+<td>标准错误流</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>clog</td>
+<td>标准错误流</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="文件I-O（file-I-O）"><a href="#文件I-O（file-I-O）" class="headerlink" title="文件I/O（file I/O）"></a>文件I/O（file I/O）</h3><h3 id="字符串I-O（string-I-O）"><a href="#字符串I-O（string-I-O）" class="headerlink" title="字符串I/O（string I/O）"></a>字符串I/O（string I/O）</h3><h3 id="网络I-O（network-I-O）"><a href="#网络I-O（network-I-O）" class="headerlink" title="网络I/O（network I/O）"></a>网络I/O（network I/O）</h3>]]></content>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python爬虫（八）——正则表达式</title>
     <url>/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<h1 id="Python爬虫（八）——正则表达式"><a href="#Python爬虫（八）——正则表达式" class="headerlink" title="Python爬虫（八）——正则表达式"></a>Python爬虫（八）——正则表达式</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>正则表达式（regular expression，RE）是一种通用的字符表达框架，用来简洁表达一组字符串的表达式。</p>
