@@ -46,26 +46,26 @@
   };
 </script>
 
-  <meta name="description" content="Python爬虫（十）———股票定向爬虫 目标：获取上交所和深交所的所有股票的名称和交易信息 输出：保存到文件中 技术路线：requests-bs4-re">
+  <meta name="description" content="Python爬虫（十）——股票定向爬虫 目标：获取上交所和深交所的所有股票的名称和交易信息 输出：保存到文件中 技术路线：requests-bs4-re">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python爬虫（十）———股票定向爬虫">
-<meta property="og:url" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:title" content="Python爬虫（十）——股票定向爬虫">
+<meta property="og:url" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/index.html">
 <meta property="og:site_name" content="Ascrush">
-<meta property="og:description" content="Python爬虫（十）———股票定向爬虫 目标：获取上交所和深交所的所有股票的名称和交易信息 输出：保存到文件中 技术路线：requests-bs4-re">
-<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png">
-<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/table.png">
-<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Lfont.png">
-<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Rlist.png">
-<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/result.png">
+<meta property="og:description" content="Python爬虫（十）——股票定向爬虫 目标：获取上交所和深交所的所有股票的名称和交易信息 输出：保存到文件中 技术路线：requests-bs4-re">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/table.png">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Lfont.png">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Rlist.png">
+<meta property="og:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/result.png">
 <meta property="article:published_time" content="2020-02-06T08:29:08.000Z">
-<meta property="article:modified_time" content="2020-02-06T14:35:14.451Z">
+<meta property="article:modified_time" content="2020-02-07T06:25:15.378Z">
 <meta property="article:author" content="Ascrush">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="爬虫">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png">
+<meta name="twitter:image" content="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png">
 
-<link rel="canonical" href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/">
+<link rel="canonical" href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/">
 
 
 <script id="page-configurations">
@@ -77,7 +77,7 @@
   };
 </script>
 
-  <title>Python爬虫（十）———股票定向爬虫 | Ascrush</title>
+  <title>Python爬虫（十）——股票定向爬虫 | Ascrush</title>
   
 
 
@@ -130,7 +130,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="Cambiar a barra de navegación">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -208,7 +208,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/">
+    <link itemprop="mainEntityOfPage" href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -221,7 +221,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Python爬虫（十）———股票定向爬虫
+          Python爬虫（十）——股票定向爬虫
         </h1>
 
         <div class="post-meta">
@@ -230,10 +230,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2020-02-06 16:29:08 / 更新于：22:35:14" itemprop="dateCreated datePublished" datetime="2020-02-06T16:29:08+08:00">2020-02-06</time>
+              <time title="创建于：2020-02-06 16:29:08" itemprop="dateCreated datePublished" datetime="2020-02-06T16:29:08+08:00">2020-02-06</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Editado el</span>
+                <time title="更新于：2020-02-07 14:25:15" itemprop="dateModified" datetime="2020-02-07T14:25:15+08:00">2020-02-07</time>
+              </span>
 
           
 
@@ -246,7 +252,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Python爬虫（十）———股票定向爬虫"><a href="#Python爬虫（十）———股票定向爬虫" class="headerlink" title="Python爬虫（十）———股票定向爬虫"></a>Python爬虫（十）———股票定向爬虫</h1><ul>
+        <h1 id="Python爬虫（十）——股票定向爬虫"><a href="#Python爬虫（十）——股票定向爬虫" class="headerlink" title="Python爬虫（十）——股票定向爬虫"></a>Python爬虫（十）——股票定向爬虫</h1><ul>
 <li>目标：获取上交所和深交所的所有股票的名称和交易信息</li>
 <li>输出：保存到文件中</li>
 <li>技术路线：requests-bs4-re<a id="more"></a>
@@ -267,7 +273,7 @@
 <p>因此我们观察新浪的网页代码，发现股票的信息都是引用的js代码，然后百度股票已经关闭了网页版。所以我们在查阅了其他各种股票网站以后选择了中财网这个网站（<a href="http://quote.cfi.cn/）。" target="_blank" rel="noopener">http://quote.cfi.cn/）。</a></p>
 <h2 id="程序的结构设计"><a href="#程序的结构设计" class="headerlink" title="程序的结构设计"></a>程序的结构设计</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
 <li>从东方财富网获取股票列表</li>
-<li>根据股票列表逐个到百度股票获取个股信息</li>
+<li>根据股票列表逐个到中财网获取个股信息</li>
 <li>将结果存储到文件</li>
 </ol>
 <h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><h4 id="getHTMLText-url-code-’utf-8’"><a href="#getHTMLText-url-code-’utf-8’" class="headerlink" title="getHTMLText(url, code=’utf-8’)"></a>getHTMLText(url, code=’utf-8’)</h4><p>在这里我们预设encoding为’utf-8’从而节省判断编码的时间。</p>
@@ -276,15 +282,15 @@
 <h4 id="getStockList-lst-stockUrl"><a href="#getStockList-lst-stockUrl" class="headerlink" title="getStockList(lst, stockUrl)"></a>getStockList(lst, stockUrl)</h4><p>我们先得到股票列表。通过观察网页源代码，我们发现上证和深证的股票编码可以用以下的正则表达式表示：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">r'[s][hz]\d&#123;6&#125;'</span></span><br></pre></td></tr></table></figure>
 <p>然后我们查询网站的编码类型：</p>
-<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png" alt="编码类型" title="编码类型"></p>
+<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/dfcharset.png" alt="编码类型" title="编码类型"></p>
 <p>代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getStockList</span><span class="params">(lst, stockUrl)</span>:</span></span><br><span class="line">    html = getHTMLText(stockUrl, <span class="string">'GB2312'</span>)  <span class="comment"># 填上在网页代码中看到的编码方式</span></span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    a = soup.find_all(<span class="string">'a'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            href = i.attrs[<span class="string">'href'</span>]</span><br><span class="line">            lst.append(re.findall(<span class="string">r'[s][hz]\d&#123;6&#125;'</span>, href)[<span class="number">0</span>][<span class="number">2</span>:])</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
 <h4 id="getStockInfo-lst-stockUrl"><a href="#getStockInfo-lst-stockUrl" class="headerlink" title="getStockInfo(lst, stockUrl)"></a>getStockInfo(lst, stockUrl)</h4><p>最后我们对股票列表中的股票进行查询后提取股票的信息。这时我们需要在网页代码中找到我们需要的信息。我们发现整个股票的信息都在一个table中：</p>
-<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/table.png" alt="tabel" title="table"></p>
+<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/table.png" alt="tabel" title="table"></p>
 <p>进一步观察发现股票名字在一个class=’Lfont’的标签中：</p>
-<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Lfont.png" alt="Lfont" title="Lfont"></p>
+<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Lfont.png" alt="Lfont" title="Lfont"></p>
 <p>而其他的信息都在一个class=’Rlist’的标签中：</p>
-<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Rlist.png" alt="Rlist" title="Rlist"></p>
+<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/Rlist.png" alt="Rlist" title="Rlist"></p>
 <p>在充分了解相关信息的name和attrs后，我们利用BeautifulSoup提取出相关信息再将其存入excel表格中。</p>
 <p>代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getStockInfo</span><span class="params">(lst, stockUrl)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    wb = xlwt.Workbook(encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">    ws = wb.add_sheet(<span class="string">'股票'</span>)</span><br><span class="line">    ws.write(<span class="number">0</span>, <span class="number">0</span>, label=<span class="string">'股票名称'</span>)</span><br><span class="line">    ws.write(<span class="number">0</span>, <span class="number">1</span>, label=<span class="string">'信息'</span>)</span><br><span class="line">    <span class="keyword">for</span> stock <span class="keyword">in</span> lst:</span><br><span class="line">        url = stockUrl+stock+<span class="string">'.html'</span>  <span class="comment"># 得到每个股票代码的网页</span></span><br><span class="line">        html = getHTMLText(url)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> html == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            infoDict = &#123;&#125;</span><br><span class="line">            soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">            stockInfo = soup.find(<span class="string">'table'</span>, attrs=&#123;</span><br><span class="line">                                  <span class="string">'style'</span>: <span class="string">'width:550px;border:0;padding:0;border-collapse:collapse;'</span>&#125;)</span><br><span class="line">            <span class="keyword">if</span> stockInfo:</span><br><span class="line">                name = stockInfo.find(<span class="string">'div'</span>, attrs=&#123;<span class="string">'class'</span>: <span class="string">'Lfont'</span>&#125;)</span><br><span class="line">                infoDict.update(&#123;<span class="string">'股票名称'</span>: name.text&#125;)</span><br><span class="line">                table = stockInfo.find(<span class="string">'td'</span>, attrs=&#123;<span class="string">'class'</span>: <span class="string">'Rlist'</span>&#125;)</span><br><span class="line">                keyList = table.find_all(<span class="string">'td'</span>)</span><br><span class="line">                key = <span class="string">''</span></span><br><span class="line">                <span class="keyword">for</span> td <span class="keyword">in</span> keyList:</span><br><span class="line">                    key = key+(td.text+<span class="string">'\n'</span>)</span><br><span class="line">                infoDict[<span class="string">'信息'</span>] = key</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">                ws.write(count, <span class="number">0</span>, label=infoDict[<span class="string">'股票名称'</span>])</span><br><span class="line">                ws.write(count, <span class="number">1</span>, label=infoDict[<span class="string">'信息'</span>])</span><br><span class="line">                print(<span class="string">'\r当前进度：&#123;:.2f&#125;&amp;'</span>.format(count*<span class="number">100</span>/len(lst)),</span><br><span class="line">                      end=<span class="string">''</span>)  <span class="comment"># /r能够将打印的光标提到行首</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'\r当前进度：&#123;:.2f&#125;&amp;'</span>.format(count*<span class="number">100</span>/len(lst)), end=<span class="string">''</span>)</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">    wb.save(<span class="string">'股票.xls'</span>)</span><br></pre></td></tr></table></figure>
@@ -292,7 +298,7 @@
 <h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> xlwt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getHTMLText</span><span class="params">(url, code=<span class="string">'utf-8'</span>)</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        r = requests.get(url, timeout=<span class="number">30</span>)</span><br><span class="line">        r.raise_for_status()</span><br><span class="line">        r.encoding = code  <span class="comment"># 判断编码时间会消耗很多时间，所以我们提前去网站上了解编码类型</span></span><br><span class="line">        <span class="keyword">return</span> r.text</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getStockList</span><span class="params">(lst, stockUrl)</span>:</span></span><br><span class="line">    html = getHTMLText(stockUrl, <span class="string">'GB2312'</span>)  <span class="comment"># 填上在网页代码中看到的编码方式</span></span><br><span class="line">    soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">    a = soup.find_all(<span class="string">'a'</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> a:</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            href = i.attrs[<span class="string">'href'</span>]</span><br><span class="line">            lst.append(re.findall(<span class="string">r'[s][hz]\d&#123;6&#125;'</span>, href)[<span class="number">0</span>][<span class="number">2</span>:])</span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getStockInfo</span><span class="params">(lst, stockUrl)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    wb = xlwt.Workbook(encoding=<span class="string">'utf-8'</span>) <span class="comment"># 新建一个workbook</span></span><br><span class="line">    ws = wb.add_sheet(<span class="string">'股票'</span>) <span class="comment"># 新建一个worksheet</span></span><br><span class="line">    ws.write(<span class="number">0</span>, <span class="number">0</span>, label=<span class="string">'股票名称'</span>)</span><br><span class="line">    ws.write(<span class="number">0</span>, <span class="number">1</span>, label=<span class="string">'信息'</span>)</span><br><span class="line">    <span class="keyword">for</span> stock <span class="keyword">in</span> lst:</span><br><span class="line">        url = stockUrl+stock+<span class="string">'.html'</span>  <span class="comment"># 得到每个股票代码的网页</span></span><br><span class="line">        html = getHTMLText(url)</span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">if</span> html == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            infoDict = &#123;&#125;</span><br><span class="line">            soup = BeautifulSoup(html, <span class="string">'html.parser'</span>)</span><br><span class="line">            stockInfo = soup.find(<span class="string">'table'</span>, attrs=&#123;</span><br><span class="line">                                  <span class="string">'style'</span>: <span class="string">'width:550px;border:0;padding:0;border-collapse:collapse;'</span>&#125;)</span><br><span class="line">            <span class="keyword">if</span> stockInfo:</span><br><span class="line">                name = stockInfo.find(<span class="string">'div'</span>, attrs=&#123;<span class="string">'class'</span>: <span class="string">'Lfont'</span>&#125;)</span><br><span class="line">                infoDict.update(&#123;<span class="string">'股票名称'</span>: name.text&#125;)</span><br><span class="line">                table = stockInfo.find(<span class="string">'td'</span>, attrs=&#123;<span class="string">'class'</span>: <span class="string">'Rlist'</span>&#125;)</span><br><span class="line">                keyList = table.find_all(<span class="string">'td'</span>)</span><br><span class="line">                key = <span class="string">''</span></span><br><span class="line">                <span class="keyword">for</span> td <span class="keyword">in</span> keyList:</span><br><span class="line">                    key = key+(td.text+<span class="string">'\n'</span>)</span><br><span class="line">                infoDict[<span class="string">'信息'</span>] = key</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">                ws.write(count, <span class="number">0</span>, label=infoDict[<span class="string">'股票名称'</span>]) <span class="comment"># 写入信息</span></span><br><span class="line">                ws.write(count, <span class="number">1</span>, label=infoDict[<span class="string">'信息'</span>]) <span class="comment"># 写入信息</span></span><br><span class="line">                print(<span class="string">'\r当前进度：&#123;:.2f&#125;&amp;'</span>.format(count*<span class="number">100</span>/len(lst)),</span><br><span class="line">                      end=<span class="string">''</span>)  <span class="comment"># /r能够将打印的光标提到行首</span></span><br><span class="line">        <span class="keyword">except</span>:</span><br><span class="line">            print(<span class="string">'\r当前进度：&#123;:.2f&#125;&amp;'</span>.format(count*<span class="number">100</span>/len(lst)), end=<span class="string">''</span>)</span><br><span class="line">            traceback.print_exc()</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">    wb.save(<span class="string">'股票.xls'</span>) <span class="comment"># 保存为股票.xls</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">stockListUrl = <span class="string">'http://quote.eastmoney.com/stock_list.html'</span></span><br><span class="line">stockInfoUrl = <span class="string">'http://quote.cfi.cn/quote_'</span></span><br><span class="line">slist = []</span><br><span class="line">getStockList(slist, stockListUrl)</span><br><span class="line">getStockInfo(slist, stockInfoUrl, fpath)</span><br></pre></td></tr></table></figure>
 
 <p>结果：</p>
-<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/result.png" alt="result" title="result"></p>
+<p><img src="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/result.png" alt="result" title="result"></p>
 
     </div>
 
@@ -315,7 +321,10 @@
     <a href="/2020/02/05/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B9%9D%EF%BC%89%E2%80%94%E2%80%94%E4%BA%AC%E4%B8%9C%E6%AF%94%E4%BB%B7%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/" rel="prev" title="Python爬虫（九）——京东比价定向爬虫">
       <i class="fa fa-chevron-left"></i> Python爬虫（九）——京东比价定向爬虫
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/07/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/" rel="next" title="Python爬虫（十一）——Scrapy爬虫框架简介">
+      Python爬虫（十一）——Scrapy爬虫框架简介 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -375,7 +384,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python爬虫（十）———股票定向爬虫"><span class="nav-number">1.</span> <span class="nav-text">Python爬虫（十）———股票定向爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#候选网站"><span class="nav-number">1.1.</span> <span class="nav-text">候选网站</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">1.1.1.</span> <span class="nav-text">选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的结构设计"><span class="nav-number">1.2.</span> <span class="nav-text">程序的结构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤"><span class="nav-number">1.2.1.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getHTMLText-url-code-’utf-8’"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">getHTMLText(url, code&#x3D;’utf-8’)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getStockList-lst-stockUrl"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">getStockList(lst, stockUrl)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getStockInfo-lst-stockUrl"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">getStockInfo(lst, stockUrl)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">1.3.</span> <span class="nav-text">完整代码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Python爬虫（十）——股票定向爬虫"><span class="nav-number">1.</span> <span class="nav-text">Python爬虫（十）——股票定向爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#候选网站"><span class="nav-number">1.1.</span> <span class="nav-text">候选网站</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">1.1.1.</span> <span class="nav-text">选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#程序的结构设计"><span class="nav-number">1.2.</span> <span class="nav-text">程序的结构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤"><span class="nav-number">1.2.1.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#getHTMLText-url-code-’utf-8’"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">getHTMLText(url, code&#x3D;’utf-8’)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getStockList-lst-stockUrl"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">getStockList(lst, stockUrl)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getStockInfo-lst-stockUrl"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">getStockInfo(lst, stockUrl)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">1.3.</span> <span class="nav-text">完整代码</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -391,7 +400,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

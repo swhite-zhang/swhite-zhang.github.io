@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-02-06T14:35:14.451Z</updated>
+  <updated>2020-02-07T08:43:44.498Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -17,15 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Python爬虫（十）———股票定向爬虫</title>
-    <link href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/"/>
-    <id>http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/</id>
-    <published>2020-02-06T08:29:08.000Z</published>
-    <updated>2020-02-06T14:35:14.451Z</updated>
+    <title>Python爬虫（十一）——Scrapy爬虫框架简介</title>
+    <link href="http://blog.ascrush.cn/2020/02/07/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/"/>
+    <id>http://blog.ascrush.cn/2020/02/07/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/</id>
+    <published>2020-02-07T05:51:33.000Z</published>
+    <updated>2020-02-07T08:43:44.498Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Python爬虫（十）———股票定向爬虫&quot;&gt;&lt;a href=&quot;#Python爬虫（十）———股票定向爬虫&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（十）———股票定向爬虫&quot;&gt;&lt;/a&gt;Python爬虫（十）———股票定向爬虫&lt;/h1&gt;&lt;ul&gt;
+      &lt;h1 id=&quot;Python爬虫（十一）——Scrapy爬虫框架简介&quot;&gt;&lt;a href=&quot;#Python爬虫（十一）——Scrapy爬虫框架简介&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（十一）——Scrapy爬虫框架简介&quot;&gt;&lt;/a&gt;Python爬虫（十一）——Scrapy爬虫框架简介&lt;/h1&gt;&lt;p&gt;scrapy不是一个简单的功能库，而是一个功能强大的网络爬虫框架。它是实现爬虫功能的一个软件结构和功能组件集合。它约束了一个模板，用户用这个模板来实现爬虫。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+      <category term="爬虫" scheme="http://blog.ascrush.cn/tags/%E7%88%AC%E8%99%AB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Python爬虫（十）——股票定向爬虫</title>
+    <link href="http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/"/>
+    <id>http://blog.ascrush.cn/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/</id>
+    <published>2020-02-06T08:29:08.000Z</published>
+    <updated>2020-02-07T06:25:15.378Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Python爬虫（十）——股票定向爬虫&quot;&gt;&lt;a href=&quot;#Python爬虫（十）——股票定向爬虫&quot; class=&quot;headerlink&quot; title=&quot;Python爬虫（十）——股票定向爬虫&quot;&gt;&lt;/a&gt;Python爬虫（十）——股票定向爬虫&lt;/h1&gt;&lt;ul&gt;
 &lt;li&gt;目标：获取上交所和深交所的所有股票的名称和交易信息&lt;/li&gt;
 &lt;li&gt;输出：保存到文件中&lt;/li&gt;
 &lt;li&gt;技术路线：requests-bs4-re&lt;/li&gt;&lt;/ul&gt;
@@ -89,7 +110,7 @@
     <link href="http://blog.ascrush.cn/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
     <id>http://blog.ascrush.cn/2020/02/04/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%85%AB%EF%BC%89%E2%80%94%E2%80%94%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</id>
     <published>2020-02-04T09:23:04.000Z</published>
-    <updated>2020-02-04T12:32:22.570Z</updated>
+    <updated>2020-02-07T08:19:07.341Z</updated>
     
     <summary type="html">
     
@@ -268,10 +289,10 @@
   
   <entry>
     <title>Python爬虫（一）——开发环境</title>
-    <link href="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
-    <id>http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</id>
+    <link href="http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/"/>
+    <id>http://blog.ascrush.cn/2020/01/30/Python%E7%88%AC%E8%99%AB%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</id>
     <published>2020-01-30T14:28:31.000Z</published>
-    <updated>2020-02-04T12:36:17.564Z</updated>
+    <updated>2020-02-07T06:26:14.359Z</updated>
     
     <summary type="html">
     
@@ -423,25 +444,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;文件系统实现&quot;&gt;&lt;a href=&quot;#文件系统实现&quot; class=&quot;headerlink&quot; title=&quot;文件系统实现&quot;&gt;&lt;/a&gt;文件系统实现&lt;/h1&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OS 文件系统接口</title>
-    <link href="http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/"/>
-    <id>http://blog.ascrush.cn/2020/01/06/os%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3/</id>
-    <published>2020-01-06T13:08:41.000Z</published>
-    <updated>2020-01-07T16:14:36.457Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;文件系统接口&quot;&gt;&lt;a href=&quot;#文件系统接口&quot; class=&quot;headerlink&quot; title=&quot;文件系统接口&quot;&gt;&lt;/a&gt;文件系统接口&lt;/h1&gt;
     
     </summary>
     
