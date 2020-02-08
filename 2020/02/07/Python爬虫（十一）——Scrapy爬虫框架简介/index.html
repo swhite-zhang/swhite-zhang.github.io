@@ -54,7 +54,7 @@
 <meta property="og:description" content="Python爬虫（十一）——Scrapy爬虫框架简介scrapy不是一个简单的功能库，而是一个功能强大的网络爬虫框架。它是实现爬虫功能的一个软件结构和功能组件集合。它约束了一个模板，用户用这个模板来实现爬虫。">
 <meta property="og:image" content="http://blog.ascrush.cn/2020/02/07/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/success.png">
 <meta property="article:published_time" content="2020-02-07T05:51:33.000Z">
-<meta property="article:modified_time" content="2020-02-07T08:43:44.498Z">
+<meta property="article:modified_time" content="2020-02-07T08:46:18.772Z">
 <meta property="article:author" content="Ascrush">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="爬虫">
@@ -126,7 +126,7 @@
   </div>
 
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Cambiar a barra de navegación">
+    <div class="toggle" aria-label="تغییر ناوبری">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -228,7 +228,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建于：2020-02-07 13:51:33 / 更新于：16:43:44" itemprop="dateCreated datePublished" datetime="2020-02-07T13:51:33+08:00">2020-02-07</time>
+              <time title="创建于：2020-02-07 13:51:33 / 更新于：16:46:18" itemprop="dateCreated datePublished" datetime="2020-02-07T13:51:33+08:00">2020-02-07</time>
             </span>
 
           
@@ -245,7 +245,7 @@
         <h1 id="Python爬虫（十一）——Scrapy爬虫框架简介"><a href="#Python爬虫（十一）——Scrapy爬虫框架简介" class="headerlink" title="Python爬虫（十一）——Scrapy爬虫框架简介"></a>Python爬虫（十一）——Scrapy爬虫框架简介</h1><p>scrapy不是一个简单的功能库，而是一个功能强大的网络爬虫框架。它是实现爬虫功能的一个软件结构和功能组件集合。它约束了一个模板，用户用这个模板来实现爬虫。</p>
 <a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>打开cmd执行一下语句：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install scrapy</span><br><span class="line">scrapy -h #查看版本</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install scrapy</span><br><span class="line">scrapy -h</span><br></pre></td></tr></table></figure>
 <p>成功后：</p>
 <p><img src="/2020/02/07/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94Scrapy%E7%88%AC%E8%99%AB%E6%A1%86%E6%9E%B6%E7%AE%80%E4%BB%8B/success.png" alt="success" title="success"></p>
 <h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><p>Scrapy有七个结构：SPIDERS（入口）、ITEM PIPELINES（出口）、ENGINE（已实现）、SCHEDULER（已实现）、DOWNLOADER（已实现）和MIDDLEWARE、INTERNET。</p>
@@ -253,8 +253,9 @@
 <ol>
 <li><strong>SPIDERS-&gt;ENGINE-&gt;SCHEDULER</strong> 首先是Spider给EngineE提交请求Requests，然后Engine转发给Scheduler。</li>
 <li><strong>SCHEDULER-&gt;EMGINE-&gt;DOWNLOADER-&gt;ENGINE-&gt;SPIDERS</strong> 首先是Scheduler向Engine提交网络爬取请求Requests，然后Engine通过中间件发送给Downloader，然后Downloader从Internet中爬取相关网页，然后将爬取内容封装成成响应对象Response再发送给Engine，最终到达Spider。</li>
-<li><strong>SPIDERS-&gt;ENGINE-&gt;ITEM PIPELINES and SCHEDULER</strong> Spider处理从Downloader获得的响应后形成ITEMS和一个新的请求Requests，然后发送给Engine。然后Engine将Items发给Item Pipelines进行后期的数据处理，将Requests发送给Scheduler从而爬取新的信息。<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><h3 id="ENGINE-整个框架的核心"><a href="#ENGINE-整个框架的核心" class="headerlink" title="ENGINE 整个框架的核心"></a>ENGINE 整个框架的核心</h3>它的主要功能有：</li>
+<li><strong>SPIDERS-&gt;ENGINE-&gt;ITEM PIPELINES and SCHEDULER</strong> Spider处理从Downloader获得的响应后形成ITEMS和一个新的请求Requests，然后发送给Engine。然后Engine将Items发给Item Pipelines进行后期的数据处理，将Requests发送给Scheduler从而爬取新的信息。</li>
 </ol>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><h3 id="ENGINE-整个框架的核心"><a href="#ENGINE-整个框架的核心" class="headerlink" title="ENGINE 整个框架的核心"></a>ENGINE 整个框架的核心</h3><p>它的主要功能有：</p>
 <ul>
 <li>控制所有模块之间的数据流</li>
 <li>根据条件触发事件</li>
@@ -273,7 +274,9 @@
 <h2 id="requests库与scrapy库的比较"><a href="#requests库与scrapy库的比较" class="headerlink" title="requests库与scrapy库的比较"></a>requests库与scrapy库的比较</h2><h3 id="相同点"><a href="#相同点" class="headerlink" title="相同点"></a>相同点</h3><ul>
 <li>都可以进行页面请求和爬取</li>
 <li>可用性都很好，文档丰富，入门简单</li>
-<li>都没有处理js、提交表单、应对验证码等功能<h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h3><table>
+<li>都没有处理js、提交表单、应对验证码等功能</li>
+</ul>
+<h3 id="不同点"><a href="#不同点" class="headerlink" title="不同点"></a>不同点</h3><table>
 <thead>
 <tr>
 <th>requests</th>
@@ -305,13 +308,49 @@
 <td>入门稍难</td>
 </tr>
 </tbody></table>
-</li>
-</ul>
 <p><strong>注</strong>：网络爬虫的快慢只是一个简单的参数，在应对反爬机制时反而要求爬取速度较慢。小的程序适合使用requests库，而较大的适合Scrapy</p>
 <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>格式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;scrapy &lt;command&gt; [options] [args]</span><br></pre></td></tr></table></figure>
-
-<p>常用命令：<br>|命令|说明|格式|<br>|—-|—|—-|<br>|<strong>startproject</strong>|创建一个新工程|scrapy startproject &lt;name&gt; [dir]|<br>|<strong>genspider</strong>|创建一个爬虫|scrapy genspider [options] &lt;name&gt; &lt;domain&gt;|<br>|settings|获得爬虫配置信息|scrapy settings [options]|<br>|<strong>crawl</strong>|运行一个爬虫|scrapy crawl  &lt;spider&gt;|<br>|list|列出工程中所有爬虫|scrapy list|<br>|shell|启动URL调试命令行|scrapy shell [url]|</p>
+<p>常用命令：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+<th>格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>startproject</strong></td>
+<td>创建一个新工程</td>
+<td>scrapy startproject &lt;name&gt; [dir]</td>
+</tr>
+<tr>
+<td><strong>genspider</strong></td>
+<td>创建一个爬虫</td>
+<td>scrapy genspider [options] &lt;name&gt; &lt;domain&gt;</td>
+</tr>
+<tr>
+<td>settings</td>
+<td>获得爬虫配置信息</td>
+<td>scrapy settings [options]</td>
+</tr>
+<tr>
+<td><strong>crawl</strong></td>
+<td>运行一个爬虫</td>
+<td>scrapy crawl  &lt;spider&gt;</td>
+</tr>
+<tr>
+<td>list</td>
+<td>列出工程中所有爬虫</td>
+<td>scrapy list</td>
+</tr>
+<tr>
+<td>shell</td>
+<td>启动URL调试命令行</td>
+<td>scrapy shell [url]</td>
+</tr>
+</tbody></table>
 <p>使用命令行是为了自动化操作，易于脚本控制。</p>
 
     </div>
@@ -335,7 +374,10 @@
     <a href="/2020/02/06/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%EF%BC%89%E2%80%94%E2%80%94%E8%82%A1%E7%A5%A8%E5%AE%9A%E5%90%91%E7%88%AC%E8%99%AB/" rel="prev" title="Python爬虫（十）——股票定向爬虫">
       <i class="fa fa-chevron-left"></i> Python爬虫（十）——股票定向爬虫
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/08/Python%E7%88%AC%E8%99%AB%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94scrapy%E4%BD%BF%E7%94%A8/" rel="next" title="Python爬虫（十二）——scrapy使用">
+      Python爬虫（十二）——scrapy使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -411,7 +453,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
