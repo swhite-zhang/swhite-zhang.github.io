@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-02-10T05:28:44.841Z</updated>
+  <updated>2020-02-23T07:43:28.711Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++程序设计语言（三）——循环分支语句</title>
+    <link href="http://blog.ascrush.cn/2020/02/23/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%E5%BE%AA%E7%8E%AF%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5/"/>
+    <id>http://blog.ascrush.cn/2020/02/23/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%B8%89%EF%BC%89%E2%80%94%E2%80%94%E5%BE%AA%E7%8E%AF%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5/</id>
+    <published>2020-02-23T03:36:24.000Z</published>
+    <updated>2020-02-23T07:43:28.711Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;C-程序设计语言（三）——循环分支语句&quot;&gt;&lt;a href=&quot;#C-程序设计语言（三）——循环分支语句&quot; class=&quot;headerlink&quot; title=&quot;C++程序设计语言（三）——循环分支语句&quot;&gt;&lt;/a&gt;C++程序设计语言（三）——循环分支语句&lt;/h1&gt;&lt;p&gt;C++中提供了while语句、do while语句、for语句、if语句和switch语句。&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="C++" scheme="http://blog.ascrush.cn/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>Python爬虫（十三）——Scrapy爬取豆瓣图书</title>
@@ -131,15 +150,16 @@
   </entry>
   
   <entry>
-    <title>C++程序设计语言（二）——基础</title>
-    <link href="http://blog.ascrush.cn/2020/02/05/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80/"/>
-    <id>http://blog.ascrush.cn/2020/02/05/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80/</id>
+    <title>C++程序设计语言（二）——标准输入输出</title>
+    <link href="http://blog.ascrush.cn/2020/02/05/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/"/>
+    <id>http://blog.ascrush.cn/2020/02/05/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%BA%8C%EF%BC%89%E2%80%94%E2%80%94%E6%A0%87%E5%87%86%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/</id>
     <published>2020-02-05T09:23:49.000Z</published>
-    <updated>2020-02-06T07:52:26.065Z</updated>
+    <updated>2020-02-23T04:53:57.944Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;C-程序设计语言（二）——基础&quot;&gt;&lt;a href=&quot;#C-程序设计语言（二）——基础&quot; class=&quot;headerlink&quot; title=&quot;C++程序设计语言（二）——基础&quot;&gt;&lt;/a&gt;C++程序设计语言（二）——基础&lt;/h1&gt;
+      &lt;h1 id=&quot;C-程序设计语言（二）——标准输入输出&quot;&gt;&lt;a href=&quot;#C-程序设计语言（二）——标准输入输出&quot; class=&quot;headerlink&quot; title=&quot;C++程序设计语言（二）——标准输入输出&quot;&gt;&lt;/a&gt;C++程序设计语言（二）——标准输入输出&lt;/h1&gt;&lt;p&gt;C++语言提供了iostream库来表示输入流和输出流。它包含两个基本类型istream和ostream，分别表示输入流和输出流。&lt;/p&gt;
+&lt;p&gt;流（stream），随着时间的推移，字符是顺序生成或消耗的。&lt;/p&gt;
     
     </summary>
     
@@ -181,11 +201,11 @@
     <link href="http://blog.ascrush.cn/2020/02/04/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%A6%82%E8%A7%88/"/>
     <id>http://blog.ascrush.cn/2020/02/04/C-%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%EF%BC%88%E4%B8%80%EF%BC%89%E2%80%94%E2%80%94%E6%A6%82%E8%A7%88/</id>
     <published>2020-02-04T07:00:56.000Z</published>
-    <updated>2020-02-04T09:28:06.778Z</updated>
+    <updated>2020-02-23T07:20:04.768Z</updated>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;C-编程语言（一）——概览&quot;&gt;&lt;a href=&quot;#C-编程语言（一）——概览&quot; class=&quot;headerlink&quot; title=&quot;C++编程语言（一）——概览&quot;&gt;&lt;/a&gt;C++编程语言（一）——概览&lt;/h1&gt;&lt;p&gt;C++是一种被广泛使用的计算机程序设计语言。它是一种通用程序设计语言，支持多重编程模式，例如过程化程序设计、数据抽象、面向对象程序设计、泛型程序设计和设计模式等。——引自维基百科&lt;/p&gt;
+      &lt;h1 id=&quot;C-程序设计语言（一）——概览&quot;&gt;&lt;a href=&quot;#C-程序设计语言（一）——概览&quot; class=&quot;headerlink&quot; title=&quot;C++程序设计语言（一）——概览&quot;&gt;&lt;/a&gt;C++程序设计语言（一）——概览&lt;/h1&gt;&lt;p&gt;C++是一种被广泛使用的计算机程序设计语言。它是一种通用程序设计语言，支持多重编程模式，例如过程化程序设计、数据抽象、面向对象程序设计、泛型程序设计和设计模式等。——引自维基百科&lt;/p&gt;
     
     </summary>
     
@@ -427,25 +447,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;操作系统结构&quot;&gt;&lt;a href=&quot;#操作系统结构&quot; class=&quot;headerlink&quot; title=&quot;操作系统结构&quot;&gt;&lt;/a&gt;操作系统结构&lt;/h1&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OS 导论</title>
-    <link href="http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/"/>
-    <id>http://blog.ascrush.cn/2020/01/08/os%E5%AF%BC%E8%AE%BA/</id>
-    <published>2020-01-07T18:26:03.291Z</published>
-    <updated>2020-01-07T16:13:58.283Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;导论&quot;&gt;&lt;a href=&quot;#导论&quot; class=&quot;headerlink&quot; title=&quot;导论&quot;&gt;&lt;/a&gt;导论&lt;/h1&gt;
     
     </summary>
     
