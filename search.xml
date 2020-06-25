@@ -3,7 +3,8 @@
   <entry>
     <title>排序算法</title>
     <url>/2020/06/24/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>最简单的排序算法。将一个记录插入到已排好序的有序表中，从而的导演给新的、记录新增1的有序表。</p>
+    <content><![CDATA[<a id="more"></a>
+<h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>最简单的排序算法。将一个记录插入到已排好序的有序表中，从而的导演给新的、记录新增1的有序表。</p>
 <h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>时间复杂度为O(n²)。最好的情况为比较n-1次，移动0次。最坏的情况为比较n²/4次，移动n²/2次。</p>
 <h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><ol>
 <li>从序列中得到第一个数</li>
