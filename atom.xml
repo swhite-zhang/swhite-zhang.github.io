@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.ascrush.cn/"/>
-  <updated>2020-03-03T13:39:24.995Z</updated>
+  <updated>2020-06-25T01:14:29.976Z</updated>
   <id>http://blog.ascrush.cn/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>排序算法</title>
+    <link href="http://blog.ascrush.cn/2020/06/24/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"/>
+    <id>http://blog.ascrush.cn/2020/06/24/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</id>
+    <published>2020-06-24T15:18:31.000Z</published>
+    <updated>2020-06-25T01:14:29.976Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;插入排序&quot;&gt;&lt;a href=&quot;#插入排序&quot; class=&quot;headerlink&quot; title=&quot;插入排序&quot;&gt;&lt;/a&gt;插入排序&lt;/h1&gt;&lt;p&gt;最简单的排序算法。将一个记录插入到已排好序的有序表中，从而的导演给新的、记录新增1的有序表。&lt;/p&gt;
+&lt;h2
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Python" scheme="http://blog.ascrush.cn/tags/Python/"/>
+    
+      <category term="排序" scheme="http://blog.ascrush.cn/tags/%E6%8E%92%E5%BA%8F/"/>
+    
+      <category term="算法" scheme="http://blog.ascrush.cn/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>C++程序设计语言（五）——引用和指针</title>
@@ -434,25 +464,6 @@
       <category term="摄影" scheme="http://blog.ascrush.cn/tags/%E6%91%84%E5%BD%B1/"/>
     
       <category term="2019" scheme="http://blog.ascrush.cn/tags/2019/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OS 进程</title>
-    <link href="http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/"/>
-    <id>http://blog.ascrush.cn/2020/01/08/os%E8%BF%9B%E7%A8%8B/</id>
-    <published>2020-01-07T18:26:03.366Z</published>
-    <updated>2020-01-07T16:14:08.422Z</updated>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;进程&quot;&gt;&lt;a href=&quot;#进程&quot; class=&quot;headerlink&quot; title=&quot;进程&quot;&gt;&lt;/a&gt;进程&lt;/h1&gt;&lt;p&gt;在CPU中的活动称为进程。&lt;/p&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="OS" scheme="http://blog.ascrush.cn/tags/OS/"/>
     
   </entry>
   
